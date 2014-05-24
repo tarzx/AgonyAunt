@@ -1,0 +1,51 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+    
+
+	    <TextView
+	        android:id="@+id/resultString"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="75dp"
+	        android:text="@string/resultString" />
+
+	    <TextView
+	        android:id="@+id/question3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/resultString"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="52dp"
+	        android:text="How do you like the third question followed the second question?" 
+	        android:textAppearance="?android:attr/textAppearanceMedium"/>
+   		
+	   	<SeekBar android:id="@+id/rate_bar"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="10"
+	        android:layout_below="@+id/question2"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="34dp"
+	        android:progress="0"
+	        android:max="20"/>
+
+	    <Button
+            android:id="@+id/button1"
+        	android:layout_width="wrap_content"
+       	 	android:layout_height="wrap_content"
+       	 	android:layout_gravity="right|bottom"
+       	 	android:layout_marginTop="80dp"
+        	android:text="Next" 
+        	android:onClick="nextQuestion"/>
+    </LinearLayout>
+
+</ScrollView>
+
+<!-- From: file:/Users/user/Documents/AndroidStudio/AgonyAunt/app/src/main/res/layout/result3.xml -->
