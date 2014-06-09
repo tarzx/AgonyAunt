@@ -133,18 +133,18 @@
                 </string>
                 <string name="profile" >My Profile
                 </string>
-                <string name="button_next" >Next
-                </string>
                 <string name="preferences" >My Preferences
                 </string>
-                <string name="control1" ></string>
-                <string name="title_activity_mood_tracker" >MoodTracker
+                <string name="button_next" >Next
                 </string>
                 <string name="answer" >Enter your answer 
                 </string>
-                <string name="mood_tracker" >Mood Tracker
+                <string name="title_activity_mood_tracker" >MoodTracker
                 </string>
+                <string name="control1" ></string>
                 <string name="freq2" >2
+                </string>
+                <string name="mood_tracker" >Mood Tracker
                 </string>
                 <string name="freq3" >3
                 </string>
@@ -176,17 +176,17 @@
                 </string>
                 <string name="title_activity_intervention_notifier" >InterventionNotifier
                 </string>
-                <string name="freqCount" >freqCount
-                </string>
                 <string name="title_activity_intervention" >Intervention
+                </string>
+                <string name="freqCount" >freqCount
                 </string>
                 <string name="title_activity_my_profile" >MyProfile
                 </string>
                 <string name="freq7" >7
                 </string>
-                <string name="freq6" >6
-                </string>
                 <string name="age" >Age
+                </string>
+                <string name="freq6" >6
                 </string>
                 <string name="title_activity_question2" >Question2
                 </string>
@@ -199,9 +199,9 @@
                 </string>
                 <string name="title_activity_create_notification" >CreateNotificationActivity
                 </string>
-                <string name="occupation" >My Occupation
-                </string>
                 <string name="intervFreqQ" >How often would you like to receive interventions during the day
+                </string>
+                <string name="occupation" >My Occupation
                 </string>
                 <string name="title_activity_alarm" >Alarm
                 </string>

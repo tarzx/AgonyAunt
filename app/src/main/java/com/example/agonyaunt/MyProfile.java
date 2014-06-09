@@ -8,11 +8,13 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
 /** This class represent myProfile
  * @author Jiachun Liu
+ * @author Teng
  */
 public class MyProfile extends Activity {
 
@@ -30,8 +32,7 @@ public class MyProfile extends Activity {
 		RadioButton editSex0 = (RadioButton) findViewById(R.id.sex0);
 		RadioButton editSex1 = (RadioButton) findViewById(R.id.sex1);
 
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// Get user input
 		String uname = sharedPref.getString(getString(R.string.username), "");
@@ -56,6 +57,8 @@ public class MyProfile extends Activity {
 		editSex0.setChecked(sex0);
 		editSex1.setChecked(sex1);
 		editOcc.setText(occ);
+
+
 	}
 
 	@Override
@@ -98,9 +101,9 @@ public class MyProfile extends Activity {
 	public boolean storeData(String uname, String age, String occ,
 			boolean sex0, boolean sex1) {
 
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putting(Key, value)
 		editor.putString(getString(R.string.username), uname);
 		editor.putString(getString(R.string.age), age);
 		editor.putString(getString(R.string.occupation), occ);

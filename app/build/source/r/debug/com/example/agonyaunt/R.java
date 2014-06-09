@@ -20,6 +20,7 @@ public final class R {
         public static final int thumb_drawable=0x7f020002;
     }
     public static final class id {
+        public static final int BtnSaveProfile=0x7f080016;
         public static final int CheckBox1=0x7f080009;
         public static final int CheckBox2=0x7f08000a;
         public static final int CheckBox3=0x7f08000b;
@@ -31,8 +32,8 @@ public final class R {
         public static final int answer=0x7f080019;
         public static final int backButton=0x7f08000f;
         public static final int button1=0x7f080000;
-        public static final int button2=0x7f080001;
-        public static final int button3=0x7f080002;
+        public static final int button2=0x7f080002;
+        public static final int button3=0x7f080001;
         public static final int checkBox0=0x7f080008;
         public static final int frequency_bar=0x7f080005;
         public static final int frequency_counter=0x7f080006;
@@ -50,7 +51,6 @@ public final class R {
         public static final int rate_bar=0x7f08001b;
         public static final int relativeLayout1=0x7f08000e;
         public static final int resultString=0x7f080017;
-        public static final int saveButton=0x7f080016;
         public static final int sex0=0x7f080013;
         public static final int sex1=0x7f080014;
         public static final int textView1=0x7f080004;

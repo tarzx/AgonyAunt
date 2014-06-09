@@ -85,8 +85,9 @@ public class MyPreferences extends Activity {
 
 	/** Saves the data
 	 * @param view	The Android view
+     *              click on the save button in my preference activity
 	 */
-	public void saveData(View view) {
+	public void savePreference(View view) {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPref.edit();
@@ -99,7 +100,7 @@ public class MyPreferences extends Activity {
 			editor.putBoolean(key, checkBoxes[i].isChecked());
 		}
 		editor.commit();
-		Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Preference has been saved", Toast.LENGTH_SHORT).show();
 	}
 
 	/** Creates the seek bar

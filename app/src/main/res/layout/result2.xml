@@ -18,29 +18,34 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:text="What would you say about your state of mind just now?" 
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp" />
     
     <EditText
         android:id="@+id/answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question2"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="72dp"
         android:ems="10" 
-        android:hint="@string/answer">
+        android:hint="@string/answer"
+        android:layout_below="@+id/question2"
+        android:layout_alignLeft="@+id/question2"
+        android:layout_alignStart="@+id/question2"
+        android:layout_alignRight="@+id/question2"
+        android:layout_alignEnd="@+id/question2">
    </EditText>
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
         android:onClick="nextQuestion"
-        android:text="Next" />
+        android:text="Next"
+        android:layout_below="@+id/answer"
+        android:layout_alignRight="@+id/answer"
+        android:layout_alignEnd="@+id/answer"
+        android:layout_marginTop="82dp" />
 
 
 </RelativeLayout>

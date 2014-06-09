@@ -9,32 +9,30 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="177dp"
+        android:layout_marginTop="79dp"
         android:onClick="Intervention"
-        android:text="Demo Chat with Grandma" />
+        android:text="Demo Chat with Grandma"
+        android:layout_below="@+id/button3"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="35dp"
         android:onClick="preferences"
-        android:text="@string/preferences" />
+        android:text="@string/preferences"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="60dp"
         android:onClick="myProfile"
-        android:text="@string/profile" />
+        android:text="@string/profile"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout><!-- From: file:/Users/user/Documents/AndroidStudio/AgonyAunt/app/src/main/res/layout/activity_home_menu.xml -->

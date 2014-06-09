@@ -89,17 +89,21 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="Save" 
-            android:onClick="saveData"/>
+            android:text="Save"
+            android:onClick="savePreference"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
          <Button
             android:id="@+id/backButton"
         	style="?android:attr/buttonStyleSmall"
         	android:layout_width="wrap_content"
        	 	android:layout_height="wrap_content"
-       	 	android:layout_alignParentRight="true"
-        	android:text="Back" 
-        	android:onClick="backButton"/>
+             android:text="Back"
+        	android:onClick="backButton"
+             android:layout_alignParentTop="true"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentStart="true" />
          
         </RelativeLayout>
          

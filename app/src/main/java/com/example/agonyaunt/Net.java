@@ -11,7 +11,7 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.persist.EncogDirectoryPersistence;
 import android.content.Context;
 
-/** This class represents the Baby Aritficial Neural Network
+/** This class represents the Baby Artificial Neural Network
  * @author Abigail Lowe
  */
 public class Net {

@@ -12,12 +12,14 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="36dp"
         android:layout_marginTop="34dp"
         android:ems="10" 
-        android:hint="@string/username">
+        android:hint="@string/username"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
     </EditText>
 
@@ -48,44 +50,50 @@
         android:id="@+id/age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/username"
         android:layout_below="@+id/username"
         android:layout_marginTop="56dp"
         android:ems="10"
         android:hint="@string/age"
-        android:inputType="number" />
+        android:inputType="number"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/occupation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/age"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:ems="10" 
-        android:hint="@string/occupation"/>
+        android:ems="10"
+        android:hint="@string/occupation"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/age"
+        android:layout_alignEnd="@+id/age" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/BtnSaveProfile"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="33dp"
+        android:text="Save"
+        android:onClick="saveData"
+        android:layout_marginRight="32dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="26dp"
-        android:layout_marginLeft="22dp"
-        android:text="Save" 
-        android:onClick="saveMyProfile"/>
+        android:layout_alignRight="@+id/occupation"
+        android:layout_alignEnd="@+id/occupation" />
 
     <Button
         android:id="@+id/backButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/saveButton"
-        android:layout_marginRight="30dp"
-        android:text="Back" 
-        android:onClick="backButton"/>
+        android:text="Back"
+        android:onClick="backButton"
+        android:layout_alignTop="@+id/BtnSaveProfile"
+        android:layout_alignRight="@+id/radioGroup1"
+        android:layout_alignEnd="@+id/radioGroup1" />
 
 </RelativeLayout><!-- From: file:/Users/user/Documents/AndroidStudio/AgonyAunt/app/src/main/res/layout/activity_my_profile.xml -->

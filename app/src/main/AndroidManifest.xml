@@ -29,14 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.agonyaunt.MoodTracker"
-            android:label="@string/title_activity_mood_tracker"
-            android:parentActivityName="com.example.agonyaunt.HomeMenu" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.agonyaunt.HomeMenu" />
-        </activity>
+        <!--<activity-->
+            <!--android:name="com.example.agonyaunt.MoodTracker"-->
+            <!--android:label="@string/title_activity_mood_tracker"-->
+            <!--android:parentActivityName="com.example.agonyaunt.HomeMenu" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.example.agonyaunt.HomeMenu" />-->
+        <!--</activity>-->
         <activity
             android:name="com.example.agonyaunt.MyProfile"
             android:label="@string/title_activity_my_profile"
