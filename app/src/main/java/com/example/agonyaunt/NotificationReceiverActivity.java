@@ -126,8 +126,7 @@ public class NotificationReceiverActivity extends Activity implements
 	}
 
 	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress,
-			boolean fromUser) {
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 	}
 
 	@Override

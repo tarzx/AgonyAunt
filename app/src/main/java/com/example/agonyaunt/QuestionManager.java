@@ -35,31 +35,41 @@ public class QuestionManager implements Serializable {
 
 	/** Stores questions */
 	public void setUpQuestions() {
+        therapQuestions[0] = new Question(new double[] { 0, 0, 0, 0 },
+                "What's your goal?", "", subQuestions[0]);
 		subQuestions[0][0] = new Question(new double[] { 0 },
 				"Why is that important?", "", therapQuestions[0], -1);
 		subQuestions[0][1] = new Question(new double[] { 1 },
 				"Is that sensible?", "", therapQuestions[0], -1);
-		therapQuestions[0] = new Question(new double[] { 0, 0, 0, 0 },
-				"What's your goal?", "", subQuestions[0]);
+
+
+        therapQuestions[1] = new Question(new double[] { 0, 0, 0, 1 },
+                "How are you feeling?", "", subQuestions[1]);
 		subQuestions[1][0] = new Question(new double[] { 0 }, "Why is that?",
 				"", therapQuestions[1], -1);
 		subQuestions[1][1] = new Question(new double[] { 1 },
 				"How long have you felt that way?", "", therapQuestions[1], -1);
-		therapQuestions[1] = new Question(new double[] { 0, 0, 0, 1 },
-				"How are you feeling?", "", subQuestions[1]);
+
+
+
+        therapQuestions[2] = new Question(new double[] { 0, 0, 1, 0 },
+                "What's going through your mind?", "", subQuestions[2]);
 		subQuestions[2][0] = new Question(new double[] { 0 },
 				"Do you think about that a lot?", "", therapQuestions[2], -1);
 		subQuestions[2][1] = new Question(new double[] { 1 },
 				"Does that trouble you?", "", therapQuestions[2], -1);
-		therapQuestions[2] = new Question(new double[] { 0, 0, 1, 0 },
-				"What's going through your mind?", "", subQuestions[2]);
+
+
+        therapQuestions[3] = new Question(new double[] { 0, 0, 1, 1 },
+                "Are you in charge of your destiny?", "", subQuestions[3]);
 		subQuestions[3][0] = new Question(new double[] { 0 },
 				"Do you think it's normal to feel that?", "",
 				therapQuestions[3], -1);
 		subQuestions[3][1] = new Question(new double[] { 1 },
 				"Are you comfortable with that?", "", therapQuestions[3], -1);
-		therapQuestions[3] = new Question(new double[] { 0, 0, 1, 1 },
-				"Are you in charge of your destiny?", "", subQuestions[3]);
+
+
+
 		therapQuestions[4] = new Question(new double[] { 0, 1, 0, 0 },
 				"How do you feel today?", "", subQuestions[4]);
 		subQuestions[4][0] = new Question(new double[] { 0 },

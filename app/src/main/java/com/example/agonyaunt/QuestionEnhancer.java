@@ -25,6 +25,7 @@ public class QuestionEnhancer {
 	int index;
 	String other_replace = "";
 
+
 	public QuestionEnhancer(Context context) {
 		this.context = context;
 	}
