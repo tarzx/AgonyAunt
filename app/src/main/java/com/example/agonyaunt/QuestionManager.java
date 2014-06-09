@@ -6,6 +6,7 @@ import java.util.Random;
 /** This class manages questions functionalities
  * @author Abigail Lowe
  * @author Jiachun Liu
+ * @author Teng Li
  */
 @SuppressWarnings("serial")
 public class QuestionManager implements Serializable {
@@ -81,11 +82,11 @@ public class QuestionManager implements Serializable {
 
 	/** Updates the rating of a subQuestion
 	 * @param parentQ	The index of the parent question
-	 * @param q			The index of the sub question
-	 * @param rating	The new eating
+	 * @param subQIndex			The index of the sub question
+	 * @param newRating	The new rating
 	 */
-	public void update(int parentQ, int q, int rating) {
-		subQuestions[parentQ][q].setRating(rating);
+	public void update(int parentQ, int subQIndex, int newRating) {
+		subQuestions[parentQ][subQIndex].setRating(newRating);
 	}
 
 	
@@ -122,7 +123,7 @@ public class QuestionManager implements Serializable {
 	// Getters and Setters
 
 	public void setRecPar(Question parent) {
-		rec_par = parent;
+        rec_par = parent;
 	}
 
 	public Question getRecPar() {
