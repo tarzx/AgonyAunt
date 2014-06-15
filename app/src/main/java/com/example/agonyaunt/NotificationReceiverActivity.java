@@ -103,8 +103,7 @@ public class NotificationReceiverActivity extends Activity implements
 
 		}
 		// Get user name
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		uname = sharedPref.getString("My Username", "");
 	}
 

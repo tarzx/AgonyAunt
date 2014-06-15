@@ -15,6 +15,7 @@ public class Util {
 		new TimeSlot(240, 180), new TimeSlot(420, 300),
 		new TimeSlot(720, 300), new TimeSlot(1020, 240),
 		new TimeSlot(1260, 180), new TimeSlot(0, 240) };
+
 	public static boolean alarm_boot = false;
 
 	/** Calculate the time of the next intervention
@@ -48,8 +49,7 @@ public class Util {
 		int remaining = frequency;
 		if (remaining > frequencies.length) {
 			for (int i = 0; i < frequencies.length - 1; i++) {
-				frequencies[i] = gen.nextInt(Math.abs(remaining
-						- (frequencies.length - i))); 
+				frequencies[i] = gen.nextInt(Math.abs(remaining - (frequencies.length - i)));
 				remaining -= frequencies[i];
 			}
 			frequencies[frequencies.length - 1] = remaining;

@@ -98,8 +98,7 @@ public class MyProfile extends Activity {
 	 * @param sex1	If they are female
 	 * @return true	If data is stored successfully 
 	 */
-	public boolean storeData(String uname, String age, String occ,
-			boolean sex0, boolean sex1) {
+	public boolean storeData(String uname, String age, String occ, boolean sex0, boolean sex1) {
 
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPref.edit();
@@ -112,4 +111,8 @@ public class MyProfile extends Activity {
 		editor.commit();
 		return true;
 	}
+
+    public void storeMyData(View view){
+
+    }
 }

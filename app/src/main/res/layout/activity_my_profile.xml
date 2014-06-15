@@ -79,7 +79,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="33dp"
         android:text="Save"
-        android:onClick="saveData"
         android:layout_marginRight="32dp"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/occupation"

@@ -88,8 +88,7 @@ public class MyPreferences extends Activity {
      *              click on the save button in my preference activity
 	 */
 	public void savePreference(View view) {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPref.edit();
 
 		SeekBar bar = (SeekBar) findViewById(R.id.frequency_bar);
