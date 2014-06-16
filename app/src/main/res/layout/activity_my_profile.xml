@@ -35,7 +35,7 @@
             android:id="@+id/sex0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:checked="false"
             android:text="@string/sex0" />
 
         <RadioButton
@@ -82,7 +82,8 @@
         android:layout_marginRight="32dp"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/occupation"
-        android:layout_alignEnd="@+id/occupation" />
+        android:layout_alignEnd="@+id/occupation"
+        android:onClick="saveProfile" />
 
     <Button
         android:id="@+id/backButton"
@@ -90,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:onClick="backButton"
+        android:onClick="backButtonProfile"
         android:layout_alignTop="@+id/BtnSaveProfile"
         android:layout_alignRight="@+id/radioGroup1"
         android:layout_alignEnd="@+id/radioGroup1" />

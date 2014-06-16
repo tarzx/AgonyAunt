@@ -21,7 +21,7 @@ import android.widget.Toast;
  */
 public class MyPreferences extends Activity {
 
-	public final static String checkBoxesKey = "checkBoxeskey";
+	public final static String checkBoxesKey = "checkBoxesKey";
 	public final static int numCheckboxes = 6;
 	CheckBox[] checkBoxes = new CheckBox[numCheckboxes];
 
@@ -29,7 +29,9 @@ public class MyPreferences extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_preferences);
+
 		setupActionBar();
+
 		checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox0);
 		checkBoxes[1] = (CheckBox) findViewById(R.id.CheckBox1);
 		checkBoxes[2] = (CheckBox) findViewById(R.id.CheckBox2);
@@ -37,13 +39,16 @@ public class MyPreferences extends Activity {
 		checkBoxes[4] = (CheckBox) findViewById(R.id.CheckBox4);
 		checkBoxes[5] = (CheckBox) findViewById(R.id.CheckBox5);
 
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
 		for (int i = 0; i < numCheckboxes; i++) {
 			String key = checkBoxesKey + i;
+//            In get method of sharePref, the second is for default when this value is not existing.
 			checkBoxes[i].setChecked(sharedPref.getBoolean(key, false));
 		}
+
 		setupSeekBar(sharedPref.getInt("frequency", 1));
+
 	}
 
 	// Set up the {@link android.app.ActionBar}, if the API is available.
@@ -115,8 +120,7 @@ public class MyPreferences extends Activity {
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
-			public void onProgressChanged(SeekBar bar, int position,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar bar, int position, boolean fromUser) {
 				counter.setText(Integer.toString(position));
 			}
 

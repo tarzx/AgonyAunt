@@ -34,16 +34,14 @@ public class Alarm extends Service {
 	/** This method starts a daily alarm */
 	public void mainAlarm() {
 		boolean[] slots = new boolean[MyPreferences.numCheckboxes];
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		for (int c = 0; c < MyPreferences.numCheckboxes; c++) {
 			String key = MyPreferences.checkBoxesKey + c;
 			slots[c] = sharedPref.getBoolean(key, false);
 		}
 		int frequency = sharedPref.getInt("frequency", 1);
-		ArrayList<Integer> nextTimes = Util
-				.calculateNextTimes(frequency, slots);
+		ArrayList<Integer> nextTimes = Util.calculateNextTimes(frequency, slots);
 
 		Calendar cal_alarm = Calendar.getInstance();
 		cal_alarm.set(Calendar.HOUR_OF_DAY, 0);
@@ -55,11 +53,8 @@ public class Alarm extends Service {
 		for (int i = 0; i < nextTimes.size(); i++) {
 			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			pi[i] = PendingIntent.getService(this, i, intent, 0);
-			am.set(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis()
-					+ nextTimes.get(i) * 60 * 1000, pi[i]);
-			System.out.println(getDate(
-					cal_alarm.getTimeInMillis() + nextTimes.get(i) * 60 * 1000,
-					"dd/MM/yyyy hh:mm:ss.SSS"));
+			am.set(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis() + nextTimes.get(i) * 60 * 1000, pi[i]);
+			System.out.println(getDate(cal_alarm.getTimeInMillis() + nextTimes.get(i) * 60 * 1000, "dd/MM/yyyy hh:mm:ss.SSS"));
 		}
 	}
 
