@@ -2,6 +2,8 @@ package com.example.agonyaunt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,13 +21,17 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+
+import org.w3c.dom.Text;
 
 /** This class is responsible for the main control loop
  * @author Jiachun Liu
  * @author Abigail Lowe
  */
-public class NotificationReceiverActivity extends Activity implements
-		OnSeekBarChangeListener {
+public class NotificationReceiverActivity extends Activity implements OnSeekBarChangeListener, TextToSpeech.OnInitListener{
 
 	// Keep track of questions
 	public static final String COUNT = "com.example.agonyaunt.COUNT";
@@ -48,12 +55,18 @@ public class NotificationReceiverActivity extends Activity implements
 	// New neural net
 	Net net = new Net(this);
 
+
+    private TextToSpeech tts;
+
 	@SuppressLint("NewApi")
 	@Override
 	// On creation, set up everything
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        tts = new TextToSpeech(this, this);
 		Intent intent = getIntent();
+
+
 		quesMan = QUESMANAGER0;
 		if (intent != null) {
 			if (intent.getIntExtra(COUNT, 0) > 0) {
@@ -62,8 +75,7 @@ public class NotificationReceiverActivity extends Activity implements
 			}
 			if (intent.getSerializableExtra(quesMan) != null) {
 				// Question manager has been sent
-				quesManager = (QuestionManager) intent
-						.getSerializableExtra(quesMan);
+				quesManager = (QuestionManager) intent.getSerializableExtra(quesMan);
 			}
 			if (quesCount == 0) {
 				setContentView(R.layout.results);
@@ -71,14 +83,20 @@ public class NotificationReceiverActivity extends Activity implements
 				setContentView(R.layout.result2);
 			} else {
 				setContentView(R.layout.result3);
+                TextView question3 = (TextView) findViewById(R.id.question3);
+                speakOut(question3.getText().toString());
 			}
 			if (quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
 				question = intent.getStringExtra(QUESTION);
 				TextView question2 = (TextView) findViewById(R.id.question2);
 				question2.setText(question);
+                speakOut(question2.getText().toString());
 			}
 			// If this is the first feedback question.
 			if (quesCount == 0) {
+               TextView question1 = (TextView) findViewById(R.id.question1);
+               speakOut(question1.getText().toString());
+
 				// Show the first control level question
 				if (intent.getStringArrayExtra(ANSWERS) != null) {
 					answers = intent.getStringArrayExtra(ANSWERS);
@@ -94,6 +112,10 @@ public class NotificationReceiverActivity extends Activity implements
 					radio4.setText(answers[4]);
 				}
 			}
+
+
+
+
 			if (intent.getStringArrayListExtra(PREAMBLEIDS) != null) {
 				preambleIds = intent.getStringArrayListExtra(PREAMBLEIDS);
 			}
@@ -104,7 +126,8 @@ public class NotificationReceiverActivity extends Activity implements
 		}
 		// Get user name
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		uname = sharedPref.getString("My Username", "");
+//        What is trying to do here???
+		uname = sharedPref.getString("userName", "");
 	}
 
 	@Override
@@ -166,7 +189,9 @@ public class NotificationReceiverActivity extends Activity implements
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			// Ask the parent question
 			if (quesCount == 0) {
+//                The selected variable is a string which conclude a number from 1-5
 				String selected = getSelected();
+//                Preamble 前言 (Just a translation)
 				preambleIds.add(selected);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
 				// Get random parent
@@ -293,4 +318,46 @@ public class NotificationReceiverActivity extends Activity implements
 
 		return "";
 	}
+
+    @Override
+    public void onDestroy() {
+        // Don't forget to shutdown tts!
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            tts.setPitch(0.5f);
+            tts.setSpeechRate(1);
+            int result = tts.setLanguage(Locale.US);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            } else {
+                String anything = "";
+                speakOut(anything);
+            }
+
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+    }
+
+    private void speakOut(String text) {
+
+        Log.i("System Out", text);
+
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+
+
+
+
+
 }
