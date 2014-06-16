@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/resultString"
@@ -15,25 +16,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/resultString"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:text="What would you say about your state of mind just now?" 
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="10dp" />
     
     <EditText
         android:id="@+id/answer"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:ems="10" 
+        android:ems="10"
         android:hint="@string/answer"
-        android:layout_below="@+id/question2"
-        android:layout_alignLeft="@+id/question2"
-        android:layout_alignStart="@+id/question2"
-        android:layout_alignRight="@+id/question2"
-        android:layout_alignEnd="@+id/question2">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
    </EditText>
 
     <Button
@@ -42,10 +41,10 @@
         android:layout_height="wrap_content"
         android:onClick="nextQuestion"
         android:text="Next"
-        android:layout_below="@+id/answer"
-        android:layout_alignRight="@+id/answer"
-        android:layout_alignEnd="@+id/answer"
-        android:layout_marginTop="82dp" />
+
+        android:layout_marginTop="80dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="40dp" />
 
 
-</RelativeLayout>
+</LinearLayout>
