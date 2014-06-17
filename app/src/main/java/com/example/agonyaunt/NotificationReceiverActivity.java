@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -16,6 +17,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -55,16 +57,30 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	// New neural net
 	Net net = new Net(this);
 
+    private TextView question1, question2, question3;
+
+
 
     private TextToSpeech tts;
+    private boolean ttsInstalled = false;
 
 	@SuppressLint("NewApi")
 	@Override
 	// On creation, set up everything
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        tts = new TextToSpeech(this, this);
+
 		Intent intent = getIntent();
+
+        if(isPackageInstalled(getPackageManager(), "com.svox.pico")){
+            ttsInstalled = true; // This would be good to have it as a static member
+        }
+
+        Log.i("tts installed?", ttsInstalled+"");
+
+        if (ttsInstalled){
+            tts = new TextToSpeech(this, this);
+        }
 
 
 		quesMan = QUESMANAGER0;
@@ -79,23 +95,22 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			}
 			if (quesCount == 0) {
 				setContentView(R.layout.results);
+                Button speakBtn1 = (Button) findViewById(R.id.btnSpeak);
 			} else if (quesCount < 3) {
 				setContentView(R.layout.result2);
 			} else {
 				setContentView(R.layout.result3);
-                TextView question3 = (TextView) findViewById(R.id.question3);
-                speakOut(question3.getText().toString());
+                question3 = (TextView) findViewById(R.id.question3);
 			}
 			if (quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
 				question = intent.getStringExtra(QUESTION);
-				TextView question2 = (TextView) findViewById(R.id.question2);
+				question2 = (TextView) findViewById(R.id.question2);
 				question2.setText(question);
-                speakOut(question2.getText().toString());
+
 			}
 			// If this is the first feedback question.
 			if (quesCount == 0) {
-               TextView question1 = (TextView) findViewById(R.id.question1);
-               speakOut(question1.getText().toString());
+               question1 = (TextView) findViewById(R.id.question1);
 
 				// Show the first control level question
 				if (intent.getStringArrayExtra(ANSWERS) != null) {
@@ -332,13 +347,14 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
-            tts.setPitch(0.5f);
-            tts.setSpeechRate(1);
-            int result = tts.setLanguage(Locale.US);
+            tts.setPitch(1f);
+            tts.setSpeechRate(0.8f);
+            int result = tts.setLanguage(new Locale("en", "GB"));
 
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
             } else {
+                Log.i("Selected language support", "Yes support");
                 String anything = "";
                 speakOut(anything);
             }
@@ -356,6 +372,26 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
     }
 
 
+    public static boolean isPackageInstalled(PackageManager pm, String packageName) {
+        try {
+            pm.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void clickSpeakBtn1(View view){
+        speakOut(question1.getText().toString());
+    }
+
+    public void clickSpeakBtn2(View view){
+        speakOut(question2.getText().toString());
+    }
+
+    public void clickSpeakBtn3(View view){
+        speakOut(question3.getText().toString());
+    }
 
 
 
