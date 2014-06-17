@@ -44,11 +44,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="NotificationReceiverActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="NotificationReceiverActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/NotificationReceiverActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.653846" vertical-offset="6425" max-vertical-offset="7695">
-              <caret line="350" column="33" selection-start-line="350" selection-start-column="33" selection-end-line="350" selection-end-column="33" />
+            <state vertical-scroll-proportion="14.382682" vertical-offset="0" max-vertical-offset="7695">
+              <caret line="271" column="29" selection-start-line="271" selection-start-column="29" selection-end-line="271" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#11102#11103#0" expanded="true" />
@@ -62,7 +62,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="results.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="results.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/results.xml">
           <provider selected="true" editor-type-id="android-designer">
             <state />
@@ -1715,10 +1715,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/results.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1786">
+          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/NotificationReceiverActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.653846" vertical-offset="6425" max-vertical-offset="7695">
-          <caret line="350" column="33" selection-start-line="350" selection-start-column="33" selection-end-line="350" selection-end-column="33" />
+        <state vertical-scroll-proportion="14.382682" vertical-offset="0" max-vertical-offset="7695">
+          <caret line="271" column="29" selection-start-line="271" selection-start-column="29" selection-end-line="271" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#11102#11103#0" expanded="true" />
@@ -1728,17 +1739,6 @@
             <element signature="e#11302#11303#0" expanded="true" />
             <element signature="e#11358#11359#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/results.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1786">
-          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
