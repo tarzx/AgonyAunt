@@ -32,6 +32,7 @@ import org.w3c.dom.Text;
 /** This class is responsible for the main control loop
  * @author Jiachun Liu
  * @author Abigail Lowe
+ * @author Teng Li
  */
 public class NotificationReceiverActivity extends Activity implements OnSeekBarChangeListener, TextToSpeech.OnInitListener{
 
