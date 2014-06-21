@@ -73,6 +73,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 		Intent intent = getIntent();
 
+//      Test if text-to-speech engine is installed in local machine
         if(isPackageInstalled(getPackageManager(), "com.svox.pico")){
             ttsInstalled = true; // This would be good to have it as a static member
         }
@@ -197,7 +198,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	 */
 	public void nextQuestion(View view) throws IOException {
 
-		// Total questions
+		// Total questions, just return an int variable in QuestionManager class
 		int totalQs = quesManager.getTotalQs();
 
 		if (quesCount < totalQs) {
@@ -224,6 +225,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				String answer = answer_text.getText().toString();
 				preambleIds.add(answer);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
+//                The answer for a question is just String!! How to use it?
 				quesManager.getRecPar().setAnswer(answer);
 
 				if (quesCount == 1) {
@@ -233,8 +235,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 					// Get the next question
 					nxtQ = quesManager.getNextFromNet(net, parent);
 					// Enhance if needed
-					QuestionEnhancer qe = new QuestionEnhancer(this);
-					nxtQ = qe.receive(nxtQ, answer);
+					QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
+//                    The answer for question is used by QuestionEnhancer
+					nxtQ = questionEnhancer.receive(nxtQ, answer);
 					quesManager.setSub_index(net.getOutput());
 				}
 				
