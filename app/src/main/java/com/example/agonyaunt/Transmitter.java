@@ -18,7 +18,7 @@ import android.content.Context;
 public class Transmitter {
 
 	// Port
-	private final int PORT = 1556;
+	private final int PORT = 1558;
 	QuestionManager quesMan;
 	Context context;
 
@@ -31,8 +31,7 @@ public class Transmitter {
 	 * @param to_write	Info to write to server
 	 * @param context	The Android context
 	 */
-	public void output(String filename, ArrayList<byte[]> to_write,
-			Context context) {
+	public void output(String filename, ArrayList<byte[]> to_write, Context context) {
 		this.context = context;
 		// Gets the string
 		String message = getMessage(to_write);
@@ -66,8 +65,10 @@ public class Transmitter {
 	public String getMessage(ArrayList<byte[]> to_write) {
 		String message = "";
 		// Add some key attributes
+//        Get the number of first level questions
 		message = (Integer.toString(quesMan.getNUM_QUESTIONS()));
 		message = message + (" ");
+//        Get the bits need to represent a question ID
 		message = message + Integer.toString(quesMan.getQIDbits());
 		message = message + (" ");
 		message = message + Integer.toString(quesMan.getOutputBits());
@@ -91,8 +92,7 @@ public class Transmitter {
 		PrintWriter pw;
 		try {
 			// Open Encog file
-			pw = new PrintWriter(new FileOutputStream(new File(
-					context.getFilesDir(), "Encog")));
+			pw = new PrintWriter(new FileOutputStream(new File(context.getFilesDir(), "Encog")));
 			// Write to file
 			for (int i = 0; i < response_arr.length; i++) {
 				pw.write(response_arr[i] + "\n");
