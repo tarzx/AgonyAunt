@@ -38,7 +38,9 @@ public class Transmitter {
 		String response = "";
 		try {
 			// Open socket
-			Socket clientSocket = new Socket("10.0.2.2", PORT);
+//			Socket clientSocket = new Socket("10.0.2.2", PORT);
+            Socket clientSocket = new Socket("127.0.0.1", PORT);
+
 			// Output and input streams
 			DataOutputStream outToServer = new DataOutputStream(
 					clientSocket.getOutputStream());
