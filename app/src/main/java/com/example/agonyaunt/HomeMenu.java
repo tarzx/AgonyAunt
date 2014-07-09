@@ -9,17 +9,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 /** This class represents the main menu
  * @author Jiachun Liu
+ * @author Teng Li
  */
 public class HomeMenu extends Activity {
+
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_menu);
+
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("personal");
+        tabSpec.setContent(R.id.tabPersonal);
+        tabSpec.setIndicator("Personal");
+        tabHost.addTab(tabSpec);
+
+        tabSpec = tabHost.newTabSpec("patients");
+        tabSpec.setContent(R.id.tabAIPatients);
+        tabSpec.setIndicator("AI Patients");
+        tabHost.addTab(tabSpec);
+
 		if (Util.alarmBooted()) {
 			mainAlarm();
 		}
