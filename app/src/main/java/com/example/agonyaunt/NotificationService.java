@@ -30,7 +30,7 @@ public class NotificationService extends Service {
 
 	/** Creates a notification */
 	private void notifcationCreator() {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher).setContentTitle("Agony Aunt").setContentText("It's time for a chat!");
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.new_icon).setContentTitle("Agony Aunt").setContentText("It's time for a chat!");
         mBuilder.setAutoCancel(true);
 		Intent intent = new Intent(this, NotificationReceiverActivity.class);
 		QuestionManager quesManager = new QuestionManager();
