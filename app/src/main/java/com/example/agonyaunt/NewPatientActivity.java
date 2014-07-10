@@ -27,6 +27,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Teng Li on 09/07/2014.
+ */
+
 public class NewPatientActivity extends Activity {
 
     // Progress Dialog

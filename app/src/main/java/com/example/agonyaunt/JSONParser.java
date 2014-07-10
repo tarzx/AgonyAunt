@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Teng on 09/07/2014.
+ * Created by Teng Li on 09/07/2014.
  */
 public class JSONParser {
 

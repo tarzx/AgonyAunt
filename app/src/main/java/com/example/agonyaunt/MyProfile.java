@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 /** This class represent myProfile
  * @author Jiachun Liu
- * @author Teng
+ * @author Teng Li
  */
 public class MyProfile extends Activity {
 

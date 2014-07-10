@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Created by Teng Li on 09/07/2014.
+ */
+
 public class AllPatients extends ListActivity {
 
     // Progress Dialog
