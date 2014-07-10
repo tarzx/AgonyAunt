@@ -43,7 +43,10 @@ public class HomeMenu extends Activity {
         tabSpec.setIndicator("AI Patients");
         tabHost.addTab(tabSpec);
 
+
+//        Util class used
 		if (Util.alarmBooted()) {
+//            manage alarm
 			mainAlarm();
 		}
 	}
@@ -98,7 +101,6 @@ public class HomeMenu extends Activity {
 		Intent intent = new Intent(this, Alarm.class);
 		PendingIntent pi = PendingIntent.getService(this, 0, intent, 0);
 		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		am.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(),
-				1000 * 60 * 60 * 24, pi);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), 1000 * 60 * 60 * 24, pi);
 	}
 }

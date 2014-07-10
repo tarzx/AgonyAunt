@@ -338,6 +338,12 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 		return "";
 	}
 
+
+
+
+
+    // Code below is for Text to Speech
+
     @Override
     public void onDestroy() {
         // Don't forget to shutdown tts!

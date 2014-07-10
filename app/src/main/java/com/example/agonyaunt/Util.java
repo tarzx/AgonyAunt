@@ -23,11 +23,11 @@ public class Util {
 	 * @param slots		Timeslots
 	 * @return 			ArrayList of the next times
 	 */
-	public static ArrayList<Integer> calculateNextTimes(int frequency,
-			boolean[] slots) {
+	public static ArrayList<Integer> calculateNextTimes(int frequency, boolean[] slots) {
 		if (frequency == 0) {
 			frequency = 1;
 		}
+
 		boolean b_temp = false;
 		for (boolean slot : slots) {
 			b_temp |= slot;
@@ -36,6 +36,7 @@ public class Util {
 			slots[1] = true;
 		}
 		Random gen = new Random();
+
 		ArrayList<Integer> nexttimes = new ArrayList<Integer>(frequency);
 		ArrayList<Integer> checked = new ArrayList<Integer>(slots.length);
 		int num_checked = 0;
