@@ -24,12 +24,12 @@ public class NotificationService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		notifcationCreator();
+		notificationCreator();
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	/** Creates a notification */
-	private void notifcationCreator() {
+	private void notificationCreator() {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.new_icon).setContentTitle("Agony Aunt").setContentText("It's time for a chat!");
         mBuilder.setAutoCancel(true);
 		Intent intent = new Intent(this, NotificationReceiverActivity.class);
