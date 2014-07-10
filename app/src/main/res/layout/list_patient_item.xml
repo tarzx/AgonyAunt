@@ -50,7 +50,6 @@
             android:text="Occupation"
             android:id="@+id/textPatientOccupation" />
 
-        <!-- Name Label -->
 
 
     </LinearLayout>

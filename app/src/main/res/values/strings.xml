@@ -40,5 +40,8 @@
     <string name="title_activity_intervention_notifier">InterventionNotifier</string>
     <string name="control1"></string>
     <string name="title_activity_alarm">Alarm</string>
+    <string name="title_activity_all_patients">AllPatients</string>
+    <string name="title_activity_new_patient">NewPatientActivity</string>
+    <string name="title_activity_edit_patient">EditPatientActivity</string>
 
 </resources>

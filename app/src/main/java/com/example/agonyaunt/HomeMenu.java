@@ -1,6 +1,7 @@
 package com.example.agonyaunt;
 
 import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -12,11 +13,14 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 /** This class represents the main menu
  * @author Jiachun Liu
  * @author Teng Li
  */
 public class HomeMenu extends Activity {
+
 
 
 
@@ -72,6 +76,18 @@ public class HomeMenu extends Activity {
 		Intent intent = new Intent(this, NotificationService.class);
 		startService(intent);
 	}
+
+
+    public void showAllPatients(View view){
+        Intent intent = new Intent(this, AllPatients.class);
+        startActivity(intent);
+    }
+
+    public void addNewPatient(View view){
+        Intent intent = new Intent(this, NewPatientActivity.class);
+        startActivity(intent);
+    }
+
 
 	/** Manages alarm */
 	public void mainAlarm() {
