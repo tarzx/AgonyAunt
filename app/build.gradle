@@ -4,8 +4,8 @@ android {
     compileSdkVersion 17
     buildToolsVersion '19.1.0'
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 17
+        minSdkVersion 9
+        targetSdkVersion 19
     }
     buildTypes {
         release {
@@ -19,6 +19,6 @@ android {
 
 dependencies {
     compile files('libs/encog-core-3.2.0.jar')
-    compile 'com.android.support:support-v4:+'
+//    compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:19.+'
 }
