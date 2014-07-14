@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 /** This class contains the main Alarm, which is used to trigger 
  the other alarm everyday at 00:00:00 
  @author Jiachun Liu
+ @author Teng Li
  */
 public class Alarm extends Service {
 
@@ -40,6 +41,9 @@ public class Alarm extends Service {
 			String key = MyPreferences.checkBoxesKey + c;
 			slots[c] = sharedPref.getBoolean(key, false);
 		}
+
+
+//        Here decide the intervention frequency
 		int frequency = sharedPref.getInt("frequency", 1);
 		ArrayList<Integer> nextTimes = Util.calculateNextTimes(frequency, slots);
 
