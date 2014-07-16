@@ -31,12 +31,11 @@ public class InterventionNet {
 
     static BasicNetwork netWork;
     static File netFile;
-    static MLData input;
-    static double[] outputFrequency;
+
+    static double[] outputFrequency = new double[1];
 
 
-
-    protected double[] computeFrequency() {
+    protected double computeFrequency() {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -72,22 +71,15 @@ public class InterventionNet {
         }
 
 
+        double[] input = {Double.parseDouble("0."+age), Double.parseDouble(gender), Double.parseDouble(occ)};
 
-        input.add(0,Double.parseDouble("0."+age));
-        input.add(1,Double.parseDouble(gender));
-        input.add(2,Double.parseDouble(occ));
+        loadNet(input);
 
-
-
-
-
-        loadNet();
-
-        return outputFrequency;
+        return outputFrequency[0];
     }
 
 
-    public void loadNet(){
+    public void loadNet(double[] input){
         try {
             // Load up Encog file
             netFile = new File(context.getFilesDir(), "neuralNetIntervention.eg");
@@ -111,7 +103,7 @@ public class InterventionNet {
         }
 
         netWork = (BasicNetwork) EncogDirectoryPersistence.loadObject(netFile);
-        outputFrequency = netWork.compute(input).getData();
+        netWork.compute(input, outputFrequency);
 
     }
 
