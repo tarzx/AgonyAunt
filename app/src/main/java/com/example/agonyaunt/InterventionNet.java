@@ -35,11 +35,11 @@ public class InterventionNet {
     static double[] outputFrequency = new double[1];
 
 
-    protected double computeFrequency() {
+    protected int computeFrequency() {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
-        String age = sharedPref.getString("userAge", "");
+        String age = sharedPref.getString("userAge", "0");
         String occ = sharedPref.getString("userOccupation", "");
 
         String sFemale = sharedPref.getString("sex0", "");
@@ -54,6 +54,8 @@ public class InterventionNet {
             gender = "0.0";
         }else if (sexFemale == true){
             gender = "1.0";
+        }else{
+            gender = "2.0";
         }
 
 
@@ -75,7 +77,8 @@ public class InterventionNet {
 
         loadNet(input);
 
-        return outputFrequency[0];
+
+        return (int)Math.ceil(outputFrequency[0]*10)  ;
     }
 
 
