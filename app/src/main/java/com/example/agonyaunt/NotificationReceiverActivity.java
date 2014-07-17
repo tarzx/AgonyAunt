@@ -80,9 +80,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
         Log.i("tts installed?", ttsInstalled+"");
 
-        if (ttsInstalled){
+//        if (ttsInstalled){
             tts = new TextToSpeech(this, this);
-        }
+//        }
 
 
 		quesMan = QUESMANAGER0;
