@@ -114,7 +114,9 @@ public class MyProfile extends Activity {
 		editor.putString("userName", uname);
 		editor.putString("userAge", age);
 		editor.putString("userOccupation", occ);
+//        Sex0 - female
 		editor.putString("sex0", Boolean.toString(sex0));
+//        Sex1 male
 		editor.putString("sex1", Boolean.toString(sex1));
 		editor.commit();
         Toast.makeText(this, "Profile has been saved", Toast.LENGTH_SHORT).show();
