@@ -258,7 +258,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 //                preambleIds store the answer for next question
 				preambleIds.add(answer);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
-//                The answer for a question is just String!! How to use it?
+
 				quesManager.getRecPar().setAnswer(answer);
 
 				if (quesCount == 1) {
