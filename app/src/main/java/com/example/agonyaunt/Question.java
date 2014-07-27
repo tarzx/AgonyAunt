@@ -17,8 +17,7 @@ public class Question implements Serializable {
 	int rating;
 
 	/** A main question */
-	public Question(double[] ID, String content, String answer,
-			Question[] subQuestions) {
+	public Question(double[] ID, String content, String answer, Question[] subQuestions) {
 		this.ID = ID;
 		this.content = content;
 		this.answer = answer;
@@ -26,14 +25,17 @@ public class Question implements Serializable {
 	}
 
 	/** A sub question */
-	public Question(double[] ID, String content, String answer,
-			Question parent, int rating) {
+	public Question(double[] ID, String content, String answer, Question parent, int rating) {
 		this.ID = ID;
 		this.content = content;
 		this.answer = answer;
 		this.parent = parent;
 		this.rating = rating;
 	}
+
+
+
+
 
 	// Getters & Setters
 	public int getRating() {

@@ -50,11 +50,16 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	public final static String ANSWERS = "com.example.agonyaunt.answers";
 	public final static String ACTIVITYID = "com.example.agonyaunt.activityId";
 	public final static String CONTROLID = "com.example.agonyaunt.controlId";
+
+
 	public final static String PREAMBLEIDS = "com.example.agonyaunt.preambleIds";
 	public final static String QUESTIONID = "com.example.agonyaunt.questionid";
 	public ArrayList<String> preambleIds = new ArrayList<String>();
 	public ArrayList<String> questionID = new ArrayList<String>();
 	Question nxtQ;
+
+    double time1;
+
 	// New neural net
 	Net net = new Net(this);
 
@@ -97,14 +102,16 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			}
 			if (quesCount == 0) {
 				setContentView(R.layout.results);
+                time1 = System.currentTimeMillis();
+
                 Button speakBtn1 = (Button) findViewById(R.id.btnSpeak);
-			} else if (quesCount < 3) {
+			} else if (quesCount > 0 && quesCount < 3) {
 				setContentView(R.layout.result2);
 			} else {
 				setContentView(R.layout.result3);
                 question3 = (TextView) findViewById(R.id.question3);
 			}
-			if (quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
+			if (quesCount > 0 && quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
 				question = intent.getStringExtra(QUESTION);
 				question2 = (TextView) findViewById(R.id.question2);
 				question2.setText(question);
@@ -196,6 +203,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	 * @param view	Android view
 	 * @throws IOException
 	 */
+//    When click on the next button in question page
 	public void nextQuestion(View view) throws IOException {
 
 		// Total questions, just return an int variable in QuestionManager class
@@ -208,11 +216,34 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			if (quesCount == 0) {
 //                The selected variable is a string which conclude a number from 1-5
 				String selected = getSelected();
+
 //                Preamble 前言 (Just a translation)
+//                preambleIds store the answer of first question
 				preambleIds.add(selected);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
+
+//                Compute the response time and get the first level question from neural net
+                double time2 = System.currentTimeMillis();
+                double responseTime = time2 - time1;
+
+
+                FirstLevelQuestionNet firstLevelQuestionNet = new FirstLevelQuestionNet(NotificationReceiverActivity.this);
+                double[] input = {Double.parseDouble(selected), responseTime/1000};
+                Log.w("selected and time ", ""+ input[0] + " " + input[1]);
+
+                int index = firstLevelQuestionNet.computeFirstQuestion(input);
+                Log.w("The index of question", index +"");
+                index = index -1;
+                Log.w("The index of question", index +"");
+                if (index > 4){
+                    index = 4;
+                }
+                Log.w("The index of question", index +"");
+                Log.w("My test about selected and response time",selected + " <-se && time-> " + responseTime );
+//                Here to choose which group of question to ask first, the group need to decided by the
+//                answer to the first question
 				// Get random parent
-				int index = quesManager.getRandomIndex();
+//				int index = quesManager.getRandomIndex();
 				quesManager.setParent_index(index);
 				// Ask it
 				nxtQ = quesManager.getTherapeuticQ(index);
@@ -223,6 +254,8 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 				EditText answer_text = (EditText) findViewById(R.id.answer);
 				String answer = answer_text.getText().toString();
+
+//                preambleIds store the answer for next question
 				preambleIds.add(answer);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
 //                The answer for a question is just String!! How to use it?
@@ -252,7 +285,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 		}
 
-		// If final question get user's rating
+		// If final question, then get user's rating
 		else if (quesCount == totalQs) {
 			Intent intent = getIntent();
 			SeekBar rate_bar = (SeekBar) findViewById(R.id.rate_bar);
@@ -260,8 +293,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			preambleIds.add(user_rate);
 			// Update rate
 			Rater rate = new Rater(this);
-			rate.update(quesManager.getParent_index(),
-					quesManager.getSub_index(), rate_bar.getProgress(), false);
+			rate.update(quesManager.getParent_index(), quesManager.getSub_index(), rate_bar.getProgress(), false);
 			rate.getBest();
 			intent.putExtra(PREAMBLEIDS, preambleIds);
 			this.finish();
@@ -316,26 +348,26 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 		RadioButton radio4 = (RadioButton) findViewById(R.id.radio4);
 
 		if (radio0.isChecked()) {
-			return "1";
+			return "0.1";
 		}
 
 		if (radio1.isChecked()) {
-			return "2";
+			return "0.3";
 		}
 
 		if (radio2.isChecked()) {
-			return "3";
+			return "0.5";
 		}
 
 		if (radio3.isChecked()) {
-			return "4";
+			return "0.7";
 		}
 
 		if (radio4.isChecked()) {
-			return "5";
+			return "0.9";
 		}
 
-		return "";
+		return "0.0";
 	}
 
 

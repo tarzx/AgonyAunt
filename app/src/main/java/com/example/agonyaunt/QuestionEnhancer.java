@@ -37,23 +37,24 @@ public class QuestionEnhancer {
 	 */
 	public Question receive(Question question, String answer) {
 		// If there's content to replace
-		if (question.getContent().contains("[x]")
-				|| question.getContent().contains("[y]")) {
+		if (question.getContent().contains("[x]") || question.getContent().contains("[y]")) {
 			if (answer != null) {
+//                The second param will replace the first param
 				answer = answer.replaceAll("\\s+","");
+
 				consultEmotions();
+
+
 				// Add the new answer to the list of emotions
-				if (!emotions.contains(answer))
-					emotions.add(answer);
+				if (!emotions.contains(answer)) emotions.add(answer);
 				// Save
 				new_question = question;
 				prev_answer = answer;
 				// We have to reword if the user didn't enter anything
-				if (prev_answer.equals(""))
-					prev_answer = "like that";
+				if (prev_answer.equals("")) prev_answer = "like that";
+
 				// Replace part of the new question with the previous answer
-				new_question.setContent(new_question.getContent().replace(
-						"[x]", prev_answer));
+				new_question.setContent(new_question.getContent().replace("[x]", prev_answer));
 				// Replace key words with other emotions user has expressed
 				if (new_question.getContent().contains("[y]")) {
 					
@@ -74,7 +75,9 @@ public class QuestionEnhancer {
 					new_question.setContent(new_question.getContent().replace(
 							"[y]", other_replace));
 				}
+
 				updateEmotions();
+
 				return new_question;
 			}
 		}

@@ -17,9 +17,9 @@ public class QuestionManager implements Serializable {
 	final int qIDbits = 4;
 	// Number of first level questions
 	final int NUM_QUESTIONS = 5;
-	// Number of subquestions per parent question
+	// Number of subQuestions per parent question
 	final int SUB_PER_Q = 2;
-	// Array of subquestions
+	// Array of subQuestions
 	Question[][] subQuestions = new Question[NUM_QUESTIONS][SUB_PER_Q];
 	// Therapeutic questions - one chosen at random each time
 	public Question[] therapQuestions = new Question[NUM_QUESTIONS];
@@ -118,6 +118,16 @@ public class QuestionManager implements Serializable {
 		setRecPar(nxtQ);
 		return nxtQ;
 	}
+
+
+
+
+
+
+
+
+
+
 	
 	
 	// Getters and Setters

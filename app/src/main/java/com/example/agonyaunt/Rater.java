@@ -55,7 +55,7 @@ public class Rater {
 			int j = 0;
 			int sub_index;
 			int rating;
-			// Get the questions
+			// Get the questions -> question in the first level
 			mainQs = quesMan.getTherapQuestions();
 
 			while (scan.hasNext()) {
@@ -128,15 +128,13 @@ public class Rater {
 			// Compare their rating
 			for (int j = 0; j < subQs.length; j++) {
 				// Check that all subQs don't have the same rating
-				if ((subQs[0].getRating()) == subQs[1].getRating()
-						|| (subQs[0].getRating() == -1 && subQs[1].getRating() == -1)) {
+				if ((subQs[0].getRating()) == subQs[1].getRating() || (subQs[0].getRating() == -1 && subQs[1].getRating() == -1)) {
 					// If they do, prefer a random one
 					Random r = new Random();
 					best_id = r.nextInt(subQs.length);
 					best_rating = subQs[best_id].getRating();
 				// If one of them is still unasked, prefer that one 
-				} else if (subQs[0].getRating() == -1
-						|| subQs[1].getRating() == -1) {
+				} else if (subQs[0].getRating() == -1 || subQs[1].getRating() == -1) {
 					if (subQs[1].getRating() == -1) {
 						best_id = 1;
 					}
@@ -194,8 +192,7 @@ public class Rater {
 	public void toapp() {
 		try {
 			// Open
-			fs = context
-					.openFileOutput("ratings_for_app", Context.MODE_PRIVATE);
+			fs = context.openFileOutput("ratings_for_app", Context.MODE_PRIVATE);
 			PrintWriter ps = new PrintWriter(fs);
 			// Write
 			for (int i = 0; i < mainQs.length; i++) {

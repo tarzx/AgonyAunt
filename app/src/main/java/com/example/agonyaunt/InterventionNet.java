@@ -78,7 +78,7 @@ public class InterventionNet {
         loadNet(input);
 
 
-        return (int)Math.ceil(outputFrequency[0]*10)  ;
+        return (int)Math.floor(outputFrequency[0]*10 + 0.5)  ;
     }
 
 
