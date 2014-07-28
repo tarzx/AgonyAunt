@@ -90,14 +90,7 @@ public class QuestionManager implements Serializable {
 	}
 
 	
-	/** Given a question and a particular index, get a subquestion
-	 * @param parent	The parent
-	 * @param index		Index of the subquestion
-	 * @return 			The sub question at that index
-	 */
-	public Question getNSub(Question parent, int index) {
-		return parent.getSubQuestions()[index];
-	}
+
 
 	/** Get a random index of a question
 	 * @return index	random index
@@ -118,6 +111,22 @@ public class QuestionManager implements Serializable {
 		setRecPar(nxtQ);
 		return nxtQ;
 	}
+
+
+    /** Given a question and a particular index, get a subquestion
+     * @param parent	The parent
+     * @param index		Index of the subquestion
+     * @return 			The sub question at that index
+     */
+    public Question getNSub(Question parent, int index) {
+        return parent.getSubQuestions()[index];
+    }
+
+    public Question getSubFromSubQuestionNet(Question parent, int index){
+        Question nxtQ = getNSub(parent, index);
+        setRecPar(nxtQ);
+        return nxtQ;
+    }
 
 
 

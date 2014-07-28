@@ -43,6 +43,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	int quesCount;
 	String question;
 	String uname;
+
+    String selectedControl;
+
 	QuestionManager quesManager;
 	public final static String QUESMANAGER0 = NotificationService.QUESMANAGER;
 	public static String quesMan;
@@ -215,11 +218,16 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			// Ask the parent question
 			if (quesCount == 0) {
 //                The selected variable is a string which conclude a number from 1-5
-				String selected = getSelected();
+				selectedControl = getSelected();
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("controlLevel",selectedControl);
+                editor.commit();
 
 //                Preamble 前言 (Just a translation)
 //                preambleIds store the answer of first question
-				preambleIds.add(selected);
+				preambleIds.add(selectedControl);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
 
 //                Compute the response time and get the first level question from neural net
@@ -228,18 +236,18 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 
                 FirstLevelQuestionNet firstLevelQuestionNet = new FirstLevelQuestionNet(NotificationReceiverActivity.this);
-                double[] input = {Double.parseDouble(selected), responseTime/1000};
+                double[] input = {Double.parseDouble(selectedControl), responseTime/1000};
                 Log.w("selected and time ", ""+ input[0] + " " + input[1]);
 
                 int index = firstLevelQuestionNet.computeFirstQuestion(input);
                 Log.w("The index of question", index +"");
                 index = index -1;
-                Log.w("The index of question", index +"");
+                Log.w("The minus 1 index of question", index +"");
                 if (index > 4){
                     index = 4;
                 }
-                Log.w("The index of question", index +"");
-                Log.w("My test about selected and response time",selected + " <-se && time-> " + responseTime );
+                Log.w("The final index of question", index +"");
+                Log.w("My test about selected and response time", selectedControl + " <-se && time-> " + responseTime);
 //                Here to choose which group of question to ask first, the group need to decided by the
 //                answer to the first question
 				// Get random parent
@@ -262,16 +270,38 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				quesManager.getRecPar().setAnswer(answer);
 
 				if (quesCount == 1) {
-					net.load(quesManager.getRecPar().getID());
+
+                    SubQuestionNet subQuestionNet = new SubQuestionNet(NotificationReceiverActivity.this);
+
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    String uAge = sharedPref.getString("userAge", "0.0");
+                    selectedControl = sharedPref.getString("controlLevel", "0.0");
+                    Log.w("The selected control", selectedControl);
+                    Log.w("The current age for sub question net", uAge);
+                    double[] input = {Double.parseDouble(selectedControl), Double.parseDouble("0." + uAge)};
+                    Log.w("Control level and age", " " + input[0] + " " + input[1]);
+
+                    int subIndex = subQuestionNet.computeSubQuestion(input);
+
+
+
+//                    compute the index of sub question and use Q manager to set the sub index
+//					net.load(quesManager.getRecPar().getID());
 					// Get the parent
 					Question parent = quesManager.getRecPar();
 					// Get the next question
-					nxtQ = quesManager.getNextFromNet(net, parent);
+//					nxtQ = quesManager.getNextFromNet(net, parent);
+
+                    nxtQ = quesManager.getSubFromSubQuestionNet(parent, subIndex);
+
+
+
 					// Enhance if needed
 					QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
 //                    The answer for question is used by QuestionEnhancer
 					nxtQ = questionEnhancer.receive(nxtQ, answer);
-					quesManager.setSub_index(net.getOutput());
+//					quesManager.setSub_index(net.getOutput());
+                    quesManager.setSub_index(subIndex);
 				}
 				
 				questionID.add("0");
