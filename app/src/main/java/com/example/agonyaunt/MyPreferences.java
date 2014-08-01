@@ -2,6 +2,8 @@ package com.example.agonyaunt;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,16 @@ public class MyPreferences extends Activity {
 		setContentView(R.layout.activity_my_preferences);
 
 		setupActionBar();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("User notification!");
+        alertDialog.setMessage("The app will suggest an intervention frequency if you leave the slide bar blank. If you don't like it, you can also set it as you want.");
+        alertDialog.setButton("I got it", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        alertDialog.show();
 
 		checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox0);
 		checkBoxes[1] = (CheckBox) findViewById(R.id.CheckBox1);
