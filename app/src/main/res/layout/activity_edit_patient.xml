@@ -64,13 +64,25 @@
 
     </RadioGroup>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editTextInterventionFrequency"
+        android:layout_below="@id/radioGroup"
+        android:layout_alignParentLeft="true"
+        android:hint="Intervention Frequency"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-30dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Patient"
         android:id="@+id/btnUpdatePatient"
         android:layout_marginTop="42dp"
-        android:layout_below="@+id/radioGroup"
+        android:layout_below="@+id/editTextInterventionFrequency"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -87,6 +99,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+
 
 
 </RelativeLayout>

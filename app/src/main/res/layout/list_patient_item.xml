@@ -50,6 +50,13 @@
             android:text="Occupation"
             android:id="@+id/textPatientOccupation" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="InterventionFrequency"
+            android:id="@+id/textInterventionFrequency" />
 
 
     </LinearLayout>

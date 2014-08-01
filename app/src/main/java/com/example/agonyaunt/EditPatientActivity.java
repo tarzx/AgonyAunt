@@ -31,7 +31,7 @@ import java.util.List;
 
 public class EditPatientActivity extends Activity {
 
-    EditText patientName, patientAge, patientOccupation;
+    EditText patientName, patientAge, patientOccupation, patientInterFrequency;
     Button btnUpdate, btnDelete;
     RadioButton rbMale, rbFemale;
 
@@ -67,6 +67,7 @@ public class EditPatientActivity extends Activity {
     private static final String TAG_AGE = "age";
     private static final String TAG_GENDER = "gender";
     private static final String TAG_OCCUPATION = "occupation";
+    private static final String TAG_INTERFREQUENCY = "interventionFrequency";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,8 @@ public class EditPatientActivity extends Activity {
                             patientName = (EditText) findViewById(R.id.editTextName);
                             patientAge = (EditText) findViewById(R.id.editTextAge);
                             patientOccupation = (EditText) findViewById(R.id.editTextOccupation);
+//                            interventionFrequency= (EditText) findViewById(R.id.editTextInterventionFrequency);
+                            patientInterFrequency = (EditText) findViewById(R.id.editTextInterventionFrequency);
                             rbMale = (RadioButton) findViewById(R.id.radioBtnMale);
                             rbFemale = (RadioButton) findViewById(R.id.radioBtnFemale);
 
@@ -178,6 +181,7 @@ public class EditPatientActivity extends Activity {
                             patientName.setText(patient.getString(TAG_NAME));
                             patientAge.setText(patient.getString(TAG_AGE));
                             patientOccupation.setText(patient.getString(TAG_OCCUPATION));
+                            patientInterFrequency.setText(patient.getString(TAG_INTERFREQUENCY));
 
                             if (patient.getString(TAG_GENDER).equals("Male") ){
                                 rbMale.setChecked(true);
@@ -233,6 +237,7 @@ public class EditPatientActivity extends Activity {
             String name = patientName.getText().toString();
             String age = patientAge.getText().toString();
             String occupation = patientOccupation.getText().toString();
+            String interventionFrequency = patientInterFrequency.getText().toString();
             String gender = null;
             if (rbMale.isChecked()){
                 gender = "Male";
@@ -247,6 +252,7 @@ public class EditPatientActivity extends Activity {
             params.add(new BasicNameValuePair(TAG_AGE, age));
             params.add(new BasicNameValuePair(TAG_GENDER, gender));
             params.add(new BasicNameValuePair(TAG_OCCUPATION, occupation));
+            params.add(new BasicNameValuePair(TAG_INTERFREQUENCY, interventionFrequency));
 
             // sending modified data through http request
             // Notice that update patient url accepts POST method

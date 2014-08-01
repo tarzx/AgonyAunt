@@ -38,7 +38,7 @@ public class NewPatientActivity extends Activity {
 
     JSONParser jsonParser = new JSONParser();
 
-    EditText patientName, patientAge, patientOccupation;
+    EditText patientName, patientAge, patientOccupation, patientInterFrequency;
     RadioButton rbMale, rbFemale;
 
     //    private static String url_create_patient = "http://10.0.2.2:8888/AndroidApp/create_patient.php";
@@ -58,6 +58,7 @@ public class NewPatientActivity extends Activity {
         patientName = (EditText) findViewById(R.id.newTextName);
         patientAge = (EditText) findViewById(R.id.newTextAge);
         patientOccupation = (EditText) findViewById(R.id.newTextOccupation);
+        patientInterFrequency = (EditText) findViewById(R.id.newTextInterventionFrequency);
         rbMale = (RadioButton) findViewById(R.id.radioBtnNewMale);
         rbFemale = (RadioButton) findViewById(R.id.radioBtnNewFemale);
 
@@ -100,12 +101,14 @@ public class NewPatientActivity extends Activity {
             String name = patientName.getText().toString();
             String age = patientAge.getText().toString();
             String occupation = patientOccupation.getText().toString();
+            String interventionFrequency = patientInterFrequency.getText().toString();
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("name", name));
             params.add(new BasicNameValuePair("age", age));
             params.add(new BasicNameValuePair("occupation", occupation));
+            params.add(new BasicNameValuePair("interventionFrequency",interventionFrequency ));
 
             if (rbMale.isChecked()){
                 params.add(new BasicNameValuePair("gender", "Male"));

@@ -56,6 +56,8 @@ public class AllPatients extends ListActivity {
     private static final String TAG_AGE = "age";
     private static final String TAG_GENDER = "gender";
     private static final String TAG_OCCUPATION = "occupation";
+    private static final String TAG_INTERFREQUENCY = "interventionFrequency";
+
 
 
 
@@ -171,6 +173,7 @@ public class AllPatients extends ListActivity {
                         String age = c.getString(TAG_AGE);
                         String gender = c.getString(TAG_GENDER);
                         String occupation = c.getString(TAG_OCCUPATION);
+                        String interventionFrequency = c.getString(TAG_INTERFREQUENCY);
 
 
 
@@ -183,6 +186,7 @@ public class AllPatients extends ListActivity {
                         map.put(TAG_AGE, age);
                         map.put(TAG_GENDER, gender);
                         map.put(TAG_OCCUPATION, occupation);
+                        map.put(TAG_INTERFREQUENCY, interventionFrequency);
 
                         // adding HashList to ArrayList
                         patientsList.add(map);
@@ -220,8 +224,8 @@ public class AllPatients extends ListActivity {
                     ListAdapter adapter = new SimpleAdapter(
                             AllPatients.this, patientsList,
                             R.layout.list_patient_item, new String[]{TAG_PID,
-                            TAG_NAME, TAG_AGE, TAG_GENDER, TAG_OCCUPATION},
-                            new int[]{R.id.pid, R.id.textPatientName, R.id.textAge, R.id.textGender, R.id.textPatientOccupation}
+                            TAG_NAME, TAG_AGE, TAG_GENDER, TAG_OCCUPATION, TAG_INTERFREQUENCY},
+                            new int[]{R.id.pid, R.id.textPatientName, R.id.textAge, R.id.textGender, R.id.textPatientOccupation, R.id.textInterventionFrequency}
                     );
                     // updating listview
                     setListAdapter(adapter);
