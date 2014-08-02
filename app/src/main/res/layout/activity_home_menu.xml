@@ -47,12 +47,28 @@
                         android:onClick="showAllPatients" />
 
                     <Button
-                        android:layout_width="264dp"
+                        android:layout_width="260dp"
                         android:layout_height="wrap_content"
                         android:text="Add New Patient"
+                        android:layout_marginBottom="20dp"
                         android:id="@+id/btnAddpatient"
                         android:layout_gravity="center_horizontal"
                         android:onClick="addNewPatient" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:text="Train Intervention Frequency Neural Networks"
+                        android:id="@+id/btnTrainInterventionFrequencyNeuralNetworks"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:text="Update Intervention Frequency Neural Networks"
+                        android:id="@+id/btnUpdateInterventionFrequencyNeuralNetworks"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateInterventionNet" />
 
                 </LinearLayout>
 

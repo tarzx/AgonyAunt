@@ -1,19 +1,48 @@
 package com.example.agonyaunt;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /** This class represents the main menu
  * @author Jiachun Liu
@@ -21,9 +50,13 @@ import org.json.JSONArray;
  */
 public class HomeMenu extends Activity {
 
+    public static final String TRAIN_INTERVENTION_FREQUENCY_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runInterventionFrequencyNet.php";
+    public static final String INTERVENTION_FREQUENCY_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/neuralNetIntervention.eg";
+    public static final String TRAIN_FIRST_LEVEL_QUESTION_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runFirstLevelQuestionNet.php";
+    public static final String TRAIN_SUB_QUESTION_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runSubQuestionNet.php";
 
 
-
+    private ProgressDialog pDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +76,148 @@ public class HomeMenu extends Activity {
         tabSpec.setIndicator("AI Patients");
         tabHost.addTab(tabSpec);
 
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 
 //        Util class used
 		if (Util.alarmBooted()) {
 //            manage alarm
 			mainAlarm();
 		}
+
+
+
+        Button btnTrainInterventionFrequencyNet = (Button) findViewById(R.id.btnTrainInterventionFrequencyNeuralNetworks);
+        btnTrainInterventionFrequencyNet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TrainInterventionNeuralNet().execute();
+
+            }
+        });
 	}
+
+
+
+    /**
+     * Background Async Task to train intervention frequency neural network
+     * */
+    class TrainInterventionNeuralNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(HomeMenu.this);
+            pDialog.setMessage("Training the intervention frequency neural network..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        protected void onProgressUpdate(Integer... progress){
+            super.onProgressUpdate(String.valueOf(progress));
+            pDialog.setIndeterminate(false);
+            pDialog.setMax(100);
+            pDialog.setProgress(progress[0]);
+        }
+
+
+        /**
+         * Invoke the training jar in server
+         * */
+        protected String doInBackground(String... args) {
+            try {
+                URL url = new URL(TRAIN_INTERVENTION_FREQUENCY_NET_URL);
+                try {
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+
+
+
+                    in.close();
+
+
+
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+
+//            updateLocalNeuralNetwork();
+
+//            Show the finish information
+            AlertDialog alertDialog = new AlertDialog.Builder(HomeMenu.this).create();
+            alertDialog.setTitle("Server Information");
+            alertDialog.setMessage("Training done!");
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+
+            alertDialog.show();
+        }
+
+        protected void updateLocalNeuralNetwork(){
+            try {
+                URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
+                ReadableByteChannel rbc = null;
+                FileOutputStream fos = null;
+                Log.w("Initial updating process", "HEY");
+
+                try {
+                    rbc = Channels.newChannel(url.openStream());
+                    Log.w("Build up the channel","done");
+
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                try {
+                    fos = new FileOutputStream("neuralNetIntervention.eg");
+                    Log.w("NEURAL NET UPDATED??",  "yes");
+
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                try {
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +257,46 @@ public class HomeMenu extends Activity {
     public void addNewPatient(View view){
         Intent intent = new Intent(this, NewPatientActivity.class);
         startActivity(intent);
+    }
+
+
+    public void updateInterventionNet(View view){
+        try {
+            URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
+            ReadableByteChannel rbc = null;
+            FileOutputStream fos = null;
+            Log.w("Initial updating process", "HEY");
+
+            try {
+                rbc = Channels.newChannel(url.openStream());
+                Log.w("Build up the channel","done");
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            try {
+                fos = new FileOutputStream("neuralNetIntervention.eg");
+                Log.w("NEURAL NET UPDATED??",  "yes");
+
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 

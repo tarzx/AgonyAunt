@@ -25,7 +25,7 @@ public class InterventionNet {
 
     public InterventionNet(Context context){
         this.context = context;
-        System.out.println("Come to the NN");
+        System.out.println("Come to the Intervention Net");
     }
 
 
