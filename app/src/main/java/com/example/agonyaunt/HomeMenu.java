@@ -253,10 +253,12 @@ public class HomeMenu extends Activity {
         byte buffer[] = new byte[1024];
         int dataSize;
         int loadedSize = 0;
+        Log.w("My Track from here", "Intervention update");
         try {
             while ((dataSize = inputStream.read(buffer)) != -1) {
                 loadedSize += dataSize;
                 outputStream.write(buffer, 0, dataSize);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -268,47 +270,6 @@ public class HomeMenu extends Activity {
             e.printStackTrace();
         }
 
-
-//        try {
-//            URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
-//            ReadableByteChannel rbc = null;
-//            FileOutputStream fos = null;
-//            Log.w("Initial updating process", "HEY");
-//
-//            try {
-//                rbc = Channels.newChannel(url.openStream());
-//                Log.w("Build up the channel","done");
-//
-//            } catch (IOException e1) {
-//                // TODO Auto-generated catch block
-//                e1.printStackTrace();
-//            }
-//            try {
-////                File file = new File(HomeMenu.this.getFilesDir(),"neuralNetIntervention.eg" );
-//                fos = new FileOutputStream(neuralNet);
-////                fos = openFileOutput("neuralNetIntervention.eg", MODE_PRIVATE);
-//                Log.w("NEURAL NET UPDATED??",  "yes");
-//
-//
-//
-//            } catch (FileNotFoundException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            try {
-//                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-//                fos.close();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//
-//        } catch (MalformedURLException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
 
     }
 

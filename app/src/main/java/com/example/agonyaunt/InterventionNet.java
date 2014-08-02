@@ -85,7 +85,7 @@ public class InterventionNet {
     public void loadNet(double[] input){
         try {
             // Load up Encog file
-            netFile = new File(context.getFilesDir(), "neuralNetIntervention.eg");
+            netFile = new File(context.getApplicationContext().getFilesDir(), "neuralNetIntervention.eg");
             // If for some reason it doesn't exist, a backup exists in Assets file
             if (netFile.createNewFile() || netFile.length()==0){
                 // Open neural net file
