@@ -71,6 +71,7 @@ public class HomeMenu extends Activity {
         tabHost.setup();
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("personal");
+
         tabSpec.setContent(R.id.tabPersonal);
         tabSpec.setIndicator("Personal");
         tabHost.addTab(tabSpec);
@@ -78,6 +79,16 @@ public class HomeMenu extends Activity {
         tabSpec = tabHost.newTabSpec("patients");
         tabSpec.setContent(R.id.tabAIPatients);
         tabSpec.setIndicator("AI Patients");
+        tabHost.addTab(tabSpec);
+
+        tabSpec = tabHost.newTabSpec("firstLevelQuestion");
+        tabSpec.setContent(R.id.tabFirstLevelQuestion);
+        tabSpec.setIndicator("First Level");
+        tabHost.addTab(tabSpec);
+
+        tabSpec = tabHost.newTabSpec("subQuestion");
+        tabSpec.setContent(R.id.tabSubQuestion);
+        tabSpec.setIndicator("Sub Level");
         tabHost.addTab(tabSpec);
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
