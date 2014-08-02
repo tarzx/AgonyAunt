@@ -57,6 +57,7 @@ public class HomeMenu extends Activity {
     public static final String TRAIN_INTERVENTION_FREQUENCY_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runInterventionFrequencyNet.php";
     public static final String INTERVENTION_FREQUENCY_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/neuralNetIntervention.eg";
     public static final String TRAIN_FIRST_LEVEL_QUESTION_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runFirstLevelQuestionNet.php";
+    public static final String FIRST_LEVEL_QUESTION_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/neuralNetFirstLevelQuestion.eg";
     public static final String TRAIN_SUB_QUESTION_NET_URL = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/neuralNetFactory/runSubQuestionNet.php";
 
 
@@ -107,6 +108,14 @@ public class HomeMenu extends Activity {
             public void onClick(View view) {
                 new TrainInterventionNeuralNet().execute();
 
+            }
+        });
+
+        Button btnTrainFirstLevelQuestionNet = (Button) findViewById(R.id.btnTrainFirstLevelQuestionNeuralNetwork);
+        btnTrainFirstLevelQuestionNet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TrainFirstLevelQuestionNeuralNet().execute();
             }
         });
 	}
@@ -165,6 +174,80 @@ public class HomeMenu extends Activity {
         }
 
 
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+
+//            Show the finish information
+            AlertDialog alertDialog = new AlertDialog.Builder(HomeMenu.this).create();
+            alertDialog.setTitle("Server Information");
+            alertDialog.setMessage("Intervention frequency neural network training done!");
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+
+            alertDialog.show();
+        }
+
+    }
+
+
+
+
+    /**
+     * Background Async Task to train first level question neural network
+     * */
+    class TrainFirstLevelQuestionNeuralNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(HomeMenu.this);
+            pDialog.setMessage("Training the first level question neural network..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        protected void onProgressUpdate(Integer... progress){
+            super.onProgressUpdate(String.valueOf(progress));
+            pDialog.setIndeterminate(false);
+            pDialog.setMax(100);
+            pDialog.setProgress(progress[0]);
+        }
+
+
+        /**
+         * Invoke the training jar in server
+         * */
+        protected String doInBackground(String... args) {
+            try {
+                URL url = new URL(TRAIN_FIRST_LEVEL_QUESTION_NET_URL);
+                try {
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+
+                    in.close();
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
 
 
         /**
@@ -174,11 +257,10 @@ public class HomeMenu extends Activity {
             // dismiss the dialog once done
             pDialog.dismiss();
 
-
 //            Show the finish information
             AlertDialog alertDialog = new AlertDialog.Builder(HomeMenu.this).create();
             alertDialog.setTitle("Server Information");
-            alertDialog.setMessage("Training done!");
+            alertDialog.setMessage("First level question neural network training done!");
             alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                 }
@@ -187,9 +269,10 @@ public class HomeMenu extends Activity {
             alertDialog.show();
         }
 
-
-
     }
+
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -281,6 +364,65 @@ public class HomeMenu extends Activity {
             e.printStackTrace();
         }
 
+
+        Toast.makeText(this, "Intervention frequency net updated!",
+                Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    public void updateFirstLevelQuestionNet(View view){
+        String fileName = "neuralNetFirstLevelQuestion.eg";
+
+        URL url = null;
+        try {
+            url = new URL(FIRST_LEVEL_QUESTION_NET_URL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            URLConnection connection = url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream inputStream = null;
+        try {
+            inputStream = new BufferedInputStream(url.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File neuralNet = new File(this.getApplicationContext().getFilesDir(), fileName);
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(neuralNet);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte buffer[] = new byte[1024];
+        int dataSize;
+        int loadedSize = 0;
+        Log.w("My Track from here", "First level question update");
+        try {
+            while ((dataSize = inputStream.read(buffer)) != -1) {
+                loadedSize += dataSize;
+                outputStream.write(buffer, 0, dataSize);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Toast.makeText(this, "First level question net updated!",
+                Toast.LENGTH_SHORT).show();
 
     }
 

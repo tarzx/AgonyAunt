@@ -107,7 +107,8 @@
                         android:layout_height="wrap_content"
                         android:text="Update First Level Question Neural Network"
                         android:id="@+id/btnUpdateFirstLevelQuestionNeuralNetwork"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateFirstLevelQuestionNet"/>
 
                 </LinearLayout>
 
