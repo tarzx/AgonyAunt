@@ -1,6 +1,8 @@
 package com.example.agonyaunt;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -134,12 +138,7 @@ public class HomeMenu extends Activity {
 
                     BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 
-
-
                     in.close();
-
-
-
 
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -164,7 +163,6 @@ public class HomeMenu extends Activity {
             // dismiss the dialog once done
             pDialog.dismiss();
 
-//            updateLocalNeuralNetwork();
 
 //            Show the finish information
             AlertDialog alertDialog = new AlertDialog.Builder(HomeMenu.this).create();
@@ -178,43 +176,6 @@ public class HomeMenu extends Activity {
             alertDialog.show();
         }
 
-        protected void updateLocalNeuralNetwork(){
-            try {
-                URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
-                ReadableByteChannel rbc = null;
-                FileOutputStream fos = null;
-                Log.w("Initial updating process", "HEY");
-
-                try {
-                    rbc = Channels.newChannel(url.openStream());
-                    Log.w("Build up the channel","done");
-
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                try {
-                    fos = new FileOutputStream("neuralNetIntervention.eg");
-                    Log.w("NEURAL NET UPDATED??",  "yes");
-
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                try {
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
 
 
     }
@@ -261,41 +222,93 @@ public class HomeMenu extends Activity {
 
 
     public void updateInterventionNet(View view){
+        String fileName = "neuralNetIntervention.eg";
+
+        URL url = null;
         try {
-            URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
-            ReadableByteChannel rbc = null;
-            FileOutputStream fos = null;
-            Log.w("Initial updating process", "HEY");
-
-            try {
-                rbc = Channels.newChannel(url.openStream());
-                Log.w("Build up the channel","done");
-
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-            try {
-                fos = new FileOutputStream("neuralNetIntervention.eg");
-                Log.w("NEURAL NET UPDATED??",  "yes");
-
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            try {
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-
+            url = new URL(INTERVENTION_FREQUENCY_NET_URL);
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        try {
+            URLConnection connection = url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream inputStream = null;
+        try {
+            inputStream = new BufferedInputStream(url.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File neuralNet = new File(this.getApplicationContext().getFilesDir(), fileName);
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(neuralNet);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte buffer[] = new byte[1024];
+        int dataSize;
+        int loadedSize = 0;
+        try {
+            while ((dataSize = inputStream.read(buffer)) != -1) {
+                loadedSize += dataSize;
+                outputStream.write(buffer, 0, dataSize);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//        try {
+//            URL url = new URL(INTERVENTION_FREQUENCY_NET_URL);
+//            ReadableByteChannel rbc = null;
+//            FileOutputStream fos = null;
+//            Log.w("Initial updating process", "HEY");
+//
+//            try {
+//                rbc = Channels.newChannel(url.openStream());
+//                Log.w("Build up the channel","done");
+//
+//            } catch (IOException e1) {
+//                // TODO Auto-generated catch block
+//                e1.printStackTrace();
+//            }
+//            try {
+////                File file = new File(HomeMenu.this.getFilesDir(),"neuralNetIntervention.eg" );
+//                fos = new FileOutputStream(neuralNet);
+////                fos = openFileOutput("neuralNetIntervention.eg", MODE_PRIVATE);
+//                Log.w("NEURAL NET UPDATED??",  "yes");
+//
+//
+//
+//            } catch (FileNotFoundException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//
+//            try {
+//                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+//                fos.close();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//
+//
+//        } catch (MalformedURLException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
     }
 
