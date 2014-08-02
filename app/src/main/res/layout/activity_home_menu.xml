@@ -67,7 +67,8 @@
                         android:layout_height="wrap_content"
                         android:text="Update Sub Question Neural Network"
                         android:id="@+id/btnUpdateSubQuestionNeuralNetwork"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateSubQuestionNet"/>
 
                 </LinearLayout>
 
