@@ -11,11 +11,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlarmManager;
