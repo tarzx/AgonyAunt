@@ -16,7 +16,7 @@ public class QuestionManager implements Serializable {
 	// Number of bits needed to represent a qID
 	final int qIDbits = 4;
 	// Number of first level questions
-	final int NUM_QUESTIONS = 5;
+	final int NUM_QUESTIONS = 7;
 	// Number of subQuestions per parent question
 	final int SUB_PER_Q = 2;
 	// Array of subQuestions
@@ -78,6 +78,23 @@ public class QuestionManager implements Serializable {
 		subQuestions[4][1] = new Question(new double[] { 1 },
 				"Would you rather feel [x] or [y]?", "", therapQuestions[4],
 				-1);
+
+
+        therapQuestions[5] = new Question(new double[] { 0, 1, 0, 1 },
+                "I know you felt [x] last time. How do you feel now?", "", subQuestions[5]);
+        subQuestions[5][0] = new Question(new double[] { 0 },
+                "Any reasons lead you feel [x]?", "", therapQuestions[5], -1);
+        subQuestions[5][1] = new Question(new double[] { 1 },
+                "Any thing special happened to you?", "", therapQuestions[5],
+                -1);
+
+        therapQuestions[6] = new Question(new double[] { 0, 1, 1, 0 },
+                "Since last time you said you felt [x], what's in your mind this time?", "", subQuestions[6]);
+        subQuestions[6][0] = new Question(new double[] { 0 },
+                "You said [x]? Why that?", "", therapQuestions[6], -1);
+        subQuestions[6][1] = new Question(new double[] { 1 },
+                "Is that a common emotion to you?", "", therapQuestions[6],
+                -1);
 
         
 	}

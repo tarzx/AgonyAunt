@@ -63,8 +63,8 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
     double time1;
 
-	// New neural net
-	Net net = new Net(this);
+//	// New neural net
+//	Net net = new Net(this);
 
     private TextView question1, question2, question3;
 
@@ -72,6 +72,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
     private TextToSpeech tts;
     private boolean ttsInstalled = false;
+
+
+    String answerInFirstDepthConversation = "";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -236,10 +239,10 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("controlLevel",selectedControl);
+                editor.putString("controlLevel", selectedControl);
                 editor.commit();
 
-//                Preamble 前言 (Just a translation)
+//                Preamble
 //                preambleIds store the answer of first question
 				preambleIds.add(selectedControl);
 				intent.putExtra(PREAMBLEIDS, preambleIds);
@@ -248,17 +251,30 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                 double time2 = System.currentTimeMillis();
                 double responseTime = time2 - time1;
 
-
+                int conversationDepth = sharedPref.getInt("conversationDepth", 1);
+                Log.w("Track the conversation depth--first time", conversationDepth +"");
+                if (conversationDepth > 2 || conversationDepth < 1){
+                    conversationDepth = 1;
+                }
+                Log.w("Track the conversation depth after if", conversationDepth +"");
                 FirstLevelQuestionNet firstLevelQuestionNet = new FirstLevelQuestionNet(NotificationReceiverActivity.this);
-                double[] input = {Double.parseDouble(selectedControl), responseTime/1000};
+                double[] input = {Double.parseDouble(selectedControl), responseTime/1000, conversationDepth};
+
+
+
+                conversationDepth++;
+                editor.putInt("conversationDepth", conversationDepth).commit();
+                Log.w("Track the conversation depth after ++", conversationDepth +"");
+
+
                 Log.w("selected and time ", ""+ input[0] + " " + input[1]);
 
                 int index = firstLevelQuestionNet.computeFirstQuestion(input);
                 Log.w("The index of question", index +"");
                 index = index -1;
                 Log.w("The minus 1 index of question", index +"");
-                if (index > 4){
-                    index = 4;
+                if (index > quesManager.getNUM_QUESTIONS()-1){
+                    index = quesManager.getNUM_QUESTIONS()-1;
                 }
                 Log.w("The final index of question", index +"");
                 Log.w("My test about selected and response time", selectedControl + " <-se && time-> " + responseTime);
@@ -271,7 +287,17 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				nxtQ = quesManager.getTherapeuticQ(index);
 				quesManager.setRecPar(nxtQ);
 
-				// Ask the subquestion
+
+                answerInFirstDepthConversation = sharedPref.getString("answerInFirstDepthConversation", "");
+
+                // Enhance if needed
+                QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
+//                    The answer for question is used by QuestionEnhancer
+                nxtQ = questionEnhancer.receive(nxtQ, answerInFirstDepthConversation);
+                Log.w("Answer in first depth conversation", answerInFirstDepthConversation);
+
+
+				// Ask the sub question
 			} else {
 
 				EditText answer_text = (EditText) findViewById(R.id.answer);
@@ -284,10 +310,14 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				quesManager.getRecPar().setAnswer(answer);
 
 				if (quesCount == 1) {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("answerInFirstDepthConversation", answer).commit();
 
+
+                    Log.w("Answer in first depth conversation -> Q count = 1", answer);
                     SubQuestionNet subQuestionNet = new SubQuestionNet(NotificationReceiverActivity.this);
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                     String uAge = sharedPref.getString("userAge", "0.0");
                     selectedControl = sharedPref.getString("controlLevel", "0.0");
                     Log.w("The selected control", selectedControl);
