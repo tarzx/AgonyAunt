@@ -202,6 +202,20 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 		}
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/** Gets the questions to ask the user
 	 * @param view	Android view
 	 * @throws IOException
@@ -331,6 +345,24 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/** Finds out if an intervention should be sent
 	 * @return true		If there should be an intervention sent
 	 * @return false	If there should not be an intervention sent
@@ -399,6 +431,19 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 		return "0.0";
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

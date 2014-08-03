@@ -78,6 +78,8 @@ public class QuestionManager implements Serializable {
 		subQuestions[4][1] = new Question(new double[] { 1 },
 				"Would you rather feel [x] or [y]?", "", therapQuestions[4],
 				-1);
+
+        
 	}
 
 	/** Updates the rating of a subQuestion

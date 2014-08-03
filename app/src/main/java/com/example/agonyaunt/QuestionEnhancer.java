@@ -72,8 +72,7 @@ public class QuestionEnhancer {
 					}
 					if (other_replace.equals("")) other_replace = "not";
 					// Replace
-					new_question.setContent(new_question.getContent().replace(
-							"[y]", other_replace));
+					new_question.setContent(new_question.getContent().replace("[y]", other_replace));
 				}
 
 				updateEmotions();
