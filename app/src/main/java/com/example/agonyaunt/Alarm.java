@@ -36,12 +36,32 @@ public class Alarm extends Service {
 	/** This method starts a daily alarm */
 	public void mainAlarm() {
 		boolean[] slots = new boolean[MyPreferences.numCheckboxes];
+        double[] slotsFromNeuralNet = new double[MyPreferences.numCheckboxes];
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		for (int c = 0; c < MyPreferences.numCheckboxes; c++) {
 			String key = MyPreferences.checkBoxesKey + c;
 			slots[c] = sharedPref.getBoolean(key, false);
 		}
+
+
+        boolean b_temp = false;
+        for (boolean slot : slots) {
+            b_temp |= slot;
+        }
+        if (b_temp == false) {
+            InterventionSlotsNet interSlotsNet = new InterventionSlotsNet(Alarm.this);
+            slotsFromNeuralNet = interSlotsNet.computeSlots();
+            for (int i = 0; i < slots.length; i++){
+                if (slotsFromNeuralNet[i] == 1){
+                    slots[i] = true;
+
+
+                }
+
+                Log.w("from net to slots", slots[i] + "");
+            }
+        }
 
 
 //        Here decide the intervention frequency
