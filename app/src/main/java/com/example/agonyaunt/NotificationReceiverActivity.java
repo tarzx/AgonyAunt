@@ -42,7 +42,6 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	int questionId;
 	int quesCount;
 	String question;
-	String uname;
 
     String selectedControl;
 
@@ -106,6 +105,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				// Question manager has been sent
 				quesManager = (QuestionManager) intent.getSerializableExtra(quesMan);
 			}
+
+
+
 			if (quesCount == 0) {
 				setContentView(R.layout.results);
                 time1 = System.currentTimeMillis();
@@ -117,6 +119,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 				setContentView(R.layout.result3);
                 question3 = (TextView) findViewById(R.id.question3);
 			}
+
+
+
 			if (quesCount > 0 && quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
 				question = intent.getStringExtra(QUESTION);
 				question2 = (TextView) findViewById(R.id.question2);
@@ -154,10 +159,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			}
 
 		}
-		// Get user name
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//        What is trying to do here???
-		uname = sharedPref.getString("userName", "");
+
 	}
 
 	@Override

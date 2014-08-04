@@ -38,26 +38,12 @@
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
 
+
                     <Button
                         android:layout_width="260dp"
                         android:layout_height="wrap_content"
-                        android:text="Show Sub level content"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="20dp"
-                        android:id="@+id/btnShowAllSub"
-                        android:layout_gravity="center_horizontal" />
-
-                    <Button
-                        android:layout_width="260dp"
-                        android:layout_height="wrap_content"
-                        android:text="Add New sub record"
-                        android:layout_marginBottom="60dp"
-                        android:id="@+id/btnAddSub"
-                        android:layout_gravity="center_horizontal" />
-
-                    <Button
-                        android:layout_width="260dp"
-                        android:layout_height="wrap_content"
                         android:text="Train Sub Question Neural Network"
                         android:id="@+id/btnTrainSubQuestionNeuralNetwork"
                         android:layout_gravity="center_horizontal" />
@@ -79,26 +65,13 @@
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
 
+ 
+
                     <Button
                         android:layout_width="260dp"
                         android:layout_height="wrap_content"
-                        android:text="Show first level content"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="20dp"
-                        android:id="@+id/btnShowAllFirstLevel"
-                        android:layout_gravity="center_horizontal" />
-
-                    <Button
-                        android:layout_width="260dp"
-                        android:layout_height="wrap_content"
-                        android:text="Add New First level record"
-                        android:layout_marginBottom="60dp"
-                        android:id="@+id/btnAddFirstLevelQuestion"
-                        android:layout_gravity="center_horizontal" />
-
-                    <Button
-                        android:layout_width="260dp"
-                        android:layout_height="wrap_content"
                         android:text="Train First Level Question Neural Network"
                         android:id="@+id/btnTrainFirstLevelQuestionNeuralNetwork"
                         android:layout_gravity="center_horizontal" />
