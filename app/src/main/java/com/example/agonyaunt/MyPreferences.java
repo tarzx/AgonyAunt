@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 /** This class control user preferences
  * @author Jiachun Liu
+ * @author Teng Li
  */
 public class MyPreferences extends Activity {
 

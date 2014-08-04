@@ -83,8 +83,12 @@ public class HomeMenu extends Activity {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 
 //        Util class used
-		if (Util.alarmBooted()) {
+        boolean mainAlarmTrigger = Util.alarmBooted();
+
+
+		if (mainAlarmTrigger) {
 //            manage alarm
+
 			mainAlarm();
 		}
 

@@ -13,6 +13,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /** This class contains the main Alarm, which is used to trigger 
  the other alarm everyday at 00:00:00 
@@ -50,8 +51,11 @@ public class Alarm extends Service {
 		int frequency = sharedPref.getInt("frequency", 0);
         if(frequency == 0){
             frequency = interNet.computeFrequency();
+            Log.w("Suggested frequency by inter net", frequency+"");
         }
-//        int frequency = sharedPref.getInt("frequency", 1);
+
+
+
 
 		ArrayList<Integer> nextTimes = Util.calculateNextTimes(frequency, slots);
 
