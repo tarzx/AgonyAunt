@@ -62,8 +62,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
     double time1;
 
-//	// New neural net
-//	Net net = new Net(this);
+
 
     private TextView question1, question2, question3;
 
@@ -332,11 +331,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 
 //                    compute the index of sub question and use Q manager to set the sub index
-//					net.load(quesManager.getRecPar().getID());
 					// Get the parent
 					Question parent = quesManager.getRecPar();
 					// Get the next question
-//					nxtQ = quesManager.getNextFromNet(net, parent);
 
                     nxtQ = quesManager.getSubFromSubQuestionNet(parent, subIndex);
 
@@ -346,7 +343,6 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 					QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
 //                    The answer for question is used by QuestionEnhancer
 					nxtQ = questionEnhancer.receive(nxtQ, answer);
-//					quesManager.setSub_index(net.getOutput());
                     quesManager.setSub_index(subIndex);
 				}
 				

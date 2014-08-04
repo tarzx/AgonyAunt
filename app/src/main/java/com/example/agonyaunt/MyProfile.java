@@ -1,6 +1,8 @@
 package com.example.agonyaunt;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -119,7 +121,16 @@ public class MyProfile extends Activity {
 //        Sex1 male
 		editor.putString("sex1", Boolean.toString(sex1));
 		editor.commit();
-        Toast.makeText(this, "Profile has been saved", Toast.LENGTH_SHORT).show();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("User notification!");
+        alertDialog.setMessage("Profile has been saved. Now restart the app to apply new settings.");
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        alertDialog.show();
 	}
 
     public void saveProfile(View view){

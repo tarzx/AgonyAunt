@@ -154,10 +154,10 @@ public class Rater {
 			add(i, mainQs[i].getID(), best_id);
 		}
 		// Send out via the transmitter
-		if (Build.FINGERPRINT.startsWith("generic")){
-			Transmitter trans = new Transmitter(quesMan);
-			trans.output("ratings_for_net", for_net_list, context);
-		}
+//		if (Build.FINGERPRINT.startsWith("generic")){
+//			Transmitter trans = new Transmitter(quesMan);
+//			trans.output("ratings_for_net", for_net_list, context);
+//		}
 		format_for_app();
 	}
 

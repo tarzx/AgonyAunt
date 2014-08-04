@@ -120,16 +120,7 @@ public class QuestionManager implements Serializable {
 		return index;
 	}
 	
-	/** Get the next question from the NN
-	 * @param net		The ANN
-	 * @param parent	The parent
-	 * @return nxtQ		The next question
-	 */
-	public Question getNextFromNet(Net net, Question parent) {
-		Question nxtQ = getNSub(parent, net.getOutput());
-		setRecPar(nxtQ);
-		return nxtQ;
-	}
+
 
 
     /** Given a question and a particular index, get a subquestion
