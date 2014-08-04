@@ -36,7 +36,7 @@ public class MyPreferences extends Activity {
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("User notification!");
-        alertDialog.setMessage("The app will suggest an intervention frequency if you leave the slide bar blank. If you don't like it, you can also set it as you want.");
+        alertDialog.setMessage("The app will suggest an intervention frequency if you leave the slide bar at 0. If you don't like it, you can also set it as you want.");
         alertDialog.setButton("I got it", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -59,7 +59,7 @@ public class MyPreferences extends Activity {
 			checkBoxes[i].setChecked(sharedPref.getBoolean(key, false));
 		}
 
-		setupSeekBar(sharedPref.getInt("frequency", 1));
+		setupSeekBar(sharedPref.getInt("frequency", 0));
 
 	}
 

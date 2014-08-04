@@ -46,7 +46,11 @@ public class Alarm extends Service {
 //        Here decide the intervention frequency
 //        Frequency could be user's setting, if no setting, then use neural net suggestion.
         InterventionNet interNet = new InterventionNet(Alarm.this);
-		int frequency = sharedPref.getInt("frequency", interNet.computeFrequency());
+
+		int frequency = sharedPref.getInt("frequency", 0);
+        if(frequency == 0){
+            frequency = interNet.computeFrequency();
+        }
 //        int frequency = sharedPref.getInt("frequency", 1);
 
 		ArrayList<Integer> nextTimes = Util.calculateNextTimes(frequency, slots);
