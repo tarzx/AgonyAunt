@@ -33,7 +33,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/tabSubQuestion"
+                    android:id="@+id/tabQuestions"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
@@ -43,6 +43,25 @@
                         android:layout_width="260dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Train First Level Question Neural Network"
+                        android:id="@+id/btnTrainFirstLevelQuestionNeuralNetwork"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="Update First Level Question Neural Network"
+                        android:id="@+id/btnUpdateFirstLevelQuestionNeuralNetwork"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateFirstLevelQuestionNet"/>
+
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:text="Train Sub Question Neural Network"
                         android:id="@+id/btnTrainSubQuestionNeuralNetwork"
@@ -60,11 +79,10 @@
 
 
                 <LinearLayout
-                    android:id="@+id/tabFirstLevelQuestion"
+                    android:id="@+id/tabInterventionSlots"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
-
 
 
                     <Button
@@ -72,17 +90,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Train First Level Question Neural Network"
-                        android:id="@+id/btnTrainFirstLevelQuestionNeuralNetwork"
+                        android:text="Train Intervention Slots Neural Network"
+                        android:id="@+id/btnTrainInterventionSlotsNeuralNetwork"
                         android:layout_gravity="center_horizontal" />
 
                     <Button
                         android:layout_width="260dp"
                         android:layout_height="wrap_content"
-                        android:text="Update First Level Question Neural Network"
-                        android:id="@+id/btnUpdateFirstLevelQuestionNeuralNetwork"
+                        android:layout_marginBottom="20dp"
+                        android:text="Update Intervention Slots Neural Network"
+                        android:id="@+id/btnUpdateInterventionSlotsNeuralNetwork"
                         android:layout_gravity="center_horizontal"
-                        android:onClick="updateFirstLevelQuestionNet"/>
+                        android:onClick="updateInterventionSlotsNet"/>
+
 
                 </LinearLayout>
 
