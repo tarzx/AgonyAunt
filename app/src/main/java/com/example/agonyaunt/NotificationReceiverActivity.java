@@ -161,6 +161,11 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 	}
 
+
+
+
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -240,8 +245,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("controlLevel", selectedControl);
-                editor.commit();
+                editor.putString("controlLevel", selectedControl).commit();
 
 //                Preamble
 //                preambleIds store the answer of first question
@@ -262,7 +266,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                 double[] input = {Double.parseDouble(selectedControl), responseTime/1000, conversationDepth};
 
 
-
+//
                 conversationDepth++;
                 editor.putInt("conversationDepth", conversationDepth).commit();
                 Log.w("Track the conversation depth after ++", conversationDepth +"");
@@ -277,24 +281,30 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                 if (index > quesManager.getNUM_QUESTIONS()-1){
                     index = quesManager.getNUM_QUESTIONS()-1;
                 }
+                if (index < 0){
+                    index = 0;
+                }
+
                 Log.w("The final index of question", index +"");
                 Log.w("My test about selected and response time", selectedControl + " <-se && time-> " + responseTime);
 //                Here to choose which group of question to ask first, the group need to decided by the
 //                answer to the first question
-				// Get random parent
-//				int index = quesManager.getRandomIndex();
+
 				quesManager.setParent_index(index);
 				// Ask it
 				nxtQ = quesManager.getTherapeuticQ(index);
 				quesManager.setRecPar(nxtQ);
 
 
-                answerInFirstDepthConversation = sharedPref.getString("answerInFirstDepthConversation", "");
-
-                // Enhance if needed
+                answerInFirstDepthConversation = sharedPref.getString("answerInFirstDepthConversation", "empty");
+//
+////                // Enhance if needed
                 QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
 //                    The answer for question is used by QuestionEnhancer
                 nxtQ = questionEnhancer.receive(nxtQ, answerInFirstDepthConversation);
+
+
+
                 Log.w("Answer in first depth conversation", answerInFirstDepthConversation);
 
 
@@ -315,7 +325,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("answerInFirstDepthConversation", answer).commit();
 
-
+//
                     Log.w("Answer in first depth conversation -> Q count = 1", answer);
                     SubQuestionNet subQuestionNet = new SubQuestionNet(NotificationReceiverActivity.this);
 
