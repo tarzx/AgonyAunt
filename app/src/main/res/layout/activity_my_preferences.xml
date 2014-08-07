@@ -83,28 +83,24 @@
         <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+            android:layout_marginTop="40dp">
 
         <Button
-            android:id="@+id/button1"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnSavePreferences"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Save"
-            android:onClick="savePreference"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
          <Button
             android:id="@+id/backButton"
-        	style="?android:attr/buttonStyleSmall"
-        	android:layout_width="wrap_content"
+        	android:layout_width="80dp"
        	 	android:layout_height="wrap_content"
-             android:text="Back"
+            android:text="Back"
         	android:onClick="backButton"
-             android:layout_alignParentTop="true"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentStart="true" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
          
         </RelativeLayout>
          
