@@ -380,6 +380,10 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			intent.putExtra(PREAMBLEIDS, preambleIds);
 			this.finish();
 		}
+
+
+
+
 	}
 
 
