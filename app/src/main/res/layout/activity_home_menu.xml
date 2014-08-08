@@ -158,21 +158,22 @@
                     android:focusableInTouchMode="true">
 
                     <Button
-                        android:id="@+id/button2"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:onClick="preferences"
-                        android:text="@string/preferences"
-                        android:layout_marginTop="30dp"
-
-                        android:layout_gravity="center_horizontal" />
-
-                    <Button
                         android:id="@+id/button3"
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:onClick="myProfile"
                         android:text="@string/profile"
+                        android:layout_marginTop="30dp"
+
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="preferences"
+                        android:text="@string/preferences"
+
 
                         android:layout_marginTop="20dp"
                         android:layout_gravity="center_horizontal" />
