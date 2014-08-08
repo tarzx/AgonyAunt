@@ -79,7 +79,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Speak"
+        android:text="Speak to you"
         android:id="@+id/btnSpeak"
         android:layout_alignTop="@+id/button1"
         android:layout_alignLeft="@+id/question1"
