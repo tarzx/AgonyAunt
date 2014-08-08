@@ -40,10 +40,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2ec73772-9020-48bd-a09b-550ff7da1e9a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/MyPreferences.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/MyPreferences.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/NotificationReceiverActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/NotificationReceiverActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home_menu.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/result3.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/result3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AgonyAunt v2014.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,11 +65,11 @@
       <file leaf-file-name="MyPreferences.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/MyPreferences.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80877745" vertical-offset="1319" max-vertical-offset="8759">
-              <caret line="113" column="17" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+            <state vertical-scroll-proportion="-1.6677116" vertical-offset="741" max-vertical-offset="8778">
+              <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
               <folding>
-                <element signature="e#3454#4178#0" expanded="true" />
-                <element signature="e#4167#4168#0" expanded="true" />
+                <element signature="e#3491#4215#0" expanded="true" />
+                <element signature="e#4204#4205#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2215,11 +2211,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/agonyaunt/MyPreferences.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80877745" vertical-offset="1319" max-vertical-offset="8759">
-          <caret line="113" column="17" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+        <state vertical-scroll-proportion="-1.6677116" vertical-offset="741" max-vertical-offset="8778">
+          <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
           <folding>
-            <element signature="e#3454#4178#0" expanded="true" />
-            <element signature="e#4167#4168#0" expanded="true" />
+            <element signature="e#3491#4215#0" expanded="true" />
+            <element signature="e#4204#4205#0" expanded="true" />
           </folding>
         </state>
       </provider>

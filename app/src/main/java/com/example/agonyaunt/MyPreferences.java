@@ -40,6 +40,7 @@ public class MyPreferences extends Activity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
+    private ProgressDialog pDialog2;
 
     JSONParser jsonParser = new JSONParser();
 
@@ -295,11 +296,11 @@ public class MyPreferences extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(MyPreferences.this);
-            pDialog.setMessage("Frequency preference saving to the database..");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
+            pDialog2 = new ProgressDialog(MyPreferences.this);
+            pDialog2.setMessage("Frequency preference saving to the database..");
+            pDialog2.setIndeterminate(false);
+            pDialog2.setCancelable(true);
+            pDialog2.show();
         }
 
         /**
@@ -374,7 +375,7 @@ public class MyPreferences extends Activity {
             // dismiss the dialog once done
 
             Toast.makeText(MyPreferences.this, "Frequency preference has been saved", Toast.LENGTH_SHORT).show();
-            pDialog.dismiss();
+            pDialog2.dismiss();
 
         }
 
