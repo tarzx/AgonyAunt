@@ -2,6 +2,7 @@ package com.example.agonyaunt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -27,7 +29,12 @@ import android.widget.TextView;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 /** This class is responsible for the main control loop
@@ -81,7 +88,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
     JSONParser jsonParser = new JSONParser();
 
-    private static String url_create_patient = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/create_patient.php";
+    private static String url_add_sub_record = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/add_to_sub_table.php";
 
     private static final String TAG_SUCCESS = "success";
 
@@ -388,11 +395,35 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			Intent intent = getIntent();
 			SeekBar rate_bar = (SeekBar) findViewById(R.id.rate_bar);
 			String user_rate = Integer.toString(rate_bar.getProgress());
+            int u_rate = rate_bar.getProgress();
+            Log.w("User rate", user_rate);
 			preambleIds.add(user_rate);
 			// Update rate
 			Rater rate = new Rater(this);
-			rate.update(quesManager.getParent_index(), quesManager.getSub_index(), rate_bar.getProgress(), false);
-			rate.getBest();
+
+            int parentIndex = quesManager.getParent_index();
+            int subIndex = quesManager.getSub_index();
+
+
+            Log.w("User rate from bar", rate_bar.getProgress()+"");
+			rate.update(parentIndex, subIndex, u_rate, false);
+
+
+//			rate.getBest();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(NotificationReceiverActivity.this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            int rate0 = sharedPref.getInt("sub0Rate", -1);
+            int rate1 = sharedPref.getInt("sub1Rate", -1);
+
+            if (subIndex == 0 && rate0 > rate1 && rate0 > 10){
+                editor.putString("subQuestion", "0").commit();
+                new AddSubRecord().execute();
+            }else if(subIndex == 1 && rate1 > rate0 && rate1 > 10){
+                editor.putString("subQuestion", "1").commit();
+                new AddSubRecord().execute();
+            }
+
+
 			intent.putExtra(PREAMBLEIDS, preambleIds);
 			this.finish();
 		}
@@ -406,6 +437,89 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Background Async Task to add sub table record
+     * */
+    class AddSubRecord extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(NotificationReceiverActivity.this);
+            pDialog.setMessage("Creating sub table record..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating sub table record
+         * */
+        protected String doInBackground(String... args) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(NotificationReceiverActivity.this);
+
+
+            String age = sharedPref.getString("userAge", "0");
+            String controlLevel = sharedPref.getString("controlLevel", "0.0");
+            String subQuestion = sharedPref.getString("subQuestion", "0");
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("age", age));
+            params.add(new BasicNameValuePair("control_level", controlLevel));
+            params.add(new BasicNameValuePair("sub_question", subQuestion));
+
+
+
+            // getting JSON Object
+            JSONObject json = jsonParser.makeHttpRequest(url_add_sub_record, "POST", params);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+
+                } else {
+                    // failed to create patient
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+            Toast.makeText(NotificationReceiverActivity.this, "Question rating has been saved", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 
 
