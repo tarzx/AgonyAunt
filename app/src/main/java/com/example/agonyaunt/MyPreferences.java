@@ -235,7 +235,6 @@ public class MyPreferences extends Activity {
 
 
             // getting JSON Object
-            // Note that create patient url accepts POST method
             JSONObject json = jsonParser.makeHttpRequest(url_add_to_slots, "POST", params);
 
             // check log cat fro response
@@ -265,8 +264,9 @@ public class MyPreferences extends Activity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
 
-            Toast.makeText(MyPreferences.this, "Slots preference has been saved", Toast.LENGTH_SHORT).show();
+
             pDialog.dismiss();
+            Toast.makeText(MyPreferences.this, "Slots preference has been saved", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -344,7 +344,6 @@ public class MyPreferences extends Activity {
             Log.w("DATA", "name " + name + " age " + age + " occupation " + occupation + " intervention fre " + interventionFrequency + " fe " + sexF + " ma " + sexM);
 
             // getting JSON Object
-            // Note that create patient url accepts POST method
             JSONObject json = jsonParser.makeHttpRequest(url_create_patient, "POST", params);
 
             // check log cat fro response
@@ -374,8 +373,9 @@ public class MyPreferences extends Activity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
 
-            Toast.makeText(MyPreferences.this, "Frequency preference has been saved", Toast.LENGTH_SHORT).show();
+
             pDialog2.dismiss();
+            Toast.makeText(MyPreferences.this, "Frequency preference has been saved", Toast.LENGTH_SHORT).show();
 
         }
 
