@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -73,6 +74,16 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 
     String answerInFirstDepthConversation = "";
+
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
+    JSONParser jsonParser = new JSONParser();
+
+    private static String url_create_patient = "http://tl29.host.cs.st-andrews.ac.uk/AndroidApp/create_patient.php";
+
+    private static final String TAG_SUCCESS = "success";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -210,6 +221,11 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			questionId = 2;
 		}
 	}
+
+
+
+
+
 
 
 
@@ -385,6 +401,18 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
