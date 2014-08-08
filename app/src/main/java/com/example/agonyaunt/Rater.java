@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 /** This class manages user ratings
  * @author Abigail Lowe
+ * @author Teng Li
  */
 
 public class Rater {
@@ -99,8 +104,10 @@ public class Rater {
 	 */
 	public void update(int parent, int sub, int new_rate, boolean loading) {
 		// If we aren't just loading from the file
-		
-			int old_rate = mainQs[parent].getSubQuestions()[sub].getRating();
+        Question[] subQs = quesMan.getTherapeuticQ(parent).getSubQuestions();
+			int old_rate = subQs[sub].getRating();
+        Log.w("BEFORE RATE IS SET:",old_rate+"");
+//            int old_rate = mainQs.
 			// If the question has not been asked for the first time 
 			// (i.e. rating is not -1)
 			// And we aren't just loading the questions
@@ -109,8 +116,19 @@ public class Rater {
 				new_rate = (new_rate + old_rate) / 2;
 			}
 			// Update
-			quesMan.update(parent, sub, new_rate);
-			mainQs[parent].getSubQuestions()[sub].setRating(new_rate);
+//			quesMan.update(parent, sub, new_rate);
+//			mainQs[parent].getSubQuestions()[sub].setRating(new_rate);
+            subQs[sub].setRating(new_rate);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        int sub0Rate = subQs[0].getRating();
+        int sub1Rate = subQs[1].getRating();
+        editor.putInt("sub0Rate", sub0Rate);
+        editor.putInt("sub1Rate", sub1Rate);
+        editor.commit();
+
+        Log.w("IF RATE IS SET:", subQs[sub].getRating()+"");
 
 	}
 
