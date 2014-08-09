@@ -114,6 +114,21 @@ public class MyPreferences extends Activity {
                         new SaveSlotsPreferences().execute();
                 }
 
+                if (frequency == 0 && !slotsSelected) {
+
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MyPreferences.this);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+
+                    editor.putInt("frequency", frequency);
+
+                    for (int i = 0; i < numCheckboxes; i++) {
+                        String key = checkBoxesKey + i;
+                        editor.putBoolean(key, checkBoxes[i].isChecked());
+                    }
+                    editor.commit();
+                    Toast.makeText(MyPreferences.this, "Preference has been saved", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });
