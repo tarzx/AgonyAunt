@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NavUtils;
@@ -85,6 +86,8 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 
     // Progress Dialog
     private ProgressDialog pDialog;
+    Context contextForDialogue;
+    Intent intentForDialogue;
 
     JSONParser jsonParser = new JSONParser();
 
@@ -98,8 +101,10 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Intent intent = getIntent();
 
+
+		Intent intent = getIntent();
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 //      Test if text-to-speech engine is installed in local machine
         if(isPackageInstalled(getPackageManager(), "com.svox.pico")){
             ttsInstalled = true; // This would be good to have it as a static member
@@ -135,6 +140,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
 			} else {
 				setContentView(R.layout.result3);
                 question3 = (TextView) findViewById(R.id.question3);
+                contextForDialogue = this.getApplicationContext();
 			}
 
 
@@ -279,11 +285,18 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                 double time2 = System.currentTimeMillis();
                 double responseTime = time2 - time1;
 
+
+
                 int conversationDepth = sharedPref.getInt("conversationDepth", 1);
                 Log.w("Track the conversation depth--first time", conversationDepth +"");
                 if (conversationDepth > 2 || conversationDepth < 1){
                     conversationDepth = 1;
                 }
+
+
+
+
+
                 Log.w("Track the conversation depth after if", conversationDepth +"");
                 FirstLevelQuestionNet firstLevelQuestionNet = new FirstLevelQuestionNet(NotificationReceiverActivity.this);
                 double[] input = {Double.parseDouble(selectedControl), responseTime/1000, conversationDepth};
@@ -312,6 +325,8 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                 Log.w("My test about selected and response time", selectedControl + " <-se && time-> " + responseTime);
 //                Here to choose which group of question to ask first, the group need to decided by the
 //                answer to the first question
+
+
 
 				quesManager.setParent_index(index);
 				// Ask it
@@ -360,7 +375,6 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
                     Log.w("Control level and age", " " + input[0] + " " + input[1]);
 
                     int subIndex = subQuestionNet.computeSubQuestion(input);
-
 
 
 //                    compute the index of sub question and use Q manager to set the sub index
@@ -418,9 +432,21 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
             if (subIndex == 0 && rate0 > rate1 && rate0 > 10){
                 editor.putString("subQuestion", "0").commit();
                 new AddSubRecord().execute();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }else if(subIndex == 1 && rate1 > rate0 && rate1 > 10){
                 editor.putString("subQuestion", "1").commit();
                 new AddSubRecord().execute();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
 
@@ -461,6 +487,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+//            pDialog = new ProgressDialog(intent);
             pDialog = new ProgressDialog(NotificationReceiverActivity.this);
             pDialog.setMessage("Creating sub table record..");
             pDialog.setIndeterminate(false);
@@ -515,8 +542,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
          * **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
+
             pDialog.dismiss();
-            Toast.makeText(NotificationReceiverActivity.this, "Question rating has been saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NotificationReceiverActivity.this, "Question sequence has been saved", Toast.LENGTH_SHORT).show();
         }
 
     }
