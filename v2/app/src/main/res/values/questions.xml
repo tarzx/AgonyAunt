@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Target-->
+    <string name="target_thought">your thought</string>
+    <string name="target_behaviour">your behaviour</string>
+    <string name="target_goal">your goal</string>
+
+    <!--Group 1-->
+    <string-array name="g1">
+        <item>What&quot;s going through your mind just at the minute?</item>
+        <item>What would you say about your state of mind just now?</item>
+        <item>What thought is running through your mind?</item>
+        <item>What are you most aware of right now?</item>
+        <item>How would you describe your frame of mind just now?</item>
+        <item>Where&quot;s your attention just now?</item>
+        <item>What are you thinking about as you answer these questions?</item>
+        <item>What are your thoughts doing just now?</item>
+        <item>How would you describe the inside of your mind at the moment?</item>
+        <item>What&quot;s your mind playing with just now?</item>
+        <item>What&quot;s the main thing in your frame of mind?</item>
+    </string-array>
+    <string-array name="g1_prefix">
+        <item>My thought at the minute is </item>
+        <item>I am thinking about </item>
+        <item>My current thought is </item>
+        <item>I am thinking about </item>
+        <item>I am thinking about </item>
+        <item>My attention now is </item>
+        <item>I am thinking about </item>
+        <item>My thought now is </item>
+        <item>I am thinking about </item>
+        <item>My mind is playing with </item>
+        <item>I am thinking about </item>
+    </string-array>
+
+    <!--Group 2-->
+    <string-array name="g2">
+        <item>How would you comment on $$$ just now?</item>
+    </string-array>
+    <string name="g2_default">last thought</string>
+    <string name="g2_pattern">this thought about ###</string>
+
+    <!--Group 3-->
+    <string-array name="g3">
+        <item>What goal are you heading for right now?</item>
+        <item>What&quot;s your mind up to right now?</item>
+    </string-array>
+    <string-array name="g3_prefix">
+        <item>My goal right now is </item>
+        <item>In my mind right now is </item>
+    </string-array>
+
+    <!--Group 4-->
+    <string-array name="g4">
+        <item>What&quot;s important to you at the moment?</item>
+        <item>What&quot;s uppermost in your mind at the moment?</item>
+    </string-array>
+    <string-array name="g4_prefix">
+        <item>The important thing to me at the moment is </item>
+        <item>The uppermost thing in my mind at the moment is </item>
+    </string-array>
+
+    <!--Group 5-->
+    <string-array name="g5">
+        <item>How are things sitting for you at the moment?</item>
+        <item>What do you think about yourself at the moment?</item>
+    </string-array>
+
+    <!--Group 6-1-->
+    <string-array name="g61">
+        <item>Replay the thought that just went through your mind.</item>
+        <item>What is your background thought?</item>
+        <item>What is going through your mind at this very minute?</item>
+        <item>What are you thinking about just now?</item>
+        <item>What&quot;s the main thought running through your mind just now?</item>
+        <item>Where&quot;s your mind at just now?</item>
+        <item>How are you travelling just now?</item>
+        <item>What&quot;s in your mind right now?</item>
+    </string-array>
+    <string-array name="g61_prefix">
+        <item>My thought is </item>
+        <item>My background thought is </item>
+        <item>My thought is </item>
+        <item>I am thinking about </item>
+        <item>My thought is </item>
+        <item>My mind now is at </item>
+        <item>I am thinking about </item>
+        <item>I am thinking about </item>
+    </string-array>
+    <!--Group 6-2-->
+    <string-array name="g62">
+        <item>How does it sound?</item>
+        <item>What does it mean?</item>
+        <item>What do you make of $$$?</item>
+        <item>What do you think about $$$?</item>
+        <item>What do you make of $$$?</item>
+        <item>What do you make of $$$?</item>
+        <item>What&quot;s running through your mind as you think about $$$?</item>
+        <item>How do things look to you just now?</item>
+    </string-array>
+    <string name="g62_default">that</string>
+    <string name="g62_pattern">###</string>
+
+    <!--Group 7-1-->
+    <string-array name="g71">
+        <item>How would you describe the state your mind is in right now?</item>
+        <item>What&quot;s occurring to you right now?</item>
+        <item>What crossed your mind just then?</item>
+    </string-array>
+    <string-array name="g71_prefix">
+        <item>I am thinking about </item>
+        <item>I am thinking about </item>
+        <item>My current thought is </item>
+    </string-array>
+    <!--Group 7-2-->
+    <string-array name="g72">
+        <item>What goals do you connect with them?</item>
+        <item>Can you relate that to an important goal you have?</item>
+        <item>What goal does that relate to?</item>
+    </string-array>
+
+    <!--Group 8-1-->
+    <string-array name="g81">
+        <item>What are you going for right now?</item>
+    </string-array>
+    <string-array name="g81_prefix">
+        <item>Right now, I am going for </item>
+    </string-array>
+    <!--Group 8-2-->
+    <string-array name="g82">
+        <item>What do you think about that?</item>
+    </string-array>
+
+    <!--Group 9-1-->
+    <string-array name="g91">
+        <item>Where&quot;s your mind at just now?</item>
+        <item>What stands out in your mind just now?</item>
+        <item>What thought is going through your mind right now?</item>
+    </string-array>
+    <string-array name="g91_prefix">
+        <item>I am thinking about </item>
+        <item>I am thinking about </item>
+        <item>My thought right now is </item>
+    </string-array>
+    <!--Group 9-2-->
+    <string-array name="g92">
+        <item>What aspect of yourself are you most aware of at this moment?</item>
+        <item>What are you most aware of at the moment?</item>
+        <item>What feelings are you most aware of?</item>
+    </string-array>
+
+    <!--Group 10-1-->
+    <string-array name="g101">
+        <item>Where&quot;s your life at just now?</item>
+    </string-array>
+    <!--Group 10-2-->
+    <string-array name="g102">
+        <item>How do you feel about that?</item>
+    </string-array>
+
+    <!--Group 11-1-->
+    <string-array name="g111">
+        <item>What&quot;s sitting at the front of your mind just now?</item>
+        <item>What&quot;s the activity of your mind just now?</item>
+        <item>What&quot;s occupying your mind at the moment?</item>
+        <item>What&quot;s your perspective on things right now?</item>
+    </string-array>
+    <!--Group 11-2-->
+    <string-array name="g112">
+        <item>How are you travelling overall?</item>
+        <item>How do you feel about that?</item>
+        <item>How does that sit with you?</item>
+        <item>What&quot;s the thought that stands out the most?</item>
+    </string-array>
+
+    <!--Linking-->
+    <string-array name="change_topic">
+        <item>Now I understand about ###, then we move to the topic about @@@.&#92;n</item>
+        <item>I understand about ###, now let&quot;s talk about @@@.&#92;n</item>
+    </string-array>
+    <string name="change_topic_default">that</string>
+    <string-array name="echo">
+        <item>You said that %%%.&#92;n</item>
+        <item>It sounds that %%%.&#92;n</item>
+    </string-array>
+    <string name="link">So, </string>
+
+    <!--Summary-->
+    <string name="summary">Thank you very much for your answers. Overall, you have said that your current thought is about ###.&#92;nYour current state is that %%%.&#92;nIn addition, your goal is &amp;&amp;&amp;.</string>
+    <string name="summary_default">yourself</string>
+
+    <!--ControlLevel-->
+    <string name="preControl">To what extent do you feel you are in control of your life recently?&#92;n</string>
+    <string name="postControl">After answering the question, I hope you feel better.&#92;nSo, let us check again. To what extent do you feel you are in control of your life now?&#92;n</string>
+    <string name="controlChoice">Rate from 1 (Not at all) to 20 (To a large extent)</string>
+
+    /<!--Response-->
+    <string name="likeChoice">Rate from 0 (Unlike) to 10 (Like)</string>
+
+    <!--Ambiguous-->
+    <string name="ambPreQuestion">Now I would like to ask you about your likes and dislikes about the series of question.&#92;n</string>
+    <string name="ambQuestion">Do you like that the question &quot;%%%&quot; is followed by &quot;&amp;&amp;&amp;&quot;?&#92;n</string>
+
+    <!--Intervention-->
+    <string name="preIntvQuestion">OK. I would now like to ask about the interventions to see if they are good for you.&#92;n</string>
+    <string name="freqIntvQuestion">Do you like the present timing frequency of interventions?&#92;n</string>
+    <string name="slotIntvQuestion">Do you like the present timing slot of interventions?&#92;n</string>
+
+</resources>

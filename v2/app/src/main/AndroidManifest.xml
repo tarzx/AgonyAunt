@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="standrews.Agonyaunt"
+    android:versionCode="3"
+    android:versionName="2.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/new_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="standrews.Agonyaunt.HomeMenu"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- <activity -->
+        <!-- android:name="standrews.agonyaunt.MoodTracker" -->
+        <!-- android:label="@string/title_activity_mood_tracker" -->
+        <!-- android:parentActivityName="standrews.HomeMenu" > -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="standrews.HomeMenu" /> -->
+        <!-- </activity> -->
+        <activity
+            android:name="standrews.Agonyaunt.MyProfile"
+            android:label="@string/title_activity_my_profile"
+            android:parentActivityName="standrews.Agonyaunt.HomeMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="standrews.Agonyaunt.HomeMenu" />
+        </activity>
+        <activity
+            android:name="standrews.Agonyaunt.MyPreferences"
+            android:label="@string/title_activity_my_preferences"
+            android:parentActivityName="standrews.Agonyaunt.HomeMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="standrews.Agonyaunt.HomeMenu" />
+        </activity>
+        <activity
+            android:name="standrews.Agonyaunt.NotificationReceiverActivity"
+            android:label="@string/title_activity_create_notification" >
+        </activity>
+
+        <service
+            android:name="standrews.Agonyaunt.Alarm"
+            android:enabled="true" />
+        <service
+            android:name="standrews.Agonyaunt.NotificationService"
+            android:enabled="true" />
+
+        <activity
+            android:name="standrews.Agonyaunt.AllPatients"
+            android:label="@string/title_activity_all_patients" >
+        </activity>
+        <activity
+            android:name="standrews.Agonyaunt.NewPatientActivity"
+            android:label="@string/title_activity_new_patient" >
+        </activity>
+        <activity
+            android:name="standrews.Agonyaunt.EditPatientActivity"
+            android:label="@string/title_activity_edit_patient" >
+        </activity>
+    </application>
+
+
+</manifest>

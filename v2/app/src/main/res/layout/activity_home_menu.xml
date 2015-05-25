@@ -1,0 +1,206 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HomeMenu"
+    android:background="@drawable/chat_background">
+
+    <TabHost
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tabHost"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:measureAllChildren="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+
+
+                <LinearLayout
+                    android:id="@+id/tabUpdate"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/update_freq"
+                        android:id="@+id/btnUpdateFrequencyInterventionNeuralNetwork"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateFrequencyInterventionNet"/>
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/update_slot"
+                        android:id="@+id/btnUpdateSlotInterventionNeuralNetwork"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateSlotInterventionNet"/>
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/update_seq"
+                        android:id="@+id/btnUpdateSelectSequenceNeuralNetwork"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateSelectSequenceNet"/>
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/update_goal"
+                        android:id="@+id/btnUpdateSelectGoalNeuralNetwork"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateSelectGoalNet"/>
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/update_behav"
+                        android:id="@+id/btnUpdateSelectBehaviourNeuralNetworks"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="updateSelectBehaviourNet" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/tabTrain"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/train_freq"
+                        android:id="@+id/btnTrainFrequencyInterventionNeuralNetwork"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/train_slot"
+                        android:id="@+id/btnTrainSlotInterventionNeuralNetwork"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/train_seq"
+                        android:id="@+id/btnTrainSelectSequenceNeuralNet"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/train_goal"
+                        android:id="@+id/btnTrainSelectGoalNeuralNetwork"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/train_behav"
+                        android:id="@+id/btnTrainSelectBehaviourNeuralNetworks"
+                        android:layout_gravity="center_horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabAIPatients"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_show_all"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/btnShowAllPatients"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="showAllPatients" />
+
+                    <Button
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_add_new"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/btnAddpatient"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="addNewPatient" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabPersonal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:focusableInTouchMode="true">
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="myProfile"
+                        android:text="@string/profile"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:id="@+id/btnDemo"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="Intervention"
+                        android:text="@string/button_demo"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="50dp"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>
