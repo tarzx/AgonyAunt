@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/** This class handles dates
+/** This class handles New Patient
  * @author Teng
  * @author Patomporn Loungvara
  */
@@ -46,12 +46,12 @@ public class NewPatientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_new_patient);
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll().penaltyLog().build());
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                    .detectAll().penaltyLog().build());
 //            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 //                    .detectAll().penaltyLog().penaltyDeath().build());
-        }
+//        }
 
         patientName = (EditText) findViewById(R.id.NewNameText);
         patientAge = (EditText) findViewById(R.id.NewAgeText);

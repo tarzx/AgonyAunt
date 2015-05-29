@@ -1,6 +1,6 @@
 package standrews.Agonyaunt;
 
-/** This class represents the main menu
+/** This class handles Question transformation
  * @author Patomporn Loungvara
  */
 public class Transform {

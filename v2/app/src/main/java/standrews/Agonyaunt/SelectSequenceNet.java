@@ -6,8 +6,9 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.persist.EncogDirectoryPersistence;
 
 import java.io.File;
+import java.io.Serializable;
 
-/** This class represents the main menu
+/** This class handles Select Sequence Neural Network
  * @author Patomporn Loungvara
  */
 public class SelectSequenceNet {

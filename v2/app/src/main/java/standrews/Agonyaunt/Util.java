@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/** This class handles dates
+/** This class handles Utility Function
  * @author Jiachun Liu
  * @author Patomporn Loungvara
  */
@@ -27,8 +27,7 @@ public class Util {
     //Constants
     public static final int NUM_FREQUENCY = 7;
     public static final int NUM_SLOTS = 6;
-    public static final int MIN_CONTROL = 1;
-    public static final int MAX_CONTROL = 20;
+    public static final int MAX_RATE = 20;
 
     private static final int BUFFER_SIZE = 1024;
 
@@ -64,7 +63,7 @@ public class Util {
     public static final String SELECT_BEHAVIOUR_NET_URL = url_host + "neuralNetFactory/neuralNetSelectBehaviour.eg";
 
     // file name
-    public static final String FREQUENCY_INTERVENTION_NET_EG = "neuralNetfreqeuncyIntervention.eg";
+    public static final String FREQUENCY_INTERVENTION_NET_EG = "neuralNetfrequencyIntervention.eg";
     public static final String SLOT_INTERVENTION_NET_EG = "neuralNetslotIntervention.eg";
     public static final String SELECT_SEQUENCE_NET_EG = "neuralNetSelectSequence.eg";
     public static final String SELECT_GOAL_NET_EG = "neuralNetSelectGoal.eg";
@@ -109,16 +108,20 @@ public class Util {
     public static final String TAG_SLOT5 = "slot5";
     public static final String TAG_SLOT6 = "slot6";
 
-    // SharedPreferences Key
-    public static final String KEY_PID = "pid";
-    public static final String KEY_USERNAME = "username";
-    public static final String KEY_AGE = "age";
-    public static final String KEY_GENDER = "gender";
-    public static final String KEY_SET_FREQ = "setFreq";
-    public static final String KEY_FREQ = "frequency";
-    public static final String KEY_SET_SLOT = "setSlot";
-    public static final String KEY_CHECKBOX = "checkBoxesKey";
-    public static final String KEY_CONTROL_LEVEL = "control_level";
+    // SharedPreferences & Intent Key
+    public static final String KEY_PID = "Agony.pid";
+    public static final String KEY_USERNAME = "Agony.username";
+    public static final String KEY_AGE = "Agony.age";
+    public static final String KEY_GENDER = "Agony.gender";
+    public static final String KEY_SET_FREQ = "Agony.setFreq";
+    public static final String KEY_FREQ = "Agony.frequency";
+    public static final String KEY_SET_SLOT = "Agony.setSlot";
+    public static final String KEY_CHECKBOX = "Agony.checkBoxesKey";
+    public static final String KEY_CONTROL_LEVEL = "Agony.control_level";
+    public static final String KEY_SEQ = "Agony.sequence";
+    public static final String KEY_QUESTION = "Agony.question";
+    public static final String KEY_ANSWER = "Agony.answer";
+    public static final String KEY_COUNT = "Agony.qcount";
 
     private static final TimeSlot[] timeslots = new TimeSlot[] {
 		new TimeSlot(240, 180), new TimeSlot(420, 300),

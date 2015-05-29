@@ -7,7 +7,7 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 import java.io.File;
 
-/** This class represents the main menu
+/** This class handles Select Group Question Goal Neural Network
  * @author Patomporn Loungvara
  */
 public class SelectGQGoalNet {

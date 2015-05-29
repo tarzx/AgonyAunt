@@ -10,11 +10,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 /** This class represents the main menu
  * @author Jiachun Liu
  * @author Teng Li
+ * @author Patomporn Loungvara
  */
 public class HomeMenu extends Activity {
     //private final int READ_TIMEOUT = 10000; /* milliseconds */
@@ -39,8 +42,8 @@ public class HomeMenu extends Activity {
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll().penaltyLog().build());
-//             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectAll().penaltyLog().penaltyDeath().build());
+             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll().penaltyLog().penaltyDeath().build());
         }
 
 		setContentView(R.layout.activity_home_menu);
@@ -48,9 +51,9 @@ public class HomeMenu extends Activity {
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec(this.getResources().getString(R.string.tab_personal));
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec(this.getResources().getString(R.string.tab_Personal));
         tabSpec.setContent(R.id.tabPersonal);
-        tabSpec.setIndicator(this.getResources().getString(R.string.tab_personal));
+        tabSpec.setIndicator(this.getResources().getString(R.string.tab_Personal));
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec(this.getResources().getString(R.string.tab_AIPatient));
@@ -68,7 +71,8 @@ public class HomeMenu extends Activity {
         tabSpec.setIndicator(this.getResources().getString(R.string.tab_Update));
         tabHost.addTab(tabSpec);
 
-        if (Util.alarmBooted()) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (Util.alarmBooted() && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
             // manage alarm
 			mainAlarm();
 		}
@@ -208,7 +212,7 @@ public class HomeMenu extends Activity {
     }
 
     /**
-     * Background Async Task to train intervention frequency neural network
+     * Background Async Task to train neural network
      * */
     class TrainSlotInterventionNeuralNet extends AsyncTask<String, String, String> {
 
@@ -256,7 +260,7 @@ public class HomeMenu extends Activity {
     }
 
     /**
-     * Background Async Task to train intervention slots neural network
+     * Background Async Task to train neural network
      * */
     class TrainSelectSequenceNeuralNet extends AsyncTask<String, String, String> {
 
@@ -304,7 +308,7 @@ public class HomeMenu extends Activity {
 
 
     /**
-     * Background Async Task to train first level question neural network
+     * Background Async Task to train neural network
      * */
     class TrainSelectGoalNeuralNet extends AsyncTask<String, String, String> {
 
@@ -353,7 +357,7 @@ public class HomeMenu extends Activity {
 
 
     /**
-     * Background Async Task to train sub question neural network
+     * Background Async Task to train neural network
      * */
     class TrainSelectBehaviourNeuralNet extends AsyncTask<String, String, String> {
 
@@ -400,6 +404,111 @@ public class HomeMenu extends Activity {
 
     }
 
+    /**
+     * Background Async Task to update neural network
+     * */
+    class updateFrequencyInterventionNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Invoke the encog file in server
+         * */
+        protected String doInBackground(String... args) {
+            Util.loadNet(HomeMenu.this, Util.FREQUENCY_INTERVENTION_NET_URL, Util.FREQUENCY_INTERVENTION_NET_EG);
+            return null;
+        }
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            Toast.makeText(HomeMenu.this, "Frequency intervention networks updated!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /**
+     * Background Async Task to update neural network
+     * */
+    class updateSlotInterventionNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Invoke the encog file in server
+         * */
+        protected String doInBackground(String... args) {
+            Util.loadNet(HomeMenu.this, Util.SLOT_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_EG);
+            return null;
+        }
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            Toast.makeText(HomeMenu.this, "Slot intervention networks updated!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /**
+     * Background Async Task to update neural network
+     * */
+    class updateSelectSequenceNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Invoke the encog file in server
+         * */
+        protected String doInBackground(String... args) {
+            Util.loadNet(HomeMenu.this, Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_SEQUENCE_NET_EG);
+            return null;
+        }
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            Toast.makeText(HomeMenu.this, "Select sequence networks updated!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /**
+     * Background Async Task to update neural network
+     * */
+    class updateSelectGoalNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Invoke the encog file in server
+         * */
+        protected String doInBackground(String... args) {
+            Util.loadNet(HomeMenu.this, Util.SELECT_GOAL_NET_URL, Util.SELECT_GOAL_NET_EG);
+            return null;
+        }
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            Toast.makeText(HomeMenu.this, "Select group question goal networks updated!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /**
+     * Background Async Task to update neural network
+     * */
+    class updateSelectBehaviourNet extends AsyncTask<String, String, String> {
+
+        /**
+         * Invoke the encog file in server
+         * */
+        protected String doInBackground(String... args) {
+            Util.loadNet(HomeMenu.this, Util.SELECT_BEHAVIOUR_NET_URL, Util.SELECT_BEHAVIOUR_NET_EG);
+            return null;
+        }
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            Toast.makeText(HomeMenu.this, "Select group question behaviour networks updated!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -417,10 +526,10 @@ public class HomeMenu extends Activity {
         }
 	}
 
-	/** Starts a demo chat
-	 * @param view	The Android view
-	 */
-	public void Intervention(View view) {
+    /** Starts a demo chat
+     * @param view	The Android view
+     */
+    public void Intervention(View view) {
         if (Util.checkNetwork(this)) {
             Toast.makeText(this, "Notification has appeared! Click on it to begin",
                     Toast.LENGTH_SHORT).show();
@@ -429,7 +538,7 @@ public class HomeMenu extends Activity {
         } else {
             showDialog();
         }
-	}
+    }
 
     public void showAllPatients(View view){
         if (Util.checkNetwork(this)) {
@@ -451,51 +560,36 @@ public class HomeMenu extends Activity {
 
     public void updateFrequencyInterventionNet(View view){
         if (Util.checkNetwork(this)) {
-            Util.loadNet(this, Util.FREQUENCY_INTERVENTION_NET_URL, Util.FREQUENCY_INTERVENTION_NET_EG);
-
-            Toast.makeText(this, "Frequency intervention networks updated!", Toast.LENGTH_SHORT).show();
+            new updateFrequencyInterventionNet().execute();
         } else {
             showDialog();
         }
     }
-
-
     public void updateSlotInterventionNet(View view){
         if (Util.checkNetwork(this)) {
-            Util.loadNet(this, Util.SLOT_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_EG);
-
-            Toast.makeText(this, "Slot intervention networks updated!", Toast.LENGTH_SHORT).show();
+            new updateSlotInterventionNet().execute();
         } else {
             showDialog();
         }
     }
-
     public void updateSelectSequenceNet(View view) {
         if (Util.checkNetwork(this)) {
-            Util.loadNet(this, Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_SEQUENCE_NET_EG);
-
-            Toast.makeText(this, "Select sequence networks updated!", Toast.LENGTH_SHORT).show();
+            new updateSelectSequenceNet().execute();
         } else {
             showDialog();
         }
     }
-
     public void updateSelectGoalNet(View view){
         if (Util.checkNetwork(this)) {
-            Util.loadNet(this, Util.SELECT_GOAL_NET_URL, Util.SELECT_GOAL_NET_EG);
-
-            Toast.makeText(this, "Select group question goal networks updated!", Toast.LENGTH_SHORT).show();
+            new updateSelectGoalNet().execute();
         } else {
             showDialog();
         }
 
     }
-
     public void updateSelectBehaviourNet(View view){
         if (Util.checkNetwork(this)) {
-            Util.loadNet(this, Util.SELECT_BEHAVIOUR_NET_URL, Util.SELECT_BEHAVIOUR_NET_EG);
-
-            Toast.makeText(this, "Select group question behaviour networks updated!", Toast.LENGTH_SHORT).show();
+            new updateSelectBehaviourNet().execute();
         } else {
             showDialog();
         }

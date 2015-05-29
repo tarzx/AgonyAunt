@@ -32,7 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/username"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ems="10"
         android:hint="@string/age"
         android:inputType="number"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/username"
         android:layout_below="@+id/age"
-        android:layout_marginTop="16dp" >
+        android:layout_marginTop="@dimen/activity_vertical_margin" >
 
         <RadioButton
             android:id="@+id/MyrbMale"
@@ -70,7 +70,7 @@
         android:id="@+id/MyFrequencyText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/intervFreqQ" />
 
     <LinearLayout android:layout_width="fill_parent"
@@ -82,7 +82,7 @@
             android:layout_weight="10"
             android:layout_height="wrap_content"
             android:progress="0"
-            android:max="7"
+            android:max="@integer/num_freq"
             />
 
         <TextView android:id="@+id/MyFrequencyCounter"
@@ -97,7 +97,7 @@
         android:id="@+id/MySlotText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/intervSlotQ" />
 
 

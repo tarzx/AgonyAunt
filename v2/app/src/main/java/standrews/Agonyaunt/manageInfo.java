@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/** This class represents the main menu
+/** This class handles Information from database
  * @author Patomporn Loungvara
  */
 public class manageInfo {
@@ -293,6 +293,165 @@ public class manageInfo {
 
             // check for success tag
             success = json.getInt(Util.TAG_PID);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public static int recordFrequency(String pid, int ctlLv, int frequency, double rate) {
+        int success = 0;
+
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair(Util.TAG_PID, pid));
+            params.add(new BasicNameValuePair(Util.TAG_CONTROL_LEVEL, String.valueOf(ctlLv)));
+            switch (frequency) {
+                case 1: params.add(new BasicNameValuePair(Util.TAG_FREQ1, String.valueOf(rate))); break;
+                case 2: params.add(new BasicNameValuePair(Util.TAG_FREQ2, String.valueOf(rate))); break;
+                case 3: params.add(new BasicNameValuePair(Util.TAG_FREQ3, String.valueOf(rate))); break;
+                case 4: params.add(new BasicNameValuePair(Util.TAG_FREQ4, String.valueOf(rate))); break;
+                case 5: params.add(new BasicNameValuePair(Util.TAG_FREQ5, String.valueOf(rate))); break;
+                case 6: params.add(new BasicNameValuePair(Util.TAG_FREQ6, String.valueOf(rate))); break;
+                case 7: params.add(new BasicNameValuePair(Util.TAG_FREQ7, String.valueOf(rate))); break;
+                default: break;
+            }
+
+            // getting JSON Object
+            // Note that create patient url accepts POST method
+            JSONObject json = jParser.makeHttpRequest(Util.url_record_preference, "POST", params);
+
+            // check for success tag
+            success = json.getInt(Util.TAG_SUCCESS);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public static int recordSlot(String pid, int ctlLv, int[] slots, double rate) {
+        int success = 0;
+
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair(Util.TAG_PID, pid));
+            params.add(new BasicNameValuePair(Util.TAG_CONTROL_LEVEL, String.valueOf(ctlLv)));
+            for (int i=0; i<slots.length; i++) {
+                if (slots[i]==1) {
+                    switch (i + 1) {
+                        case 1:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT1, String.valueOf(rate)));
+                            break;
+                        case 2:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT2, String.valueOf(rate)));
+                            break;
+                        case 3:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT3, String.valueOf(rate)));
+                            break;
+                        case 4:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT4, String.valueOf(rate)));
+                            break;
+                        case 5:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT5, String.valueOf(rate)));
+                            break;
+                        case 6:
+                            params.add(new BasicNameValuePair(Util.TAG_SLOT6, String.valueOf(rate)));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            // getting JSON Object
+            // Note that create patient url accepts POST method
+            JSONObject json = jParser.makeHttpRequest(Util.url_record_preference, "POST", params);
+
+            // check for success tag
+            success = json.getInt(Util.TAG_SUCCESS);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public static int recordGroupQuestion(String pid, int ctlLv, int prevG, int group, double rate) {
+        int success = 0;
+
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair(Util.TAG_PID, pid));
+            params.add(new BasicNameValuePair(Util.TAG_CONTROL_LEVEL, String.valueOf(ctlLv)));
+            params.add(new BasicNameValuePair(Util.TAG_PREVG, String.valueOf(prevG)));
+            switch (group) {
+                case 3: params.add(new BasicNameValuePair(Util.TAG_GROUP3, String.valueOf(rate))); break;
+                case 4: params.add(new BasicNameValuePair(Util.TAG_GROUP4, String.valueOf(rate))); break;
+                case 10: params.add(new BasicNameValuePair(Util.TAG_GROUP10, String.valueOf(rate))); break;
+                case 11: params.add(new BasicNameValuePair(Util.TAG_GROUP11, String.valueOf(rate))); break;
+                default: break;
+            }
+
+            // getting JSON Object
+            // Note that create patient url accepts POST method
+            JSONObject json = jParser.makeHttpRequest(Util.url_record_select_group_question, "POST", params);
+
+            // check for success tag
+            success = json.getInt(Util.TAG_SUCCESS);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public static int recordSequence(String pid, int ctlLv, int seq, double rate) {
+        int success = 0;
+
+        try {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair(Util.TAG_PID, pid));
+            params.add(new BasicNameValuePair(Util.TAG_CONTROL_LEVEL, String.valueOf(ctlLv)));
+            switch (seq) {
+                case 1: params.add(new BasicNameValuePair(Util.TAG_SEQ1, String.valueOf(rate))); break;
+                case 2: params.add(new BasicNameValuePair(Util.TAG_SEQ2, String.valueOf(rate))); break;
+                case 3: params.add(new BasicNameValuePair(Util.TAG_SEQ3, String.valueOf(rate))); break;
+                case 4: params.add(new BasicNameValuePair(Util.TAG_SEQ4, String.valueOf(rate))); break;
+                case 5: params.add(new BasicNameValuePair(Util.TAG_SEQ5, String.valueOf(rate))); break;
+                case 6: params.add(new BasicNameValuePair(Util.TAG_SEQ6, String.valueOf(rate))); break;
+                case 7: params.add(new BasicNameValuePair(Util.TAG_SEQ7, String.valueOf(rate))); break;
+                case 8: params.add(new BasicNameValuePair(Util.TAG_SEQ8, String.valueOf(rate))); break;
+                default: break;
+            }
+
+            // getting JSON Object
+            // Note that create patient url accepts POST method
+            JSONObject json = jParser.makeHttpRequest(Util.url_record_select_sequence, "POST", params);
+
+            // check for success tag
+            success = json.getInt(Util.TAG_SUCCESS);
 
             // check log cat fro response
             Log.d("Create Response", json.toString());

@@ -1,13 +1,14 @@
 package standrews.Agonyaunt;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.persist.EncogDirectoryPersistence;
 
 import java.io.File;
 
-/** This class represents the main menu
+/** This class handles Frequency Intervention Neural Network
  * @author Patomporn Loungvara
  */
 public class FrequencyInterventionNet {
@@ -22,7 +23,7 @@ public class FrequencyInterventionNet {
 
     public FrequencyInterventionNet(Context context){
         this.context = context;
-        System.out.println("Come to the Frequency Intervention net");
+        Log.i("Track : ","Come to the Frequency Intervention net");
     }
 
     public int getFreq(int idx) {

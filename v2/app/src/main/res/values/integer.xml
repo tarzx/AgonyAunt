@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="num_freq">7</integer>
+    <integer name="num_slot">6</integer>
+    <integer name="max_rate">20</integer>
+
+</resources>

@@ -5,44 +5,25 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Random;
 
-/** This class represents the main menu
+/** This class handles Recommendation Value from Neural Network
  * @author Patomporn Loungvara
  */
 public class SelectRecommendation {
 
-    private Random rand;
-    private final double RATE = 0.1;
-    private final double BASE_RATE = 0.8;
+    private static final Random rand = new Random();;
+    private static final double RATE = 0.1;
+    private static final double BASE_RATE = 0.8;
 
-    private Context context;
-
-    public SelectRecommendation(Context context){
-        this.context = context;
-        System.out.println("Come to the Select Recommendation");
-
-        rand = new Random();
-
-//        String[] loadURLs = { Util.FREQUENCY_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_URL,
-//                Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_GOAL_NET_URL, Util.SELECT_BEHAVIOUR_NET_URL };
-//        String[] fileNames = { Util.FREQUENCY_INTERVENTION_NET_EG, Util.SLOT_INTERVENTION_NET_EG,
-//                Util.SELECT_SEQUENCE_NET_EG, Util.SELECT_GOAL_NET_EG, Util.SELECT_BEHAVIOUR_NET_EG };
-//
-//        for (int i=0; i<loadURLs.length; i++) {
-//            Util.loadNet(this.context, loadURLs[i], fileNames[i]);
-//        }
-
-    }
-
-    public int selectFrequency(int lastCtlLv, int age, boolean isMale) {
-        FrequencyInterventionNet fin = new FrequencyInterventionNet(this.context);
+    public static int selectFrequency(Context context, int lastCtlLv, int age, boolean isMale) {
+        FrequencyInterventionNet fin = new FrequencyInterventionNet(context);
 
         double[] freqRate = fin.getRate(lastCtlLv, age, isMale);
 
         return fin.getFreq(getMaxRandomRate(freqRate));
     }
 
-    public ArrayList<Integer> selectTimeSlot(int lastCtlLv, int age, boolean isMale) {
-        TimeSlotInterventionNet tsin = new TimeSlotInterventionNet(this.context);
+    public static ArrayList<Integer> selectTimeSlot(Context context, int lastCtlLv, int age, boolean isMale) {
+        TimeSlotInterventionNet tsin = new TimeSlotInterventionNet(context);
 
         double[] slotRate = tsin.getRate(lastCtlLv, age, isMale);
 
@@ -55,31 +36,31 @@ public class SelectRecommendation {
         return slotSet;
     }
 
-    public int selectSequence(int ctlLv, int age, boolean isMale) {
-        SelectSequenceNet ssq = new SelectSequenceNet(this.context);
+    public static int selectSequence(Context context, int ctlLv, int age, boolean isMale) {
+        SelectSequenceNet ssq = new SelectSequenceNet(context);
 
         double[] seqRate = ssq.getRate(ctlLv, age, isMale);
 
         return ssq.getSequence(getMaxRandomRate(seqRate));
     }
 
-    public int selectReplayGoal(int ctlLv, int age, boolean isMale, int prevGroup) {
-        SelectGQGoalNet sgqg = new SelectGQGoalNet(this.context);
+    public static int selectReplayGoal(Context context, int ctlLv, int age, boolean isMale, int prevGroup) {
+        SelectGQGoalNet sgqg = new SelectGQGoalNet(context);
 
         double[] rateGQGoal = sgqg.getRate(ctlLv, age, isMale, prevGroup);
 
         return sgqg.getGroupQuestion(getMaxRandomRate(rateGQGoal));
     }
 
-    public int selectReflectBehaviour(int ctlLv, int age, boolean isMale, int prevGroup) {
-        SelectGQBehaviourNet sgqb = new SelectGQBehaviourNet(this.context);
+    public static int selectReflectBehaviour(Context context, int ctlLv, int age, boolean isMale, int prevGroup) {
+        SelectGQBehaviourNet sgqb = new SelectGQBehaviourNet(context);
 
         double[] rateGQBehaviour = sgqb.getRate(ctlLv, age, isMale, prevGroup);
 
         return sgqb.getGroupQuestion(getMaxRandomRate(rateGQBehaviour));
     }
 
-    private int getMaxRandomRate(double[] rate) {
+    private static int getMaxRandomRate(double[] rate) {
         int maxIdx = 0;
         double max = Double.MIN_VALUE;
         for (int i=0; i<rate.length; i++) {
@@ -92,7 +73,7 @@ public class SelectRecommendation {
         return maxIdx;
     }
 
-    private ArrayList<Integer> getSetMaxRandomRate(double[] rate) {
+    private static ArrayList<Integer> getSetMaxRandomRate(double[] rate) {
         double[] rndRate = new double[rate.length];
         double max = Double.MIN_VALUE;
         for (int i=0; i<rate.length; i++) {
@@ -110,7 +91,7 @@ public class SelectRecommendation {
         return maxSet;
     }
 
-    private double getRandomRate() {
+    private static double getRandomRate() {
         switch (rand.nextInt(3)) {
             case 0:
                 return 0;

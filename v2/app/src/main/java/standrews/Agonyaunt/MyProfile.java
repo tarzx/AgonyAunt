@@ -2,9 +2,13 @@ package standrews.Agonyaunt;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +25,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 /** This class represent myProfile
  * @author Jiachun Liu
@@ -42,12 +48,12 @@ public class MyProfile extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll().penaltyLog().build());
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                    .detectAll().penaltyLog().build());
 //            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 //                    .detectAll().penaltyLog().penaltyDeath().build());
-        }
+//        }
 
         setContentView(R.layout.activity_my_profile);
 
@@ -71,6 +77,8 @@ public class MyProfile extends Activity {
         String username = sharedPref.getString(Util.KEY_USERNAME, "");
         String age = sharedPref.getString(Util.KEY_AGE, "");
         String gender = sharedPref.getString(Util.KEY_GENDER, "");
+        int set_slot = sharedPref.getInt(Util.KEY_SET_SLOT, 0);
+        int set_freq = sharedPref.getInt(Util.KEY_SET_FREQ, 0);
 
         Log.i("System.out", "Username: " + username + " Age: " + age + " Gender: " + (gender.equals("0")?"Male":(gender.equals("1")?"Female":"")));
 
@@ -81,12 +89,13 @@ public class MyProfile extends Activity {
         rbFemale.setChecked(gender.equals("1"));
 
         setupActionBar();
-        setupSeekBar(sharedPref.getInt(Util.KEY_FREQ, 0));
-
-        for (int i = 0; i < numCheckboxes; i++) {
-            String key = Util.KEY_CHECKBOX + i;
-            // In get method of sharePref, the second is for default when this value is not existing.
-            checkBoxes[i].setChecked(sharedPref.getBoolean(key, false));
+        if (set_freq==1) setupSeekBar(sharedPref.getInt(Util.KEY_FREQ, 0));
+        if (set_slot==1) {
+            for (int i = 0; i < numCheckboxes; i++) {
+                String key = Util.KEY_CHECKBOX + i;
+                // In get method of sharePref, the second is for default when this value is not existing.
+                checkBoxes[i].setChecked(sharedPref.getBoolean(key, false));
+            }
         }
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -197,8 +206,7 @@ public class MyProfile extends Activity {
         editor.putInt(Util.KEY_FREQ, frequency);
         editor.putInt(Util.KEY_SET_SLOT, set_slot);
         for (int i = 0; i < numCheckboxes; i++) {
-            String key = Util.KEY_CHECKBOX + i;
-            editor.putBoolean(key, checkBoxes[i].isChecked());
+            editor.putBoolean(Util.KEY_CHECKBOX + i, checkBoxes[i].isChecked());
         }
         editor.apply();
 

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/** This class handles dates
+/** This class handles editing patient information
  * @author Teng
  * @author Patomporn Loungvara
  */
@@ -49,12 +49,12 @@ public class EditPatientActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll().penaltyLog().build());
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                    .detectAll().penaltyLog().build());
 //            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 //                    .detectAll().penaltyLog().penaltyDeath().build());
-        }
+//        }
 
         setContentView(R.layout.activity_edit_patient);
 

@@ -35,37 +35,40 @@ public class Alarm extends Service {
 	
 	/** This method starts a daily alarm */
 	public void mainAlarm() {
-        SelectRecommendation recommendNet = new SelectRecommendation(Alarm.this);
         boolean[] slots = new boolean[Util.NUM_SLOTS];
 
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
         int ctlLv = sharedPref.getInt(Util.KEY_CONTROL_LEVEL, 1);
         int age = Integer.parseInt(sharedPref.getString(Util.KEY_AGE, "0"));
         boolean gender = (sharedPref.getString(Util.KEY_GENDER, null).equals("0"));
 
         if (sharedPref.getInt(Util.KEY_SET_SLOT, 0) == 0) {
-            ArrayList<Integer> slotsFromNeuralNet = recommendNet.selectTimeSlot(ctlLv, age, gender);
+            ArrayList<Integer> slotsFromNeuralNet = SelectRecommendation.selectTimeSlot(this.getBaseContext(), ctlLv, age, gender);
             for (int i = 0; i < slots.length; i++){
                 if (slotsFromNeuralNet.contains(i)){
                     slots[i] = true;
+                    editor.putBoolean(Util.KEY_CHECKBOX + i, true);
+                    editor.apply();
+
                 }
 
                 Log.w("from net to slots", slots[i] + "");
             }
         } else {
             for (int i=0; i<slots.length; i++) {
-                String key = Util.KEY_CHECKBOX + i;
-                slots[i] = (sharedPref.getBoolean(key, false));
+                slots[i] = (sharedPref.getBoolean(Util.KEY_CHECKBOX + i, false));
             }
         }
 
         // Here decide the intervention frequency
         // Frequency could be user's setting, if no setting, then use neural net suggestion.
-        FrequencyInterventionNet FreqIntNet = new FrequencyInterventionNet(Alarm.this);
-
         int frequency = sharedPref.getInt("frequency", 0);
         if(sharedPref.getInt(Util.KEY_FREQ, 0) == 0){
-            frequency = recommendNet.selectFrequency(ctlLv, age, gender);
+            frequency = SelectRecommendation.selectFrequency(this.getBaseContext(), ctlLv, age, gender);
+            editor.putInt(Util.KEY_FREQ, frequency);
+            editor.apply();
+
             Log.w("Suggested frequency by inter net", frequency+"");
         }
 

@@ -6,30 +6,40 @@
     android:background="@drawable/chat_background">
 
     <TextView
-        android:id="@+id/resultString"
+        android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="75dp"
         android:text="@string/resultString" />
 
     <TextView
-        android:id="@+id/question2"
+        android:id="@+id/questionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/resultString"
+        android:layout_below="@+id/resultText"
         android:layout_marginTop="52dp"
-        android:text="What would you say about your state of mind just now?" 
+        android:text="@string/question"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" />
-    
+
+    <TextView
+        android:id="@+id/answerPrefixText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resultText"
+        android:layout_marginTop="32dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
     <EditText
         android:id="@+id/answer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:ems="10"
         android:hint="@string/answer"
         android:layout_marginLeft="20dp"
@@ -47,23 +57,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/speak"
-            android:id="@+id/btnSpeak2"
+            android:id="@+id/btnSpeakText"
             android:layout_marginLeft="39dp"
             android:layout_marginTop="53dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:textSize="18dp"
-            android:onClick="clickSpeakBtn2" />
+            android:onClick="clickSpeakText" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="nextQuestion"
-            android:text="Next"
+            android:text="@string/button_next"
             android:layout_marginRight="39dp"
-            android:layout_alignTop="@+id/btnSpeak2"
+            android:layout_alignTop="@+id/btnSpeakText"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>

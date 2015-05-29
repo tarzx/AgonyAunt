@@ -193,10 +193,10 @@
     <!--ControlLevel-->
     <string name="preControl">To what extent do you feel you are in control of your life recently?&#92;n</string>
     <string name="postControl">After answering the question, I hope you feel better.&#92;nSo, let us check again. To what extent do you feel you are in control of your life now?&#92;n</string>
-    <string name="controlChoice">Rate from 1 (Not at all) to 20 (To a large extent)</string>
+    <string name="controlChoice">Rate from 0 (Not at all) to 20 (To a large extent)</string>
 
     /<!--Response-->
-    <string name="likeChoice">Rate from 0 (Unlike) to 10 (Like)</string>
+    <string name="likeChoice">Rate from 1 (Unlike) to 20 (Like)</string>
 
     <!--Ambiguous-->
     <string name="ambPreQuestion">Now I would like to ask you about your likes and dislikes about the series of question.&#92;n</string>

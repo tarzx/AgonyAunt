@@ -2,19 +2,13 @@ package standrews.Agonyaunt;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NavUtils;
@@ -22,462 +16,297 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.util.Log;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 
 /** This class is responsible for the main control loop
  * @author Jiachun Liu
  * @author Abigail Lowe
  * @author Teng Li
+ * @author Patomporn Loungvara
  */
-public class NotificationReceiverActivity extends Activity implements OnSeekBarChangeListener, TextToSpeech.OnInitListener{
+public class NotificationReceiverActivity extends Activity {
+    // Progress Dialog
+    private ProgressDialog pDialog;
+    private SeekBar bar;
+    private TextView counter, qTypeShow, qTypeText, qTypeBar, answerPrefix;
+    private EditText answerText;
 
-	// Keep track of questions
-	public static final String COUNT = "standrews.agonyaunt.COUNT";
-	String[] answers;
-	int questionId;
-	int quesCount;
-	String question;
+    // Manage SharePreference
+    private SharedPreferences sharedPref;
+    private String pid;
+    private int ctlLv, age, set_slot, set_freq, frequency;
+    private boolean gender;
+    private int[] slots;
 
-    String selectedControl;
+    // Manage Question
+    private QuestionManager qManager;
+    private SequenceQuestion seqQ;
+    private ArrayList<Question> listQ;
+    private ArrayList<String> listA;
 
-	QuestionManager quesManager;
-	public final static String QUESMANAGER0 = NotificationService.QUESMANAGER;
-	public static String quesMan;
-	public final static String QUESTION = "standrews.agonyaunt.question";
-	public final static String ANSWERS = "standrews.agonyaunt.answers";
-	//public final static String ACTIVITYID = "standrews.agonyaunt.activityId";
-	//public final static String CONTROLID = "standrews.agonyaunt.controlId";
+    // Keep track of questions
+    private int quesCount = 0;
+    private Question curQuestion;
 
-
-	public final static String PREAMBLEIDS = "standrews.agonyaunt.preambleIds";
-	public final static String QUESTIONID = "standrews.agonyaunt.questionid";
-	public ArrayList<String> preambleIds = new ArrayList<String>();
-	public ArrayList<String> questionID = new ArrayList<String>();
-	Question nxtQ;
-
-    double time1;
-
-
-
-    private TextView question1, question2, question3;
-
-
-
+    // Speak
     private TextToSpeech tts;
     private boolean ttsInstalled = false;
 
-
-    String answerInFirstDepthConversation = "";
-
-
-    // Progress Dialog
-    private ProgressDialog pDialog;
-    Context contextForDialogue;
-    //Intent intentForDialogue;
-
-    JSONParser jsonParser = new JSONParser();
-
-    //private static final String TAG_SUCCESS = "success";
-
-	@SuppressLint("NewApi")
-	@Override
-	// On creation, set up everything
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll().penaltyLog().build());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                    .detectAll().penaltyLog().build());
 //            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 //                    .detectAll().penaltyLog().penaltyDeath().build());
-        }
-
-
-		Intent intent = getIntent();
-
-        //Test if text-to-speech engine is installed in local machine
-        if(isPackageInstalled(getPackageManager(), "com.svox.pico")){
-            ttsInstalled = true; // This would be good to have it as a static member
-        }
-
-        Log.i("tts installed?", ttsInstalled+"");
-
-//        if (ttsInstalled){
-            tts = new TextToSpeech(this, this);
 //        }
 
+        // set Intent
+        Intent intent = getIntent();
 
-		quesMan = QUESMANAGER0;
-		if (intent != null) {
-			if (intent.getIntExtra(COUNT, 0) > 0) {
-				// Counter has been sent
-				quesCount = intent.getIntExtra(COUNT, 0);
-			}
-			if (intent.getSerializableExtra(quesMan) != null) {
-				// Question manager has been sent
-				quesManager = (QuestionManager) intent.getSerializableExtra(quesMan);
-			}
+        // Get Info
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        pid = sharedPref.getString(Util.KEY_PID, "");
+        ctlLv = sharedPref.getInt(Util.KEY_CONTROL_LEVEL, 0);
+        age = Integer.parseInt(sharedPref.getString(Util.KEY_AGE, "0"));
+        gender = (sharedPref.getString(Util.KEY_GENDER, "").equals("0"));
+        set_slot = sharedPref.getInt(Util.KEY_SET_SLOT, 0);
+        set_freq = sharedPref.getInt(Util.KEY_SET_FREQ, 0);
+        frequency = sharedPref.getInt(Util.KEY_FREQ, 0);
+        slots = new int[Util.NUM_SLOTS];
+        for (int i=0; i<slots.length; i++) {
+            if (sharedPref.getBoolean(Util.KEY_CHECKBOX + i, false)) {
+                slots[i] = 1;
+            }
+        }
 
+        // Manage Question
+        qManager = new QuestionManager(this.getResources());
+        seqQ = new SequenceQuestion(this.getBaseContext(), ctlLv, age, gender, set_slot, set_freq);
+        listQ = new ArrayList<Question>();
+        listA = new ArrayList<String>();
 
+        if (intent != null) {
+            if (intent.getIntExtra(Util.KEY_COUNT, 0) > 0) {
+                // Counter has been sent
+                quesCount = intent.getIntExtra(Util.KEY_COUNT, 0);
+            }
+            if (intent.getIntExtra(Util.KEY_SEQ, 0) != 0) {
+                // Counter has been sent
+                seqQ.setSeq(intent.getIntExtra(Util.KEY_SEQ, 0));
+            }
+            if (intent.getSerializableExtra(Util.KEY_QUESTION) != null) {
+                // Counter has been sent
+                listQ = (ArrayList<Question>) intent.getSerializableExtra(Util.KEY_QUESTION);
+            }
+            if (intent.getSerializableExtra(Util.KEY_ANSWER) != null) {
+                // Counter has been sent
+                listA = (ArrayList<String>) intent.getSerializableExtra(Util.KEY_ANSWER);
+            }
+            seqQ.setQuestionList(listQ);
+            seqQ.setAnswerList(listA);
 
-			if (quesCount == 0) {
-				setContentView(R.layout.results);
-                time1 = System.currentTimeMillis();
-
-                //Button speakBtn1 = (Button) findViewById(R.id.btnSpeak);
-			} else if (quesCount > 0 && quesCount < 3) {
-				setContentView(R.layout.result2);
-			} else {
-				setContentView(R.layout.result3);
-                question3 = (TextView) findViewById(R.id.question3);
-                contextForDialogue = this.getApplicationContext();
-			}
-
-
-
-			if (quesCount > 0 && quesCount < 3 && (intent.getStringExtra(QUESTION) != null)) {
-				question = intent.getStringExtra(QUESTION);
-				question2 = (TextView) findViewById(R.id.question2);
-				question2.setText(question);
-
-			}
-			// If this is the first feedback question.
-			if (quesCount == 0) {
-               question1 = (TextView) findViewById(R.id.question1);
-
-				// Show the first control level question
-				if (intent.getStringArrayExtra(ANSWERS) != null) {
-					answers = intent.getStringArrayExtra(ANSWERS);
-					RadioButton radio0 = (RadioButton) findViewById(R.id.radio0);
-					RadioButton radio1 = (RadioButton) findViewById(R.id.radio1);
-					RadioButton radio2 = (RadioButton) findViewById(R.id.radio2);
-					RadioButton radio3 = (RadioButton) findViewById(R.id.radio3);
-					RadioButton radio4 = (RadioButton) findViewById(R.id.radio4);
-					radio0.setText(answers[0]);
-					radio1.setText(answers[1]);
-					radio2.setText(answers[2]);
-					radio3.setText(answers[3]);
-					radio4.setText(answers[4]);
-				}
-			}
-
-
-
-
-			if (intent.getStringArrayListExtra(PREAMBLEIDS) != null) {
-				preambleIds = intent.getStringArrayListExtra(PREAMBLEIDS);
-			}
-			if (intent.getStringArrayListExtra(QUESTIONID) != null) {
-				questionID = intent.getStringArrayListExtra(QUESTIONID);
-			}
-
-		}
-
-	}
-
-
-
-
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.results, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-	}
-
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
-	}
-
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
-		int currPos = seekBar.getProgress();
-		// Low
-		if (currPos >= 0 && currPos < 50) {
-			seekBar.setProgress(0);
-			questionId = 0;
-		}
-		// Medium
-		if (currPos >= 50 && currPos < 80) {
-			seekBar.setProgress(50);
-			questionId = 1;
-		}
-		// High
-		if (currPos >= 80 && currPos < 100) {
-			seekBar.setProgress(100);
-			questionId = 2;
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/** Gets the questions to ask the user
-	 * @param view	Android view
-	 * @throws IOException
-	 */
-//    When click on the next button in question page
-	public void nextQuestion(View view) throws IOException {
-
-		// Total questions, just return an int variable in QuestionManager class
-		int totalQs = quesManager.getTotalQs();
-
-		if (quesCount < totalQs) {
-			Intent intent = new Intent(this, NotificationReceiverActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// Ask the parent question
-			if (quesCount == 0) {
-//                The selected variable is a string which conclude a number from 1-5
-				selectedControl = getSelected();
-
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("controlLevel", selectedControl).apply();
-
-//                Preamble
-//                preambleIds store the answer of first question
-				preambleIds.add(selectedControl);
-				intent.putExtra(PREAMBLEIDS, preambleIds);
-
-//                Compute the response time and get the first level question from neural net
-                double time2 = System.currentTimeMillis();
-                double responseTime = time2 - time1;
-
-
-
-                int conversationDepth = sharedPref.getInt("conversationDepth", 1);
-                Log.w("Track the conversation depth--first time", conversationDepth +"");
-                if (conversationDepth > 2 || conversationDepth < 1){
-                    conversationDepth = 1;
+            // Set Question
+            if (quesCount<seqQ.getNumQ()) {
+                // set Sequence
+                if (quesCount == 1) {
+                    //int seq = SelectRecommendation.selectSequence(this.getBaseContext(), seqQ.getPreCtlLv(), age, gender);
+                    int seq = 5;
+                    seqQ.setSeq(seq);
                 }
 
+                // get Current Question
+                curQuestion = qManager.generateQuestion(this.getBaseContext(), ctlLv, age, gender, set_slot, set_freq, seqQ, quesCount);
+                seqQ.setQuestion(curQuestion);
 
+                if (curQuestion.getQuestionType().equals(questionType.CONTROL_LEVEL)) {
+                    // Control Level
 
+                    // Components
+                    setContentView(R.layout.result_type_bar);
+                    bar = (SeekBar) findViewById(R.id.rateBar);
+                    counter = (TextView) findViewById(R.id.rateCounter);
+                    setActionBar(false);
 
+                    qTypeBar = (TextView) findViewById(R.id.questionBar);
+                    qTypeBar.setText(curQuestion.getDefinedQuestion());
 
-                Log.w("Track the conversation depth after if", conversationDepth +"");
-                FirstLevelQuestionNet firstLevelQuestionNet = new FirstLevelQuestionNet(NotificationReceiverActivity.this);
-                double[] input = {Double.parseDouble(selectedControl), responseTime/1000, conversationDepth};
+                    if (quesCount != 0) {
+                        // set previous control level
+                        bar.setProgress(seqQ.getPreCtlLv());
+                    }
 
+                } else if (curQuestion.getQuestionType().equals(questionType.CONVERSATION)) {
+                    // Conversation
+                    setContentView(R.layout.result_type_text);// Components
+                    qTypeText = (TextView) findViewById(R.id.questionText);
+                    qTypeText.setText(curQuestion.getDefinedQuestion());
+                    answerPrefix = (TextView) findViewById(R.id.answerPrefixText);
+                    answerPrefix.setText(curQuestion.getAnswerPrefix());
+                    answerText = (EditText) findViewById(R.id.answer);
 
-//
-                conversationDepth++;
-                editor.putInt("conversationDepth", conversationDepth).apply();
-                Log.w("Track the conversation depth after ++", conversationDepth +"");
+                } else if (curQuestion.getQuestionType().equals(questionType.SUMMARY)) {
+                    // Summary
+                    setContentView(R.layout.result_type_show);
+                    // Components
+                    qTypeShow = (TextView) findViewById(R.id.questionShow);
+                    qTypeShow.setText(curQuestion.getDefinedQuestion());
 
+                } else if (curQuestion.getQuestionType().equals(questionType.RATE_QUESTION) ||
+                        curQuestion.getQuestionType().equals(questionType.RATE_FREQUENCY) ||
+                        curQuestion.getQuestionType().equals(questionType.RATE_SLOTS)) {
 
-                Log.w("selected and time ", ""+ input[0] + " " + input[1]);
+                    // Rate Intervention
+                    setContentView(R.layout.result_type_bar);
+                    bar = (SeekBar) findViewById(R.id.rateBar);
+                    counter = (TextView) findViewById(R.id.rateCounter);
+                    setActionBar(true);
 
-                int index = firstLevelQuestionNet.computeFirstQuestion(input);
-                Log.w("The index of question", index +"");
-                index = index -1;
-                Log.w("The minus 1 index of question", index +"");
-                if (index > quesManager.getNUM_QUESTIONS()-1){
-                    index = quesManager.getNUM_QUESTIONS()-1;
-                }
-                if (index < 0){
-                    index = 0;
-                }
-
-                Log.w("The final index of question", index +"");
-                Log.w("My test about selected and response time", selectedControl + " <-se && time-> " + responseTime);
-//                Here to choose which group of question to ask first, the group need to decided by the
-//                answer to the first question
-
-
-
-				quesManager.setParent_index(index);
-				// Ask it
-				nxtQ = quesManager.getTherapeuticQ(index);
-				quesManager.setRecPar(nxtQ);
-
-
-                answerInFirstDepthConversation = sharedPref.getString("answerInFirstDepthConversation", "empty");
-//
-////                // Enhance if needed
-                QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
-//                    The answer for question is used by QuestionEnhancer
-                nxtQ = questionEnhancer.receive(nxtQ, answerInFirstDepthConversation);
-
-
-
-                Log.w("Answer in first depth conversation", answerInFirstDepthConversation);
-
-
-				// Ask the sub question
-			} else {
-
-				EditText answer_text = (EditText) findViewById(R.id.answer);
-				String answer = answer_text.getText().toString();
-
-//                preambleIds store the answer for next question
-				preambleIds.add(answer);
-				intent.putExtra(PREAMBLEIDS, preambleIds);
-
-				quesManager.getRecPar().setAnswer(answer);
-
-				if (quesCount == 1) {
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("answerInFirstDepthConversation", answer).apply();
-
-//
-                    Log.w("Answer in first depth conversation -> Q count = 1", answer);
-                    SubQuestionNet subQuestionNet = new SubQuestionNet(NotificationReceiverActivity.this);
-
-                    String uAge = sharedPref.getString("userAge", "0.0");
-                    selectedControl = sharedPref.getString("controlLevel", "0.0");
-                    Log.w("The selected control", selectedControl);
-                    Log.w("The current age for sub question net", uAge);
-                    double[] input = {Double.parseDouble(selectedControl), Double.parseDouble("0." + uAge)};
-                    Log.w("Control level and age", " " + input[0] + " " + input[1]);
-
-                    int subIndex = subQuestionNet.computeSubQuestion(input);
-
-
-//                    compute the index of sub question and use Q manager to set the sub index
-					// Get the parent
-					Question parent = quesManager.getRecPar();
-					// Get the next question
-
-                    nxtQ = quesManager.getSubFromSubQuestionNet(parent, subIndex);
-
-
-
-					// Enhance if needed
-					QuestionEnhancer questionEnhancer = new QuestionEnhancer(this);
-//                    The answer for question is used by QuestionEnhancer
-					nxtQ = questionEnhancer.receive(nxtQ, answer);
-                    quesManager.setSub_index(subIndex);
-				}
-				
-				questionID.add("0");
-				intent.putExtra(QUESTIONID, questionID);
-			}
-			quesCount++;
-			intent.putExtra(COUNT, quesCount);
-			intent.putExtra(quesMan, quesManager);
-			intent.putExtra(QUESTION, quesManager.getRecPar().getContent());
-			startActivity(intent);
-
-		}
-
-		// If final question, then get user's rating
-		else if (quesCount == totalQs) {
-			Intent intent = getIntent();
-			SeekBar rate_bar = (SeekBar) findViewById(R.id.rate_bar);
-			String user_rate = Integer.toString(rate_bar.getProgress());
-            int u_rate = rate_bar.getProgress();
-            Log.w("User rate", user_rate);
-			preambleIds.add(user_rate);
-			// Update rate
-			Rater rate = new Rater(this);
-
-            int parentIndex = quesManager.getParent_index();
-            int subIndex = quesManager.getSub_index();
-
-
-            Log.w("User rate from bar", rate_bar.getProgress()+"");
-			rate.update(parentIndex, subIndex, u_rate, false);
-
-
-//			rate.getBest();
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(NotificationReceiverActivity.this);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            int rate0 = sharedPref.getInt("sub0Rate", -1);
-            int rate1 = sharedPref.getInt("sub1Rate", -1);
-
-            if (subIndex == 0 && rate0 > rate1 && rate0 > 10){
-                editor.putString("subQuestion", "0").apply();
-                new AddSubRecord().execute();
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    qTypeBar = (TextView) findViewById(R.id.questionBar);
+                    qTypeBar.setText(curQuestion.getDefinedQuestion());
                 }
 
-            }else if(subIndex == 1 && rate1 > rate0 && rate1 > 10){
-                editor.putString("subQuestion", "1").apply();
-                new AddSubRecord().execute();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                //setSpeaker();
+            }
+        }
+
+    }
+
+    /** Gets the questions to ask the user
+     * @param view	Android view
+     * @throws IOException
+     */
+    // When click on the next button in question page
+    public void nextQuestion(View view) throws IOException {
+        boolean isNextQ = true;
+        Intent intent = new Intent(this, NotificationReceiverActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (quesCount<seqQ.getNumQ()) {
+            if (curQuestion.getQuestionType().equals(questionType.CONTROL_LEVEL)) {
+                // Control Level
+                if (bar.getProgress()==0) {
+                    isNextQ = false;
+                } else {
+                    if (quesCount == 0) {
+                        ctlLv = (bar.getProgress());
+                        seqQ.setPreCtlLv(ctlLv);
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(Util.KEY_CONTROL_LEVEL, seqQ.getPreCtlLv());
+                        editor.apply();
+
+                    } else {
+                        seqQ.setPostCtlLv(bar.getProgress());
+                        new recordSequence().execute();
+                    }
+                    seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                }
+
+            } else if (curQuestion.getQuestionType().equals(questionType.CONVERSATION)) {
+                // Conversation
+                seqQ.setAnswer(quesCount, answerText.getText().toString());
+
+            } else if (curQuestion.getQuestionType().equals(questionType.SUMMARY)) {
+                // Summary
+
+            } else if (curQuestion.getQuestionType().equals(questionType.RATE_QUESTION)) {
+                // Rate Question
+                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                new recordGroupQuestion().execute();
+
+            } else if (curQuestion.getQuestionType().equals(questionType.RATE_FREQUENCY)) {
+                // Rate Intervention
+                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                new recordFrequency().execute();
+
+            } else if (curQuestion.getQuestionType().equals(questionType.RATE_SLOTS)) {
+                // Rate Intervention
+                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                new recordSlots().execute();
+            }
+
+            if (isNextQ) {
+                quesCount++;
+            } else {
+                Toast.makeText(this, "Please answer the question!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (quesCount == seqQ.getNumQ()) {
+            Toast.makeText(this, "Thank you. Talk to you later.", Toast.LENGTH_SHORT).show();
+            this.finish();
+        } else {
+            if (isNextQ) {
+                intent.putExtra(Util.KEY_COUNT, quesCount);
+                intent.putExtra(Util.KEY_SEQ, seqQ.getSeq());
+                intent.putExtra(Util.KEY_QUESTION, seqQ.getQuestionList());
+                intent.putExtra(Util.KEY_ANSWER, seqQ.getAnswerList());
+                startActivity(intent);
+            }
+        }
+
+    }
+
+    private void setActionBar(final boolean allowZero) {
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar bar, int position, boolean fromUser) {
+                if (!allowZero && position==0) {
+                    counter.setText("");
+                } else {
+                    counter.setText(Integer.toString(position));
                 }
             }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+            }
 
-			intent.putExtra(PREAMBLEIDS, preambleIds);
-			this.finish();
-		}
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+            }
 
+        });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.my_profile, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. Use NavUtils to allow users
+                // to navigate up one level in the application structure. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+                //
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        // Closes activity. Goes back to activity which launched it
+        this.finish();
+    }
 
     /**
-     * Background Async Task to add sub table record
+     * Background Async Task to add frequency table record
      * */
-    class AddSubRecord extends AsyncTask<String, String, String> {
+    class recordFrequency extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -487,7 +316,7 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
             super.onPreExecute();
 //            pDialog = new ProgressDialog(intent);
             pDialog = new ProgressDialog(NotificationReceiverActivity.this);
-            pDialog.setMessage("Creating sub table record..");
+            pDialog.setMessage("Creating frequency table record..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -497,39 +326,9 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
          * Creating sub table record
          * */
         protected String doInBackground(String... args) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(NotificationReceiverActivity.this);
 
-
-            String age = sharedPref.getString("userAge", "0");
-            String controlLevel = sharedPref.getString("controlLevel", "0.0");
-            String subQuestion = sharedPref.getString("subQuestion", "0");
-
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("age", age));
-            params.add(new BasicNameValuePair("control_level", controlLevel));
-            params.add(new BasicNameValuePair("sub_question", subQuestion));
-
-
-
-            // getting JSON Object
-            JSONObject json = jsonParser.makeHttpRequest(Util.url_add_sub_record, "POST", params);
-
-            // check log cat fro response
-            Log.d("Create Response", json.toString());
-
-            // check for success tag
-//            try {
-//                int success = json.getInt(TAG_SUCCESS);
-//
-//                if (success == 1) {
-//
-//                } else {
-//                    // failed to create patient
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            manageInfo.recordFrequency(pid, ctlLv, frequency, rate);
 
             return null;
         }
@@ -542,185 +341,144 @@ public class NotificationReceiverActivity extends Activity implements OnSeekBarC
             // dismiss the dialog once done
 
             pDialog.dismiss();
-            Toast.makeText(NotificationReceiverActivity.this, "Question sequence has been saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NotificationReceiverActivity.this, "Frequency intervention has been saved", Toast.LENGTH_SHORT).show();
         }
 
     }
+    /**
+     * Background Async Task to add frequency table record
+     * */
+    class recordSlots extends AsyncTask<String, String, String> {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/** Finds out if an intervention should be sent
-	 * @return true		If there should be an intervention sent
-	 * @return false	If there should not be an intervention sent
-	 */
-//	public boolean toSendIntervention() {
-//
-//		int freqCount = 0;
-//		int freq = 3;
-//
-//		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-//		freqCount = sharedPref.getInt((getString(R.string.freqCount)), 0);
-//		System.out.println("freqCount " + freqCount);
-//
-//		if (freqCount < freq) {
-//			return true;
-//		}
-//		return false;
-//	}
-
-	/** Gets available time
-	 * @param time		The time
-	 * @return nextTime	The next time
-	 */
-//	public int checkAvailableTimes(int time) {
-//
-//		int low = 0;
-//		int high = 20;
-//		int nextTime = time;
-//
-//		if (time >= low && time < high) {
-//			System.out.println("busy tiiiimes!");
-//			nextTime += high;
-//		}
-//		return nextTime;
-//	}
-
-	/** Get which radio button is selected
-	 * @return	String representing which option was picked
-	 */
-	public String getSelected() {
-		RadioButton radio0 = (RadioButton) findViewById(R.id.radio0);
-		RadioButton radio1 = (RadioButton) findViewById(R.id.radio1);
-		RadioButton radio2 = (RadioButton) findViewById(R.id.radio2);
-		RadioButton radio3 = (RadioButton) findViewById(R.id.radio3);
-		RadioButton radio4 = (RadioButton) findViewById(R.id.radio4);
-
-		if (radio0.isChecked()) {
-			return "0.1";
-		}
-
-		if (radio1.isChecked()) {
-			return "0.3";
-		}
-
-		if (radio2.isChecked()) {
-			return "0.5";
-		}
-
-		if (radio3.isChecked()) {
-			return "0.7";
-		}
-
-		if (radio4.isChecked()) {
-			return "0.9";
-		}
-
-		return "0.0";
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Code below is for Text to Speech
-
-    @Override
-    public void onDestroy() {
-        // Don't forget to shutdown tts!
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pDialog = new ProgressDialog(intent);
+            pDialog = new ProgressDialog(NotificationReceiverActivity.this);
+            pDialog.setMessage("Creating slots table record..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
         }
-        super.onDestroy();
+
+        /**
+         * Creating sub table record
+         * */
+        protected String doInBackground(String... args) {
+
+            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            manageInfo.recordSlot(pid, ctlLv, slots, rate);
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+
+            pDialog.dismiss();
+            Toast.makeText(NotificationReceiverActivity.this, "Slot intervention has been saved", Toast.LENGTH_SHORT).show();
+        }
+
     }
+    /**
+     * Background Async Task to add frequency table record
+     * */
+    class recordGroupQuestion extends AsyncTask<String, String, String> {
 
-    @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
-            tts.setPitch(1f);
-            tts.setSpeechRate(0.8f);
-            int result = tts.setLanguage(new Locale("en", "GB"));
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pDialog = new ProgressDialog(intent);
+            pDialog = new ProgressDialog(NotificationReceiverActivity.this);
+            pDialog.setMessage("Creating group question table record..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
 
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", "This Language is not supported");
+        /**
+         * Creating sub table record
+         * */
+        protected String doInBackground(String... args) {
+
+            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            int prevG = curQuestion.getPrevGroup();
+            int group = curQuestion.getGroup();
+            manageInfo.recordGroupQuestion(pid, ctlLv, prevG, group, rate);
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+
+            pDialog.dismiss();
+            Toast.makeText(NotificationReceiverActivity.this, "Group question has been saved", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    /**
+     * Background Async Task to add frequency table record
+     * */
+    class recordSequence extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pDialog = new ProgressDialog(intent);
+            pDialog = new ProgressDialog(NotificationReceiverActivity.this);
+            pDialog.setMessage("Creating sequence table record..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating sub table record
+         * */
+        protected String doInBackground(String... args) {
+
+            double rate;
+            if (seqQ.getPostCtlLv()<seqQ.getPreCtlLv()) {
+                rate = ((double) seqQ.getPostCtlLv()/seqQ.getPreCtlLv()) * 0.5;
             } else {
-                Log.i("Selected language support", "Yes support");
-                String anything = "";
-                speakOut(anything);
+                rate = 0.5;
+                if (seqQ.getPreCtlLv()!=Util.MAX_RATE) {
+                    rate += ((((double) seqQ.getPostCtlLv()-seqQ.getPreCtlLv())/(Util.MAX_RATE-seqQ.getPreCtlLv())) * 0.5);
+                }
             }
+            manageInfo.recordSequence(pid, ctlLv, seqQ.getSeq(), rate);
 
-        } else {
-            Log.e("TTS", "Initilization Failed!");
+            return null;
         }
-    }
-
-    private void speakOut(String text) {
-
-        Log.i("System Out", text);
-
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-    }
 
 
-    public static boolean isPackageInstalled(PackageManager pm, String packageName) {
-        try {
-            pm.getPackageInfo(packageName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+
+            pDialog.dismiss();
+            Toast.makeText(NotificationReceiverActivity.this, "Sequence has been saved", Toast.LENGTH_SHORT).show();
         }
-        return true;
+
     }
-
-    public void clickSpeakBtn1(View view){
-        speakOut(question1.getText().toString());
-    }
-
-    public void clickSpeakBtn2(View view){
-        speakOut(question2.getText().toString());
-    }
-
-    public void clickSpeakBtn3(View view){
-        speakOut(question3.getText().toString());
-    }
-
-
-
-
 }

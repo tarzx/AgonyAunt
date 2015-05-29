@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/chat_background">
+
+    <TextView
+        android:id="@+id/resultShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="75dp"
+        android:text="@string/resultString" />
+
+    <TextView
+        android:id="@+id/questionShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resultShow"
+        android:layout_marginTop="52dp"
+        android:text="@string/question"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/questionShow"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:id="@+id/btnNextShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="nextQuestion"
+            android:text="@string/button_next"
+            android:layout_marginRight="39dp"
+            android:layout_alignTop="@+id/btnSpeakShow"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnSpeakShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speak"
+            android:onClick="clickSpeakShow"
+            android:layout_marginLeft="39dp"
+            android:layout_marginTop="53dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

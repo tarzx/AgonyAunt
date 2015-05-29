@@ -21,7 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/** This class handles dates
+/** This class handles JSON Object
  * @author Teng
  */
 public class JSONParser {

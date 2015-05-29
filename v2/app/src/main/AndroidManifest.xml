@@ -27,25 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity -->
-        <!-- android:name="standrews.agonyaunt.MoodTracker" -->
-        <!-- android:label="@string/title_activity_mood_tracker" -->
-        <!-- android:parentActivityName="standrews.HomeMenu" > -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value="standrews.HomeMenu" /> -->
-        <!-- </activity> -->
         <activity
             android:name="standrews.Agonyaunt.MyProfile"
             android:label="@string/title_activity_my_profile"
-            android:parentActivityName="standrews.Agonyaunt.HomeMenu" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="standrews.Agonyaunt.HomeMenu" />
-        </activity>
-        <activity
-            android:name="standrews.Agonyaunt.MyPreferences"
-            android:label="@string/title_activity_my_preferences"
             android:parentActivityName="standrews.Agonyaunt.HomeMenu" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
