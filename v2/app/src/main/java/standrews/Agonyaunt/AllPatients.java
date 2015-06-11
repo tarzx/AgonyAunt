@@ -15,6 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,25 +54,36 @@ public class AllPatients extends ListActivity {
         ListView lv = getListView();
 
         // on selecting single patient
-        // launching Edit Patient Screen
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if (Util.checkNetwork(this)) {
+            // launching Edit Patient Screen
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // getting values from selected ListItem
-                String pid = ((TextView) view.findViewById(R.id.pid)).getText().toString();
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    // getting values from selected ListItem
+                    String pid = ((TextView) view.findViewById(R.id.pid)).getText().toString();
 
-                // Starting new intent
-                Intent in = new Intent(getApplicationContext(), EditPatientActivity.class);
-                // sending pid to next activity
-                in.putExtra(Util.KEY_PID, pid);
+                    // Starting new intent
+                    Intent in = new Intent(getApplicationContext(), EditPatientActivity.class);
+                    // sending pid to next activity
+                    in.putExtra(Util.KEY_PID, pid);
 
-                // starting new activity and expecting some response back
-                startActivityForResult(in, 100);
-            }
-        });
+                    // starting new activity and expecting some response back
+                    startActivityForResult(in, 100);
+                }
+            });
+        } else {
+            // launching Edit Patient Screen
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Toast.makeText(AllPatients.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 

@@ -8,17 +8,17 @@
 
     <!--Group 1-->
     <string-array name="g1">
-        <item>What&quot;s going through your mind just at the minute?</item>
+        <item>What is going through your mind just at the minute?</item>
         <item>What would you say about your state of mind just now?</item>
         <item>What thought is running through your mind?</item>
         <item>What are you most aware of right now?</item>
         <item>How would you describe your frame of mind just now?</item>
-        <item>Where&quot;s your attention just now?</item>
+        <item>Where is your attention just now?</item>
         <item>What are you thinking about as you answer these questions?</item>
         <item>What are your thoughts doing just now?</item>
         <item>How would you describe the inside of your mind at the moment?</item>
-        <item>What&quot;s your mind playing with just now?</item>
-        <item>What&quot;s the main thing in your frame of mind?</item>
+        <item>What is your mind playing with just now?</item>
+        <item>What is the main thing in your frame of mind?</item>
     </string-array>
     <string-array name="g1_prefix">
         <item>My thought at the minute is </item>
@@ -73,10 +73,10 @@
         <item>What is your background thought?</item>
         <item>What is going through your mind at this very minute?</item>
         <item>What are you thinking about just now?</item>
-        <item>What&quot;s the main thought running through your mind just now?</item>
-        <item>Where&quot;s your mind at just now?</item>
+        <item>What is the main thought running through your mind just now?</item>
+        <item>Where is your mind at just now?</item>
         <item>How are you travelling just now?</item>
-        <item>What&quot;s in your mind right now?</item>
+        <item>What is in your mind right now?</item>
     </string-array>
     <string-array name="g61_prefix">
         <item>My thought is </item>
@@ -96,7 +96,7 @@
         <item>What do you think about $$$?</item>
         <item>What do you make of $$$?</item>
         <item>What do you make of $$$?</item>
-        <item>What&quot;s running through your mind as you think about $$$?</item>
+        <item>What is running through your mind as you think about $$$?</item>
         <item>How do things look to you just now?</item>
     </string-array>
     <string name="g62_default">that</string>
@@ -152,7 +152,7 @@
 
     <!--Group 10-1-->
     <string-array name="g101">
-        <item>Where&quot;s your life at just now?</item>
+        <item>Where is your life at just now?</item>
     </string-array>
     <!--Group 10-2-->
     <string-array name="g102">
@@ -161,23 +161,23 @@
 
     <!--Group 11-1-->
     <string-array name="g111">
-        <item>What&quot;s sitting at the front of your mind just now?</item>
-        <item>What&quot;s the activity of your mind just now?</item>
-        <item>What&quot;s occupying your mind at the moment?</item>
-        <item>What&quot;s your perspective on things right now?</item>
+        <item>What is sitting at the front of your mind just now?</item>
+        <item>What is the activity of your mind just now?</item>
+        <item>What is occupying your mind at the moment?</item>
+        <item>What is your perspective on things right now?</item>
     </string-array>
     <!--Group 11-2-->
     <string-array name="g112">
         <item>How are you travelling overall?</item>
         <item>How do you feel about that?</item>
         <item>How does that sit with you?</item>
-        <item>What&quot;s the thought that stands out the most?</item>
+        <item>What is the thought that stands out the most?</item>
     </string-array>
 
     <!--Linking-->
     <string-array name="change_topic">
         <item>Now I understand about ###, then we move to the topic about @@@.&#92;n</item>
-        <item>I understand about ###, now let&quot;s talk about @@@.&#92;n</item>
+        <item>I understand about ###, now let us talk about @@@.&#92;n</item>
     </string-array>
     <string name="change_topic_default">that</string>
     <string-array name="echo">
@@ -193,10 +193,10 @@
     <!--ControlLevel-->
     <string name="preControl">To what extent do you feel you are in control of your life recently?&#92;n</string>
     <string name="postControl">After answering the question, I hope you feel better.&#92;nSo, let us check again. To what extent do you feel you are in control of your life now?&#92;n</string>
-    <string name="controlChoice">Rate from 0 (Not at all) to 20 (To a large extent)</string>
+    <string name="controlChoice">Rate from 1 (Not at all) to 20 (To a large extent)</string>
 
     /<!--Response-->
-    <string name="likeChoice">Rate from 1 (Unlike) to 20 (Like)</string>
+    <string name="likeChoice">Rate from 0 (Unlike) to 20 (Like)</string>
 
     <!--Ambiguous-->
     <string name="ambPreQuestion">Now I would like to ask you about your likes and dislikes about the series of question.&#92;n</string>

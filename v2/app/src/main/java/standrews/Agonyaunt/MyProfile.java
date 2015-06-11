@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -177,43 +178,46 @@ public class MyProfile extends Activity {
     }
 
     public void saveProfile(View view) {
-        String userName = String.valueOf(patientName.getText());
-        String userAge = String.valueOf(patientAge.getText());
-        String gender = null;
-        if (rbMale.isChecked()){
-            gender = "0";
-        } else if (rbFemale.isChecked()){
-            gender = "1";
-        }
-        int frequency = bar.getProgress();
-        int set_frequency = (int)Math.ceil(frequency/Util.NUM_FREQUENCY);
-        int set_slot = 0;
-        for (int i = 0; i < numCheckboxes; i++){
-            if (checkBoxes[i].isChecked()){
-                set_slot = 1;
-                break;
+        if (Util.checkNetwork(this)) {
+            String userName = String.valueOf(patientName.getText());
+            String userAge = String.valueOf(patientAge.getText());
+            String gender = null;
+            if (rbMale.isChecked()) {
+                gender = "0";
+            } else if (rbFemale.isChecked()) {
+                gender = "1";
             }
+            int frequency = bar.getProgress();
+            int set_frequency = (int) Math.ceil(frequency / Util.NUM_FREQUENCY);
+            int set_slot = 0;
+            for (int i = 0; i < numCheckboxes; i++) {
+                if (checkBoxes[i].isChecked()) {
+                    set_slot = 1;
+                    break;
+                }
+            }
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            // editor.put(Key, value)
+            editor.putString(Util.KEY_USERNAME, userName);
+            editor.putString(Util.KEY_AGE, userAge);
+            editor.putString(Util.KEY_GENDER, gender);
+            editor.putInt(Util.KEY_SET_FREQ, set_frequency);
+            editor.putInt(Util.KEY_FREQ, frequency);
+            editor.putInt(Util.KEY_SET_SLOT, set_slot);
+            for (int i = 0; i < numCheckboxes; i++) {
+                editor.putBoolean(Util.KEY_CHECKBOX + i, checkBoxes[i].isChecked());
+            }
+            editor.apply();
+
+            //Toast.makeText(MyProfile.this, "Preference has been saved", Toast.LENGTH_SHORT).show();
+
+            new SavePatientInfo().execute();
+        } else {
+            Toast.makeText(MyProfile.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        // editor.put(Key, value)
-        editor.putString(Util.KEY_USERNAME, userName);
-        editor.putString(Util.KEY_AGE, userAge);
-        editor.putString(Util.KEY_GENDER, gender);
-        editor.putInt(Util.KEY_SET_FREQ, set_frequency);
-        editor.putInt(Util.KEY_FREQ, frequency);
-        editor.putInt(Util.KEY_SET_SLOT, set_slot);
-        for (int i = 0; i < numCheckboxes; i++) {
-            editor.putBoolean(Util.KEY_CHECKBOX + i, checkBoxes[i].isChecked());
-        }
-        editor.apply();
-
-        //Toast.makeText(MyProfile.this, "Preference has been saved", Toast.LENGTH_SHORT).show();
-
-        new SavePatientInfo().execute();
-
     }
 
     /**

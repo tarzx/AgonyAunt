@@ -2,16 +2,21 @@ package standrews.Agonyaunt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.app.ProgressDialog;
+import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +31,7 @@ import android.widget.Toast;
  * @author Teng Li
  * @author Patomporn Loungvara
  */
-public class NotificationReceiverActivity extends Activity {
+public class NotificationReceiverActivity extends Activity implements TextToSpeech.OnInitListener {
     // Progress Dialog
     private ProgressDialog pDialog;
     private SeekBar bar;
@@ -169,7 +174,7 @@ public class NotificationReceiverActivity extends Activity {
                     qTypeBar.setText(curQuestion.getDefinedQuestion());
                 }
 
-                //setSpeaker();
+                setSpeaker();
             }
         }
 
@@ -181,74 +186,87 @@ public class NotificationReceiverActivity extends Activity {
      */
     // When click on the next button in question page
     public void nextQuestion(View view) throws IOException {
-        boolean isNextQ = true;
-        Intent intent = new Intent(this, NotificationReceiverActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //check internet connection
+        if (Util.checkNetwork(this)) {
+            boolean isNextQ = true;
+            Intent intent = new Intent(this, NotificationReceiverActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        if (quesCount<seqQ.getNumQ()) {
-            if (curQuestion.getQuestionType().equals(questionType.CONTROL_LEVEL)) {
-                // Control Level
-                if (bar.getProgress()==0) {
-                    isNextQ = false;
-                } else {
-                    if (quesCount == 0) {
-                        ctlLv = (bar.getProgress());
-                        seqQ.setPreCtlLv(ctlLv);
-
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putInt(Util.KEY_CONTROL_LEVEL, seqQ.getPreCtlLv());
-                        editor.apply();
-
+            if (quesCount < seqQ.getNumQ()) {
+                if (curQuestion.getQuestionType().equals(questionType.CONTROL_LEVEL)) {
+                    // Control Level
+                    if (bar.getProgress() == 0) {
+                        isNextQ = false;
                     } else {
-                        seqQ.setPostCtlLv(bar.getProgress());
-                        new recordSequence().execute();
+                        if (quesCount == 0) {
+                            ctlLv = (bar.getProgress());
+                            seqQ.setPreCtlLv(ctlLv);
+
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putInt(Util.KEY_CONTROL_LEVEL, seqQ.getPreCtlLv());
+                            editor.apply();
+
+                        } else {
+                            seqQ.setPostCtlLv(bar.getProgress());
+                            new recordSequence().execute();
+                        }
+                        seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
                     }
+
+                } else if (curQuestion.getQuestionType().equals(questionType.CONVERSATION)) {
+                    // Conversation
+                    seqQ.setAnswer(quesCount, answerText.getText().toString());
+
+                } else if (curQuestion.getQuestionType().equals(questionType.SUMMARY)) {
+                    // Summary
+
+                } else if (curQuestion.getQuestionType().equals(questionType.RATE_QUESTION)) {
+                    // Rate Question
                     seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                    new recordGroupQuestion().execute();
+
+                } else if (curQuestion.getQuestionType().equals(questionType.RATE_FREQUENCY)) {
+                    // Rate Intervention
+                    seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                    new recordFrequency().execute();
+
+                } else if (curQuestion.getQuestionType().equals(questionType.RATE_SLOTS)) {
+                    // Rate Intervention
+                    seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
+                    new recordSlots().execute();
                 }
 
-            } else if (curQuestion.getQuestionType().equals(questionType.CONVERSATION)) {
-                // Conversation
-                seqQ.setAnswer(quesCount, answerText.getText().toString());
-
-            } else if (curQuestion.getQuestionType().equals(questionType.SUMMARY)) {
-                // Summary
-
-            } else if (curQuestion.getQuestionType().equals(questionType.RATE_QUESTION)) {
-                // Rate Question
-                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
-                new recordGroupQuestion().execute();
-
-            } else if (curQuestion.getQuestionType().equals(questionType.RATE_FREQUENCY)) {
-                // Rate Intervention
-                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
-                new recordFrequency().execute();
-
-            } else if (curQuestion.getQuestionType().equals(questionType.RATE_SLOTS)) {
-                // Rate Intervention
-                seqQ.setAnswer(quesCount, String.valueOf(bar.getProgress()));
-                new recordSlots().execute();
+                if (isNextQ) {
+                    quesCount++;
+                } else {
+                    Toast.makeText(this, "Please answer the question!", Toast.LENGTH_SHORT).show();
+                }
             }
 
-            if (isNextQ) {
-                quesCount++;
+            if (quesCount == seqQ.getNumQ()) {
+                // Show the finish information
+                AlertDialog alertDialog = new AlertDialog.Builder(NotificationReceiverActivity.this).create();
+                alertDialog.setTitle("App Information");
+                alertDialog.setMessage("Thank you. Talk to you later.");
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        NotificationReceiverActivity.this.finish();
+                    }
+                });
+                alertDialog.show();
             } else {
-                Toast.makeText(this, "Please answer the question!", Toast.LENGTH_SHORT).show();
+                // Next question
+                if (isNextQ) {
+                    intent.putExtra(Util.KEY_COUNT, quesCount);
+                    intent.putExtra(Util.KEY_SEQ, seqQ.getSeq());
+                    intent.putExtra(Util.KEY_QUESTION, seqQ.getQuestionList());
+                    intent.putExtra(Util.KEY_ANSWER, seqQ.getAnswerList());
+                    startActivity(intent);
+                }
             }
-        }
-
-        if (quesCount == seqQ.getNumQ()) {
-            Toast.makeText(this, "Thank you. Talk to you later.", Toast.LENGTH_SHORT).show();
-            this.finish();
         } else {
-            if (isNextQ) {
-                intent.putExtra(Util.KEY_COUNT, quesCount);
-                intent.putExtra(Util.KEY_SEQ, seqQ.getSeq());
-                intent.putExtra(Util.KEY_QUESTION, seqQ.getQuestionList());
-                intent.putExtra(Util.KEY_ANSWER, seqQ.getAnswerList());
-                startActivity(intent);
-            }
+            Toast.makeText(NotificationReceiverActivity.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void setActionBar(final boolean allowZero) {
@@ -271,6 +289,15 @@ public class NotificationReceiverActivity extends Activity {
             }
 
         });
+    }
+
+    private void setSpeaker() {
+        //Test if text-to-speech engine is installed in local machine
+        if(isPackageInstalled(getPackageManager(), "com.svox.pico")){
+            ttsInstalled = true; // This would be good to have it as a static member
+        }
+        Log.i("tts installed?", ttsInstalled+"");
+        tts = new TextToSpeech(this, this);
     }
 
     @Override
@@ -304,7 +331,7 @@ public class NotificationReceiverActivity extends Activity {
     }
 
     /**
-     * Background Async Task to add frequency table record
+     * Background Async Task to add Preference (Frequency) table record
      * */
     class recordFrequency extends AsyncTask<String, String, String> {
 
@@ -327,7 +354,7 @@ public class NotificationReceiverActivity extends Activity {
          * */
         protected String doInBackground(String... args) {
 
-            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            double rate = (double) bar.getProgress()/(Util.MAX_RATE-Util.MIN_RATE);
             manageInfo.recordFrequency(pid, ctlLv, frequency, rate);
 
             return null;
@@ -346,7 +373,7 @@ public class NotificationReceiverActivity extends Activity {
 
     }
     /**
-     * Background Async Task to add frequency table record
+     * Background Async Task to add Preference (Slot) table record
      * */
     class recordSlots extends AsyncTask<String, String, String> {
 
@@ -369,7 +396,7 @@ public class NotificationReceiverActivity extends Activity {
          * */
         protected String doInBackground(String... args) {
 
-            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            double rate = (double) bar.getProgress()/(Util.MAX_RATE-Util.MIN_RATE);
             manageInfo.recordSlot(pid, ctlLv, slots, rate);
 
             return null;
@@ -388,7 +415,7 @@ public class NotificationReceiverActivity extends Activity {
 
     }
     /**
-     * Background Async Task to add frequency table record
+     * Background Async Task to add Group Question table record
      * */
     class recordGroupQuestion extends AsyncTask<String, String, String> {
 
@@ -411,7 +438,7 @@ public class NotificationReceiverActivity extends Activity {
          * */
         protected String doInBackground(String... args) {
 
-            double rate = (double) bar.getProgress()/Util.MAX_RATE;
+            double rate = (double) bar.getProgress()/(Util.MAX_RATE-Util.MIN_RATE);
             int prevG = curQuestion.getPrevGroup();
             int group = curQuestion.getGroup();
             manageInfo.recordGroupQuestion(pid, ctlLv, prevG, group, rate);
@@ -432,7 +459,7 @@ public class NotificationReceiverActivity extends Activity {
 
     }
     /**
-     * Background Async Task to add frequency table record
+     * Background Async Task to add Sequence table record
      * */
     class recordSequence extends AsyncTask<String, String, String> {
 
@@ -457,11 +484,11 @@ public class NotificationReceiverActivity extends Activity {
 
             double rate;
             if (seqQ.getPostCtlLv()<seqQ.getPreCtlLv()) {
-                rate = ((double) seqQ.getPostCtlLv()/seqQ.getPreCtlLv()) * 0.5;
+                rate = ((double) seqQ.getPostCtlLv()-Util.MIN_CTRL /seqQ.getPreCtlLv()-Util.MIN_CTRL) * 0.5;
             } else {
                 rate = 0.5;
-                if (seqQ.getPreCtlLv()!=Util.MAX_RATE) {
-                    rate += ((((double) seqQ.getPostCtlLv()-seqQ.getPreCtlLv())/(Util.MAX_RATE-seqQ.getPreCtlLv())) * 0.5);
+                if (seqQ.getPreCtlLv()!=Util.MAX_CTRL) {
+                    rate += ((((double) seqQ.getPostCtlLv()-seqQ.getPreCtlLv())/(Util.MAX_CTRL -seqQ.getPreCtlLv())) * 0.5);
                 }
             }
             manageInfo.recordSequence(pid, ctlLv, seqQ.getSeq(), rate);
@@ -480,5 +507,62 @@ public class NotificationReceiverActivity extends Activity {
             Toast.makeText(NotificationReceiverActivity.this, "Sequence has been saved", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    // Code below is for Text to Speech
+    @Override
+    public void onDestroy() {
+        // Don't forget to shutdown tts!
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            tts.setPitch(1f);
+            tts.setSpeechRate(0.8f);
+            int result = tts.setLanguage(new Locale("en", "GB"));
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            } else {
+                Log.i("Selected language support", "Yes support");
+                String anything = "";
+                speakOut(anything);
+            }
+
+        } else {
+            Log.e("TTS", "Initialization Failed!");
+        }
+    }
+
+    private void speakOut(String text) {
+        Log.i("Speak Out", text);
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public static boolean isPackageInstalled(PackageManager pm, String packageName) {
+        try {
+            pm.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void clickSpeakShow(View view){
+        speakOut(qTypeShow.getText().toString());
+    }
+
+    public void clickSpeakText(View view){
+        speakOut(qTypeText.getText().toString());
+    }
+
+    public void clickSpeakBar(View view){
+        speakOut(qTypeBar.getText().toString());
     }
 }

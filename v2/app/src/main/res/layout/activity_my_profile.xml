@@ -86,9 +86,10 @@
             />
 
         <TextView android:id="@+id/MyFrequencyCounter"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:paddingRight="10dp"
             />
 
     </LinearLayout>

@@ -379,7 +379,7 @@ public class QuestionManager {
                         case 9:
                             prevAmbQuestion = seqQ.getQuestionId(4);
                             ambQuestion = seqQ.getQuestionId(5);
-                            q = this.getAmbiguous(prevAmbQuestion.getGroup(), ambQuestion.getGroup(), prevAmbQuestion.getQuestion(), ambQuestion.getQuestion(), true);
+                            q = this.getAmbiguous(prevAmbQuestion.getGroup(), ambQuestion.getGroup(), prevAmbQuestion.getQuestion(), ambQuestion.getQuestion(), false);
                             break;
                         default:
                             break;
@@ -471,7 +471,7 @@ public class QuestionManager {
                         case 9:
                             prevAmbQuestion = seqQ.getQuestionId(4);
                             ambQuestion = seqQ.getQuestionId(5);
-                            q = this.getAmbiguous(prevAmbQuestion.getGroup(), ambQuestion.getGroup(), prevAmbQuestion.getQuestion(), ambQuestion.getQuestion(), true);
+                            q = this.getAmbiguous(prevAmbQuestion.getGroup(), ambQuestion.getGroup(), prevAmbQuestion.getQuestion(), ambQuestion.getQuestion(), false);
                             break;
                         default:
                             break;

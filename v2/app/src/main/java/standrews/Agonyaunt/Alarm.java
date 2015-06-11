@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.app.AlarmManager;
@@ -35,6 +37,7 @@ public class Alarm extends Service {
 	
 	/** This method starts a daily alarm */
 	public void mainAlarm() {
+
         boolean[] slots = new boolean[Util.NUM_SLOTS];
 
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -63,13 +66,13 @@ public class Alarm extends Service {
 
         // Here decide the intervention frequency
         // Frequency could be user's setting, if no setting, then use neural net suggestion.
-        int frequency = sharedPref.getInt("frequency", 0);
-        if(sharedPref.getInt(Util.KEY_FREQ, 0) == 0){
+        int frequency = sharedPref.getInt(Util.KEY_FREQ, 0);
+        if(sharedPref.getInt(Util.KEY_SET_FREQ, 0) == 0){
             frequency = SelectRecommendation.selectFrequency(this.getBaseContext(), ctlLv, age, gender);
             editor.putInt(Util.KEY_FREQ, frequency);
             editor.apply();
 
-            Log.w("Suggested frequency by inter net", frequency+"");
+            Log.w("Suggested frequency by inter net", frequency + "");
         }
 
 		ArrayList<Integer> nextTimes = Util.calculateNextTimes(frequency, slots);
@@ -80,14 +83,19 @@ public class Alarm extends Service {
 		cal_alarm.set(Calendar.SECOND, 0);
 
 		PendingIntent[] pi = new PendingIntent[nextTimes.size()];
-		Intent intent = new Intent(this, NotificationService.class);
 		for (int i = 0; i < nextTimes.size(); i++) {
-			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-			pi[i] = PendingIntent.getService(this, i, intent, 0);
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			pi[i] = PendingIntent.getService(this, i, new Intent(this, NotificationService.class), 0);
 			am.set(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis() + nextTimes.get(i) * 60 * 1000, pi[i]);
             Log.i("Next time: ", getDate(cal_alarm.getTimeInMillis() + nextTimes.get(i) * 60 * 1000, "dd/MM/yyyy hh:mm:ss.SSS"));
 		}
-	}
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        editor.putString(Util.KEY_DATE, sdf.format(new Date()));
+        editor.apply();
+
+        Log.i("Cal Date", sdf.format(new Date()) + "");
+    }
 
 
 

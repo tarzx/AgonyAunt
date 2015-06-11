@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -89,13 +90,22 @@ public class NewPatientActivity extends Activity {
 
         Button btnCreatePatient = (Button) findViewById(R.id.btnCreatePatient);
 
-        btnCreatePatient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // creating new patient in background thread
-                new CreateNewPatient().execute();
-            }
-        });
+        if (Util.checkNetwork(this)) {
+            btnCreatePatient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // creating new patient in background thread
+                    new CreateNewPatient().execute();
+                }
+            });
+        } else {
+            btnCreatePatient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(NewPatientActivity.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
 

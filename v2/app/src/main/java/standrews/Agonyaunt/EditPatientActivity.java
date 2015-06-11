@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -84,16 +85,25 @@ public class EditPatientActivity extends Activity {
             btnUpdate.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
         } else {
-            // save button click event
-            btnUpdate.setOnClickListener(new View.OnClickListener() {
+            if (Util.checkNetwork(this)) {
+                // save button click event
+                btnUpdate.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    // starting background task to update patient
-                    new UpdatePatientDetails().execute();
-                }
-            });
+                    @Override
+                    public void onClick(View arg0) {
+                        // starting background task to update patient
+                        new UpdatePatientDetails().execute();
+                    }
+                });
+            } else {
+                btnUpdate.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View arg0) {
+                        Toast.makeText(EditPatientActivity.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
             // Delete button click event
             btnDelete.setOnClickListener(new View.OnClickListener() {
 

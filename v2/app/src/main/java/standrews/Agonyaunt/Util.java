@@ -1,11 +1,15 @@
 package standrews.Agonyaunt;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -27,6 +31,9 @@ public class Util {
     //Constants
     public static final int NUM_FREQUENCY = 7;
     public static final int NUM_SLOTS = 6;
+    public static final int MIN_CTRL = 1;
+    public static final int MAX_CTRL = 20;
+    public static final int MIN_RATE = 0;
     public static final int MAX_RATE = 20;
 
     private static final int BUFFER_SIZE = 1024;
@@ -34,12 +41,6 @@ public class Util {
     // URL host
     // private static final String url_host = "http://10.0.2.2:8888/AndroidApp/";
     private static final String url_host = "http://pl44.host.cs.st-andrews.ac.uk/AndroidApp/v2/";
-
-    // old
-    public static final String url_add_to_slots = url_host + "add_to_slots_table.php";
-    public static final String url_add_sub_record = url_host + "add_to_sub_table.php";
-    public static final String INTERVENTION_FREQUENCY_NET_EG = "neuralNetIntervention.eg";
-    public static final String INTERVENTION_SLOTS_NET_EG = "neuralNetInterventionSlots.eg";
 
     // URL list
     public static final String url_all_patients_info = url_host + "get_all_patients_info.php";
@@ -122,6 +123,7 @@ public class Util {
     public static final String KEY_QUESTION = "Agony.question";
     public static final String KEY_ANSWER = "Agony.answer";
     public static final String KEY_COUNT = "Agony.qcount";
+    public static final String KEY_DATE = "Agony.date";
 
     private static final TimeSlot[] timeslots = new TimeSlot[] {
 		new TimeSlot(240, 180), new TimeSlot(420, 300),
@@ -187,13 +189,20 @@ public class Util {
 		return nextTimes;
 	}
 
-	public static boolean alarmBooted() {
+	public static boolean alarmBooted(Context context) {
 		if (!alarm_boot) {
 			alarm_boot = true;
 			return true;
 		} else {
-			return false;
-		}
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String calDate = sharedPref.getString(Util.KEY_DATE, "00000000");
+
+            Log.i("Cal Date", calDate + "");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return !calDate.equals(sdf.format(new Date()));
+        }
 	}
 
     public static boolean checkNetwork(Context context) {

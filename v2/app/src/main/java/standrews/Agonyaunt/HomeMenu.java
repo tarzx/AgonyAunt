@@ -72,7 +72,7 @@ public class HomeMenu extends Activity {
         tabHost.addTab(tabSpec);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (Util.alarmBooted() && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
+        if (Util.alarmBooted(this) && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
             // manage alarm
 			mainAlarm();
 		}
@@ -118,50 +118,36 @@ public class HomeMenu extends Activity {
             btnTrainFrequencyInterventionNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog();
+                    Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
                 }
             });
             btnTrainSlotInterventionNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog();
+                    Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
                 }
             });
             btnTrainSelectSequenceNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog();
+                    Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
                 }
             });
             btnTrainSelectGoalNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog();
+                    Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
                 }
             });
             btnTrainSelectBehaviourNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog();
+                    Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
 	}
-
-    private void showDialog() {
-        // Show the error network
-        AlertDialog alertDialog = new AlertDialog.Builder(HomeMenu.this).create();
-        alertDialog.setTitle("Error");
-        alertDialog.setMessage("No Internet Connection!");
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-    }
-
-
-
 
 
     /**
@@ -518,80 +504,74 @@ public class HomeMenu extends Activity {
 
 	// Starts myProfile
 	public void myProfile(View view) {
-        if (Util.checkNetwork(this)) {
-            Intent intent = new Intent(this, MyProfile.class);
-            startActivity(intent);
-        } else {
-            showDialog();
-        }
+        Intent intent = new Intent(this, MyProfile.class);
+        startActivity(intent);
 	}
 
     /** Starts a demo chat
      * @param view	The Android view
      */
     public void Intervention(View view) {
-        if (Util.checkNetwork(this)) {
-            Toast.makeText(this, "Notification has appeared! Click on it to begin",
-                    Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, NotificationService.class);
-            startService(intent);
-        } else {
-            showDialog();
-        }
+        Toast.makeText(this, "Notification has appeared! Click on it to begin",
+                Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
     }
 
     public void showAllPatients(View view){
+        //check internet connection
         if (Util.checkNetwork(this)) {
             Intent intent = new Intent(this, AllPatients.class);
             startActivity(intent);
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void addNewPatient(View view){
-        if (Util.checkNetwork(this)) {
-            Intent intent = new Intent(this, NewPatientActivity.class);
-            startActivity(intent);
-        } else {
-            showDialog();
-        }
+        Intent intent = new Intent(this, NewPatientActivity.class);
+        startActivity(intent);
     }
 
     public void updateFrequencyInterventionNet(View view){
+        //check internet connection
         if (Util.checkNetwork(this)) {
             new updateFrequencyInterventionNet().execute();
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
     }
     public void updateSlotInterventionNet(View view){
+        //check internet connection
         if (Util.checkNetwork(this)) {
             new updateSlotInterventionNet().execute();
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
     }
     public void updateSelectSequenceNet(View view) {
+        //check internet connection
         if (Util.checkNetwork(this)) {
             new updateSelectSequenceNet().execute();
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
     }
     public void updateSelectGoalNet(View view){
+        //check internet connection
         if (Util.checkNetwork(this)) {
             new updateSelectGoalNet().execute();
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
 
     }
     public void updateSelectBehaviourNet(View view){
+        //check internet connection
         if (Util.checkNetwork(this)) {
             new updateSelectBehaviourNet().execute();
         } else {
-            showDialog();
+            Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
 
     }
