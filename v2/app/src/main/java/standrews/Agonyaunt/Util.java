@@ -7,8 +7,10 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -124,6 +126,7 @@ public class Util {
     public static final String KEY_ANSWER = "Agony.answer";
     public static final String KEY_COUNT = "Agony.qcount";
     public static final String KEY_DATE = "Agony.date";
+    public static final String KEY_NEXTTIME = "Agony.nexttime";
 
     private static final TimeSlot[] timeslots = new TimeSlot[] {
 		new TimeSlot(240, 180), new TimeSlot(420, 300),
@@ -186,14 +189,28 @@ public class Util {
 			}
 
 		}
+
+        // Add next day
+        nextTimes.add(24 * 60);
+
 		return nextTimes;
 	}
 
 	public static boolean alarmBooted(Context context) {
+        boolean setAlarm = false;
 		if (!alarm_boot) {
 			alarm_boot = true;
-			return true;
-		} else {
+            setAlarm = true;
+
+            //LoadUpdated Files
+            Log.i("Upload", "First Load");
+            Util.loadNet(context, Util.FREQUENCY_INTERVENTION_NET_URL, Util.FREQUENCY_INTERVENTION_NET_EG);
+            Util.loadNet(context, Util.SLOT_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_EG);
+            Util.loadNet(context, Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_SEQUENCE_NET_EG);
+            Util.loadNet(context, Util.SELECT_BEHAVIOUR_NET_URL, Util.SELECT_BEHAVIOUR_NET_EG);
+            Util.loadNet(context, Util.SELECT_GOAL_NET_URL, Util.SELECT_GOAL_NET_EG);
+        } else {
+            // set alarm if it is new day
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sharedPref.edit();
             String calDate = sharedPref.getString(Util.KEY_DATE, "00000000");
@@ -201,9 +218,26 @@ public class Util {
             Log.i("Cal Date", calDate + "");
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            return !calDate.equals(sdf.format(new Date()));
+            setAlarm = !calDate.equals(sdf.format(new Date()));
         }
+        return setAlarm;
 	}
+
+    /** Gets a date
+     * @param milliSeconds		Time in milliseconds
+     * @param dateFormat		The format to get the date in
+     * @return 					Date in specified format
+     */
+    public static String getDate(long milliSeconds, String dateFormat) {
+        // Create a DateFormatter object for displaying date in specified
+        // format.
+        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        // Create a calendar object that will convert the date and time value in
+        // milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
 
     public static boolean checkNetwork(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager)

@@ -85,7 +85,7 @@ public class EditPatientActivity extends Activity {
             btnUpdate.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
         } else {
-            if (Util.checkNetwork(this)) {
+            if (Util.checkNetwork(this.getBaseContext())) {
                 // save button click event
                 btnUpdate.setOnClickListener(new View.OnClickListener() {
 

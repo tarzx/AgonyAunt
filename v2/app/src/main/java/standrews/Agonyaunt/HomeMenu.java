@@ -1,6 +1,9 @@
 package standrews.Agonyaunt;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -72,9 +75,11 @@ public class HomeMenu extends Activity {
         tabHost.addTab(tabSpec);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (Util.alarmBooted(this) && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
+        if (Util.alarmBooted(this.getBaseContext()) && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
             // manage alarm
-			mainAlarm();
+            Log.i("Track", "start Alarm");
+            Intent i = new Intent(this.getBaseContext(), MyAlarmManager.class);
+            startService(i);
 		}
 
         Button btnTrainFrequencyInterventionNet = (Button) findViewById(R.id.btnTrainFrequencyInterventionNeuralNetwork);
@@ -83,7 +88,7 @@ public class HomeMenu extends Activity {
         Button btnTrainSelectGoalNet = (Button) findViewById(R.id.btnTrainSelectGoalNeuralNetwork);
         Button btnTrainSelectBehaviourNet = (Button) findViewById(R.id.btnTrainSelectBehaviourNeuralNetworks);
 
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             btnTrainFrequencyInterventionNet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -520,7 +525,7 @@ public class HomeMenu extends Activity {
 
     public void showAllPatients(View view){
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             Intent intent = new Intent(this, AllPatients.class);
             startActivity(intent);
         } else {
@@ -535,7 +540,7 @@ public class HomeMenu extends Activity {
 
     public void updateFrequencyInterventionNet(View view){
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             new updateFrequencyInterventionNet().execute();
         } else {
             Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
@@ -543,7 +548,7 @@ public class HomeMenu extends Activity {
     }
     public void updateSlotInterventionNet(View view){
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             new updateSlotInterventionNet().execute();
         } else {
             Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
@@ -551,7 +556,7 @@ public class HomeMenu extends Activity {
     }
     public void updateSelectSequenceNet(View view) {
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             new updateSelectSequenceNet().execute();
         } else {
             Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
@@ -559,7 +564,7 @@ public class HomeMenu extends Activity {
     }
     public void updateSelectGoalNet(View view){
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             new updateSelectGoalNet().execute();
         } else {
             Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
@@ -568,7 +573,7 @@ public class HomeMenu extends Activity {
     }
     public void updateSelectBehaviourNet(View view){
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             new updateSelectBehaviourNet().execute();
         } else {
             Toast.makeText(HomeMenu.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
@@ -576,15 +581,4 @@ public class HomeMenu extends Activity {
 
     }
 
-	/** Manages alarm */
-	public void mainAlarm() {
-		Calendar cal_alarm = Calendar.getInstance();
-		cal_alarm.set(Calendar.HOUR_OF_DAY, 0);
-		cal_alarm.set(Calendar.MINUTE, 0);
-		cal_alarm.set(Calendar.SECOND, 0);
-		Intent intent = new Intent(this, Alarm.class);
-		PendingIntent pi = PendingIntent.getService(this, 0, intent, 0);
-		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		am.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), 1000 * 60 * 60 * 24, pi);
-	}
 }

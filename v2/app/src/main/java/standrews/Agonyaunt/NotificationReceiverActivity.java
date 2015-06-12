@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NavUtils;
@@ -62,12 +63,22 @@ public class NotificationReceiverActivity extends Activity implements TextToSpee
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//                    .detectAll().penaltyLog().build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectAll().penaltyLog().penaltyDeath().build());
-//        }
+        if (BuildConfig.DEBUG) {
+            // when you create a new application you can set the Thread and VM Policy
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .build());
+
+            //If you use StrictMode you might as well define a VM policy too
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .setClassInstanceLimit(NotificationReceiverActivity.class, 10)
+                .penaltyLog()
+                .build());
+        }
 
         // set Intent
         Intent intent = getIntent();
@@ -187,7 +198,7 @@ public class NotificationReceiverActivity extends Activity implements TextToSpee
     // When click on the next button in question page
     public void nextQuestion(View view) throws IOException {
         //check internet connection
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             boolean isNextQ = true;
             Intent intent = new Intent(this, NotificationReceiverActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

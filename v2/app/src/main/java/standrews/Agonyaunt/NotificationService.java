@@ -1,5 +1,6 @@
 package standrews.Agonyaunt;
 
+import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -19,16 +20,16 @@ public class NotificationService extends Service {
     // Enables change notification
     private static final int mId = 1;
 
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return null;
-	}
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		notificationCreator();
-		return super.onStartCommand(intent, flags, startId);
-	}
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        notificationCreator();
+        return super.onStartCommand(intent, flags, startId);
+    }
 
 	/** Creates a notification */
 	private void notificationCreator() {
@@ -56,6 +57,11 @@ public class NotificationService extends Service {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(mId, mBuilder.build());
 	}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     /**
      * Background Async Task to update neural network

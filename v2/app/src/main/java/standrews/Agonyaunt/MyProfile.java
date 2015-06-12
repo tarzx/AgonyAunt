@@ -178,7 +178,7 @@ public class MyProfile extends Activity {
     }
 
     public void saveProfile(View view) {
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             String userName = String.valueOf(patientName.getText());
             String userAge = String.valueOf(patientAge.getText());
             String gender = null;

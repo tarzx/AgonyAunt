@@ -35,12 +35,23 @@ public class AllPatients extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//                    .detectAll().penaltyLog().build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectAll().penaltyLog().penaltyDeath().build());
-//        }
+
+        if (BuildConfig.DEBUG) {
+            // when you create a new application you can set the Thread and VM Policy
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()
+                    .penaltyLog()
+                    .build());
+
+            //If you use StrictMode you might as well define a VM policy too
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .setClassInstanceLimit(AllPatients.class, 10)
+                    .penaltyLog()
+                    .build());
+        }
 
         setContentView(R.layout.activity_all_patients);
 
@@ -103,7 +114,6 @@ public class AllPatients extends ListActivity {
         }
 
     }
-
 
     /**
      * Background Async Task to Load all patient by making HTTP Request

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="standrews.Agonyaunt"
-    android:versionCode="6"
-    android:versionName="2.3" >
+    android:versionCode="7"
+    android:versionName="2.4" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -40,13 +41,13 @@
             android:label="@string/title_activity_create_notification" >
         </activity>
 
+        <receiver android:name=".MyAlarm"/>
         <service
-            android:name="standrews.Agonyaunt.Alarm"
+            android:name="standrews.Agonyaunt.MyAlarmManager"
             android:enabled="true" />
         <service
             android:name="standrews.Agonyaunt.NotificationService"
             android:enabled="true" />
-
         <activity
             android:name="standrews.Agonyaunt.AllPatients"
             android:label="@string/title_activity_all_patients" >

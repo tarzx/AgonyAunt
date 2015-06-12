@@ -90,7 +90,7 @@ public class NewPatientActivity extends Activity {
 
         Button btnCreatePatient = (Button) findViewById(R.id.btnCreatePatient);
 
-        if (Util.checkNetwork(this)) {
+        if (Util.checkNetwork(this.getBaseContext())) {
             btnCreatePatient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -162,13 +162,13 @@ public class NewPatientActivity extends Activity {
 
             int success = manageInfo.createPatient(name, age, gender, set_slot, slots, set_frequency, frequencies);
 
-            if (success == 1) {
+            if (success != 0) {
+                // closing this screen
+                finish();
+
                 // successfully created patient
                 Intent i = new Intent(getApplicationContext(), AllPatients.class);
                 startActivity(i);
-
-                // closing this screen
-                finish();
             }
 
             return null;
