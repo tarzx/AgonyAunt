@@ -212,6 +212,14 @@ public class MyProfile extends Activity {
             }
             editor.apply();
 
+            // Set New alarm - if it has not set
+            if (Util.alarmBooted(this.getBaseContext())) {
+                // manage alarm
+                Log.i("Track", "start Alarm");
+                Intent ami = new Intent(this, MyAlarmManager.class);
+                this.startService(ami);
+            }
+
             //Toast.makeText(MyProfile.this, "Preference has been saved", Toast.LENGTH_SHORT).show();
 
             new SavePatientInfo().execute();

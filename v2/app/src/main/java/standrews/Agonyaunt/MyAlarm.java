@@ -28,16 +28,18 @@ public class MyAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Set Alarm if it is new day
         if (Util.alarmBooted(context)) {
             // manage alarm
             Log.i("Track", "start Alarm");
             Intent ami = new Intent(context, MyAlarmManager.class);
             context.startService(ami);
+        } else {
+            // Start Notification Service
+            Log.d("Track", "Alarm Recieved!");
+            Intent i = new Intent(context, NotificationService.class);
+            context.startService(i);
         }
-
-        Log.d("Track", "Alarm Recieved!");
-        Intent i = new Intent(context, NotificationService.class);
-        context.startService(i);
     }
 
 }
