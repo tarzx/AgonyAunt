@@ -28,12 +28,16 @@ public class MyAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String calDate = sharedPref.getString(Util.KEY_DATE, "00000000");
+
         // Set Alarm if it is new day
-        if (Util.alarmBooted(context)) {
+        if (Util.alarmBooted(calDate)) {
             // manage alarm
             Log.i("Track", "start Alarm");
-            Intent ami = new Intent(context, MyAlarmManager.class);
-            context.startService(ami);
+            Intent i = new Intent(context, MyAlarmManager.class);
+            context.startService(i);
         } else {
             // Start Notification Service
             Log.d("Track", "Alarm Recieved!");

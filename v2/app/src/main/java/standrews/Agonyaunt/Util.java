@@ -126,7 +126,6 @@ public class Util {
     public static final String KEY_ANSWER = "Agony.answer";
     public static final String KEY_COUNT = "Agony.qcount";
     public static final String KEY_DATE = "Agony.date";
-    public static final String KEY_NEXTTIME = "Agony.nexttime";
 
     private static final TimeSlot[] timeslots = new TimeSlot[] {
 		new TimeSlot(240, 180), new TimeSlot(420, 300),
@@ -196,7 +195,7 @@ public class Util {
 		return nextTimes;
 	}
 
-	public static boolean alarmBooted(Context context) {
+	public static boolean alarmBooted(String calDate) {
         boolean setAlarm = false;
 		if (!alarm_boot) {
 			alarm_boot = true;
@@ -204,17 +203,8 @@ public class Util {
 
             //LoadUpdated Files
             Log.i("Upload", "First Load");
-            Util.loadNet(context, Util.FREQUENCY_INTERVENTION_NET_URL, Util.FREQUENCY_INTERVENTION_NET_EG);
-            Util.loadNet(context, Util.SLOT_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_EG);
-            Util.loadNet(context, Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_SEQUENCE_NET_EG);
-            Util.loadNet(context, Util.SELECT_BEHAVIOUR_NET_URL, Util.SELECT_BEHAVIOUR_NET_EG);
-            Util.loadNet(context, Util.SELECT_GOAL_NET_URL, Util.SELECT_GOAL_NET_EG);
         } else {
             // set alarm if it is new day
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            String calDate = sharedPref.getString(Util.KEY_DATE, "00000000");
-
             Log.i("Cal Date", calDate + "");
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

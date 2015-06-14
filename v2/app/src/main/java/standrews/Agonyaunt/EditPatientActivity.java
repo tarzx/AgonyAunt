@@ -142,71 +142,66 @@ public class EditPatientActivity extends Activity {
          * */
         protected String doInBackground(String... params) {
 
-            // updating UI from Background Thread
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    HashMap<String, String> patientInfo = manageInfo.getPatientInfo(pid, ctlLv);
+            HashMap<String, String> patientInfo = manageInfo.getPatientInfo(pid, ctlLv);
 
-                    if (patientInfo != null) {
-                        Log.d("Track", "Load success");
+            if (patientInfo != null) {
+                Log.d("Track", "Load success");
 
-                        // patient with this pid found
-                        // Edit Text
-                        patientName = (EditText) findViewById(R.id.EditNameText);
-                        patientAge = (EditText) findViewById(R.id.EditAgeText);
-                        rbMale = (RadioButton) findViewById(R.id.EditrbMale);
-                        rbFemale = (RadioButton) findViewById(R.id.EditrbMale);
-                        bar = (SeekBar) findViewById(R.id.EditFrequencyBar);
-                        counter = (TextView) findViewById(R.id.EditFrequencyCounter);
-                        checkBoxes[0] = (CheckBox) findViewById(R.id.EditCheckBox0);
-                        checkBoxes[1] = (CheckBox) findViewById(R.id.EditCheckBox1);
-                        checkBoxes[2] = (CheckBox) findViewById(R.id.EditCheckBox2);
-                        checkBoxes[3] = (CheckBox) findViewById(R.id.EditCheckBox3);
-                        checkBoxes[4] = (CheckBox) findViewById(R.id.EditCheckBox4);
-                        checkBoxes[5] = (CheckBox) findViewById(R.id.EditCheckBox5);
+                // patient with this pid found
+                // Edit Text
+                patientName = (EditText) findViewById(R.id.EditNameText);
+                patientAge = (EditText) findViewById(R.id.EditAgeText);
+                rbMale = (RadioButton) findViewById(R.id.EditrbMale);
+                rbFemale = (RadioButton) findViewById(R.id.EditrbMale);
+                bar = (SeekBar) findViewById(R.id.EditFrequencyBar);
+                counter = (TextView) findViewById(R.id.EditFrequencyCounter);
+                checkBoxes[0] = (CheckBox) findViewById(R.id.EditCheckBox0);
+                checkBoxes[1] = (CheckBox) findViewById(R.id.EditCheckBox1);
+                checkBoxes[2] = (CheckBox) findViewById(R.id.EditCheckBox2);
+                checkBoxes[3] = (CheckBox) findViewById(R.id.EditCheckBox3);
+                checkBoxes[4] = (CheckBox) findViewById(R.id.EditCheckBox4);
+                checkBoxes[5] = (CheckBox) findViewById(R.id.EditCheckBox5);
 
-                        // display patient data in EditText
-                        patientName.setText(patientInfo.get(Util.TAG_NAME));
-                        patientAge.setText(patientInfo.get(Util.TAG_AGE));
-                        if (patientInfo.get(Util.TAG_GENDER).equals("0") ){
-                            rbMale.setChecked(true);
-                        } else if (patientInfo.get(Util.TAG_GENDER).equals("1")){
-                            rbFemale.setChecked(true);
-                        }
-
-                        ArrayList<Integer> slots =Util.getSlots(patientInfo);
-                        for (int i=0; i<checkBoxes.length; i++) {
-                            checkBoxes[i].setChecked(slots.contains(i+1));
-                        }
-
-                        Integer frequency = Util.getFrequency(patientInfo);
-                        bar.setProgress(frequency);
-                        counter.setText(Integer.toString(frequency));
-
-                        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-                            @Override
-                            public void onProgressChanged(SeekBar bar, int position, boolean fromUser) {
-                                if (position==0) {
-                                    counter.setText("");
-                                } else {
-                                    counter.setText(Integer.toString(position));
-                                }
-                            }
-
-                            @Override
-                            public void onStartTrackingTouch(SeekBar arg0) {
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar arg0) {
-                            }
-
-                        });
-
-                    }
+                // display patient data in EditText
+                patientName.setText(patientInfo.get(Util.TAG_NAME));
+                patientAge.setText(patientInfo.get(Util.TAG_AGE));
+                if (patientInfo.get(Util.TAG_GENDER).equals("0") ){
+                    rbMale.setChecked(true);
+                } else if (patientInfo.get(Util.TAG_GENDER).equals("1")){
+                    rbFemale.setChecked(true);
                 }
-            });
+
+                ArrayList<Integer> slots =Util.getSlots(patientInfo);
+                for (int i=0; i<checkBoxes.length; i++) {
+                    checkBoxes[i].setChecked(slots.contains(i+1));
+                }
+
+                Integer frequency = Util.getFrequency(patientInfo);
+                bar.setProgress(frequency);
+                counter.setText(Integer.toString(frequency));
+
+                bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                    @Override
+                    public void onProgressChanged(SeekBar bar, int position, boolean fromUser) {
+                        if (position==0) {
+                            counter.setText("");
+                        } else {
+                            counter.setText(Integer.toString(position));
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar arg0) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar arg0) {
+                    }
+
+                });
+
+            }
 
             return null;
         }

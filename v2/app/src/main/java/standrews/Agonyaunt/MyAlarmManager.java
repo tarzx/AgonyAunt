@@ -102,4 +102,12 @@ public class MyAlarmManager extends Service {
         Log.i("Cal Date", sdf.format(new Date()) + "");
     }
 
+    private void updateNet() {
+        Util.loadNet(this.getBaseContext(), Util.FREQUENCY_INTERVENTION_NET_URL, Util.FREQUENCY_INTERVENTION_NET_EG);
+        Util.loadNet(this.getBaseContext(), Util.SLOT_INTERVENTION_NET_URL, Util.SLOT_INTERVENTION_NET_EG);
+        Util.loadNet(this.getBaseContext(), Util.SELECT_SEQUENCE_NET_URL, Util.SELECT_SEQUENCE_NET_EG);
+        Util.loadNet(this.getBaseContext(), Util.SELECT_BEHAVIOUR_NET_URL, Util.SELECT_BEHAVIOUR_NET_EG);
+        Util.loadNet(this.getBaseContext(), Util.SELECT_GOAL_NET_URL, Util.SELECT_GOAL_NET_EG);
+    }
+
 }

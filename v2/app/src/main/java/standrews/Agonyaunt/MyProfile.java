@@ -212,17 +212,12 @@ public class MyProfile extends Activity {
             }
             editor.apply();
 
-            // Set New alarm - if it has not set
-            if (Util.alarmBooted(this.getBaseContext())) {
-                // manage alarm
-                Log.i("Track", "start Alarm");
-                Intent ami = new Intent(this, MyAlarmManager.class);
-                this.startService(ami);
+            if (sharedPref.contains(Util.KEY_PID)) {
+                new SavePatientInfo().execute();
+            } else {
+                new SaveNewPatientInfo().execute();
             }
 
-            //Toast.makeText(MyProfile.this, "Preference has been saved", Toast.LENGTH_SHORT).show();
-
-            new SavePatientInfo().execute();
         } else {
             Toast.makeText(MyProfile.this, "Please connect internet!", Toast.LENGTH_SHORT).show();
         }
@@ -240,7 +235,7 @@ public class MyProfile extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MyProfile.this);
-            pDialog.setMessage("Slots preference saving to the database..");
+            pDialog.setMessage("User profile and preference are saving to the database..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -272,23 +267,12 @@ public class MyProfile extends Activity {
                 }
             }
 
-            if (sharedPref.contains(Util.KEY_PID)) {
-                //update existing
-                String pid = sharedPref.getString(Util.KEY_PID, "");
+            //update existing
+            String pid = sharedPref.getString(Util.KEY_PID, "");
 
-                success = manageInfo.updatePatient(pid, name, age, gender);
-                if (success == 1) {
-                    success = manageInfo.updatePatientPreference(pid, set_slot, slots, set_frequency, frequencies);
-                }
-
-            } else {
-                //create new
-                success = manageInfo.createPatient(name, age, gender, set_slot, slots, set_frequency, frequencies);
-                if (success != 0) {
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(Util.KEY_PID, String.valueOf(success));
-                    editor.apply();
-                }
+            success = manageInfo.updatePatient(pid, name, age, gender);
+            if (success == 1) {
+                success = manageInfo.updatePatientPreference(pid, set_slot, slots, set_frequency, frequencies);
             }
 
             return null;
@@ -305,7 +289,85 @@ public class MyProfile extends Activity {
 
             AlertDialog alertDialog = new AlertDialog.Builder(MyProfile.this).create();
             alertDialog.setTitle("User notification!");
-            alertDialog.setMessage("Profile has been saved. Now restart the app to apply new settings.");
+            alertDialog.setMessage("Profile has been saved. Change will affect at midnight.");
+            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+
+            alertDialog.show();
+        }
+
+    }
+
+    /**
+     * Background Async Task to save new patient info
+     */
+    class SaveNewPatientInfo extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MyProfile.this);
+            pDialog.setMessage("User profile and preference are saving to the database..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating record
+         */
+        protected String doInBackground(String... args) {
+            int success = 0;
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MyProfile.this);
+
+            String name = sharedPref.getString(Util.KEY_USERNAME, "");
+            String age = sharedPref.getString(Util.KEY_AGE, "");
+            String gender = sharedPref.getString(Util.KEY_GENDER, null);
+            int set_frequency = sharedPref.getInt(Util.KEY_SET_FREQ, 0);
+            int[] frequencies = new int[Util.NUM_FREQUENCY];
+            for (int i=0; i<frequencies.length; i++) {
+                if (i+1 == sharedPref.getInt(Util.KEY_FREQ, 0)) {
+                    frequencies[i] = 1;
+                }
+            }
+            int set_slot = sharedPref.getInt(Util.KEY_SET_SLOT, 0);
+            int[] slots = new int[numCheckboxes];
+            for (int i=0; i<slots.length; i++) {
+                String key = Util.KEY_CHECKBOX + i;
+                if (sharedPref.getBoolean(key, false)) {
+                    slots[i] = 1;
+                }
+            }
+
+
+            //create new
+            success = manageInfo.createPatient(name, age, gender, set_slot, slots, set_frequency, frequencies);
+            if (success != 0) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(Util.KEY_PID, String.valueOf(success));
+                editor.apply();
+            }
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * *
+         */
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+
+            AlertDialog alertDialog = new AlertDialog.Builder(MyProfile.this).create();
+            alertDialog.setTitle("User notification!");
+            alertDialog.setMessage("Profile has been saved.");
             alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                 }

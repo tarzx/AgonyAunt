@@ -75,7 +75,8 @@ public class HomeMenu extends Activity {
         tabHost.addTab(tabSpec);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (Util.alarmBooted(this.getBaseContext()) && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
+        String calDate = sharedPref.getString(Util.KEY_DATE, "00000000");
+        if (Util.alarmBooted(calDate) && sharedPref.contains(Util.KEY_AGE) && sharedPref.contains(Util.KEY_GENDER)) {
             // manage alarm
             Log.i("Track", "start Alarm");
             Intent i = new Intent(this.getBaseContext(), MyAlarmManager.class);
